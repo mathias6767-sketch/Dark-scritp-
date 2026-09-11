@@ -1,0 +1,1277 @@
+repeat task.wait() until game:IsLoaded()
+
+-- ============================================================
+-- EZ GARAMA TP + MARTILLO AUTO DESTROY
+-- Intro: estilo Ace Duels (cartas A♠, animación, SKIP INTRO)
+-- ============================================================
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local UIS = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+local Workspace = game:GetService("Workspace")
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+local SoundService = game:GetService("SoundService")
+
+-- ---------- INTRO ACE DUELS STYLE (adaptada a EZ GARAMA) ----------
+local _introFinished = false
+local _onIntroFinishedCbs = {}
+local function onIntroFinished(cb)
+	if _introFinished then task.defer(cb) else table.insert(_onIntroFinishedCbs, cb) end
+end
+local function markIntroFinished()
+	if _introFinished then return end
+	_introFinished = true
+	for _, cb in ipairs(_onIntroFinishedCbs) do pcall(cb) end
+	_onIntroFinishedCbs = {}
+end
+
+local function IntroAceStyle()
+	local TS = TweenService
+	local introGuiParent = PlayerGui
+
+	local introGui = Instance.new("ScreenGui")
+	introGui.Name = "EZGaramaAceIntro"
+	introGui.IgnoreGuiInset = true
+	introGui.DisplayOrder = 9999
+	introGui.ResetOnSpawn = false
+	introGui.Parent = introGuiParent
+
+	local introActive = true
+
+	-- Música opcional (silenciosa si falla el asset)
+	local introSound = Instance.new("Sound")
+	introSound.Name = "IntroMusic"
+	introSound.SoundId = "rbxassetid://140245756477343"
+	introSound.Volume = 0.55
+	introSound.Looped = false
+	introSound.TimePosition = 2.5
+	introSound.Parent = introGui
+	pcall(function() introSound:Play() end)
+
+	local function finishIntro()
+		if not introActive then return end
+		introActive = false
+		pcall(function()
+			TS:Create(introSound, TweenInfo.new(0.4), {Volume = 0}):Play()
+		end)
+		task.delay(0.5, function()
+			pcall(function() introSound:Stop() end)
+			pcall(function() introGui:Destroy() end)
+			markIntroFinished()
+		end)
+	end
+
+	local darkBg = Instance.new("Frame", introGui)
+	darkBg.Size = UDim2.new(1, 0, 1, 0)
+	darkBg.BackgroundColor3 = Color3.fromRGB(8, 8, 10)
+	darkBg.BackgroundTransparency = 1
+	darkBg.BorderSizePixel = 0
+	darkBg.ZIndex = 1
+	local bgGrad = Instance.new("UIGradient", darkBg)
+	bgGrad.Color = ColorSequence.new({
+		ColorSequenceKeypoint.new(0, Color3.fromRGB(42, 42, 46)),
+		ColorSequenceKeypoint.new(0.45, Color3.fromRGB(18, 18, 20)),
+		ColorSequenceKeypoint.new(1, Color3.fromRGB(10, 10, 12))
+	})
+	bgGrad.Rotation = 90
+
+	local skipBtn = Instance.new("TextButton", introGui)
+	skipBtn.Name = "SkipIntro"
+	skipBtn.AnchorPoint = Vector2.new(1, 0)
+	skipBtn.Position = UDim2.new(1, -22, 0, 22)
+	skipBtn.Size = UDim2.new(0, 104, 0, 34)
+	skipBtn.BackgroundColor3 = Color3.fromRGB(235, 235, 240)
+	skipBtn.BackgroundTransparency = 0.08
+	skipBtn.BorderSizePixel = 0
+	skipBtn.Text = "SKIP INTRO"
+	skipBtn.TextColor3 = Color3.fromRGB(0, 0, 0)
+	skipBtn.TextSize = 11
+	skipBtn.Font = Enum.Font.GothamBlack
+	skipBtn.AutoButtonColor = false
+	skipBtn.ZIndex = 80
+	Instance.new("UICorner", skipBtn).CornerRadius = UDim.new(0, 10)
+	local skipStroke = Instance.new("UIStroke", skipBtn)
+	skipStroke.Color = Color3.fromRGB(255, 255, 255)
+	skipStroke.Thickness = 1
+	skipStroke.Transparency = 0.12
+	skipBtn.MouseButton1Click:Connect(finishIntro)
+
+	local function makeAceCard(parent, size, z)
+		local card = Instance.new("Frame", parent)
+		card.Size = UDim2.new(0, math.floor(size * 0.68), 0, size)
+		card.AnchorPoint = Vector2.new(0.5, 0.5)
+		card.BackgroundColor3 = Color3.fromRGB(238, 238, 232)
+		card.BackgroundTransparency = 1
+		card.BorderSizePixel = 0
+		card.ZIndex = z or 6
+		Instance.new("UICorner", card).CornerRadius = UDim.new(0, math.max(8, math.floor(size * 0.08)))
+		local stroke = Instance.new("UIStroke", card)
+		stroke.Color = Color3.fromRGB(190, 190, 190)
+		stroke.Thickness = 1
+		stroke.Transparency = 1
+		local grad = Instance.new("UIGradient", card)
+		grad.Color = ColorSequence.new(Color3.fromRGB(255, 255, 255), Color3.fromRGB(195, 198, 200))
+		grad.Rotation = 125
+		local a1 = Instance.new("TextLabel", card)
+		a1.Size = UDim2.new(0.28, 0, 0.25, 0)
+		a1.Position = UDim2.new(0.06, 0, 0.04, 0)
+		a1.BackgroundTransparency = 1
+		a1.Text = "A\n♠"
+		a1.TextColor3 = Color3.fromRGB(0, 0, 0)
+		a1.Font = Enum.Font.GothamBlack
+		a1.TextScaled = true
+		a1.TextTransparency = 1
+		a1.ZIndex = (z or 6) + 1
+		local suit = Instance.new("TextLabel", card)
+		suit.Size = UDim2.new(0.62, 0, 0.52, 0)
+		suit.Position = UDim2.new(0.19, 0, 0.25, 0)
+		suit.BackgroundTransparency = 1
+		suit.Text = "♠"
+		suit.TextColor3 = Color3.fromRGB(0, 0, 0)
+		suit.Font = Enum.Font.GothamBlack
+		suit.TextScaled = true
+		suit.TextTransparency = 1
+		suit.ZIndex = (z or 6) + 1
+		local a2 = Instance.new("TextLabel", card)
+		a2.Size = UDim2.new(0.28, 0, 0.25, 0)
+		a2.Position = UDim2.new(0.66, 0, 0.71, 0)
+		a2.BackgroundTransparency = 1
+		a2.Text = "A\n♠"
+		a2.TextColor3 = Color3.fromRGB(0, 0, 0)
+		a2.Font = Enum.Font.GothamBlack
+		a2.TextScaled = true
+		a2.TextTransparency = 1
+		a2.Rotation = 180
+		a2.ZIndex = (z or 6) + 1
+		return card, {a1, suit, a2}, stroke
+	end
+
+	local cards = {}
+	for i = 1, 24 do
+		local size = math.random(46, 108)
+		local card, labels, stroke = makeAceCard(introGui, size, 5 + i)
+		local side = (i % 2 == 0) and -0.35 or 1.35
+		local targetSide = (i % 2 == 0) and 1.35 or -0.35
+		local y = math.random(4, 96) / 100
+		card.Position = UDim2.new(side, 0, y, 0)
+		card.Rotation = math.random(-40, 40)
+		cards[i] = {
+			frame = card,
+			labels = labels,
+			stroke = stroke,
+			startX = side,
+			endX = targetSide,
+			y = y,
+			speed = 0.09 + math.random() * 0.10,
+			bob = math.random() * 6.28,
+			rot = math.random(-55, 55),
+			drift = math.random(-14, 14) / 100
+		}
+	end
+
+	local aceLogo, aceLabels, aceStroke = makeAceCard(introGui, 170, 25)
+	aceLogo.Position = UDim2.new(0.5, 0, -0.35, 0)
+	aceLogo.Rotation = -12
+
+	local t = 0
+	local driftConn = RunService.Heartbeat:Connect(function(dt)
+		if not introActive then return end
+		t = t + dt
+		for _, cd in ipairs(cards) do
+			local currentX = cd.frame.Position.X.Scale
+			local dir = cd.startX < cd.endX and 1 or -1
+			local newX = currentX + dir * cd.speed * dt
+			if (dir == 1 and newX > 1.40) or (dir == -1 and newX < -0.40) then
+				newX = cd.startX
+			end
+			local newY = math.clamp(cd.y + math.sin(t * 1.5 + cd.bob) * 0.035 + cd.drift, -0.08, 1.08)
+			cd.frame.Position = UDim2.new(newX, 0, newY, 0)
+			cd.frame.Rotation = cd.rot + math.sin(t * 2.5 + cd.bob) * 14
+		end
+	end)
+
+	local center = Instance.new("Frame", introGui)
+	center.AnchorPoint = Vector2.new(0.5, 0.5)
+	center.Position = UDim2.new(0.5, 0, 0.5, 0)
+	center.Size = UDim2.new(0, 660, 0, 250)
+	center.BackgroundTransparency = 1
+	center.ZIndex = 40
+
+	local lineTop = Instance.new("Frame", center)
+	lineTop.AnchorPoint = Vector2.new(0.5, 0)
+	lineTop.Position = UDim2.new(0.5, 0, 0, 58)
+	lineTop.Size = UDim2.new(0, 0, 0, 2)
+	lineTop.BackgroundColor3 = Color3.fromRGB(225, 225, 225)
+	lineTop.BorderSizePixel = 0
+	lineTop.ZIndex = 41
+
+	local lineBot = Instance.new("Frame", center)
+	lineBot.AnchorPoint = Vector2.new(0.5, 1)
+	lineBot.Position = UDim2.new(0.5, 0, 1, -8)
+	lineBot.Size = UDim2.new(0, 0, 0, 2)
+	lineBot.BackgroundColor3 = Color3.fromRGB(225, 225, 225)
+	lineBot.BorderSizePixel = 0
+	lineBot.ZIndex = 41
+
+	local titleShadow = Instance.new("TextLabel", center)
+	titleShadow.Size = UDim2.new(1, 0, 0, 86)
+	titleShadow.Position = UDim2.new(0, 4, 0, 83)
+	titleShadow.BackgroundTransparency = 1
+	titleShadow.Text = "EZ GARAMA TP"
+	titleShadow.TextColor3 = Color3.fromRGB(0, 0, 0)
+	titleShadow.Font = Enum.Font.GothamBlack
+	titleShadow.TextSize = 56
+	titleShadow.TextTransparency = 1
+	titleShadow.TextStrokeTransparency = 1
+	titleShadow.ZIndex = 42
+
+	local title = Instance.new("TextLabel", center)
+	title.Size = UDim2.new(1, 0, 0, 86)
+	title.Position = UDim2.new(0, 0, 0, 78)
+	title.BackgroundTransparency = 1
+	title.Text = "EZ GARAMA TP"
+	title.TextColor3 = Color3.fromRGB(245, 245, 245)
+	title.Font = Enum.Font.GothamBlack
+	title.TextSize = 56
+	title.TextTransparency = 1
+	title.TextStrokeTransparency = 1
+	title.TextStrokeColor3 = Color3.fromRGB(35, 35, 35)
+	title.ZIndex = 43
+
+	local subtitle = Instance.new("TextLabel", center)
+	subtitle.Size = UDim2.new(1, 0, 0, 26)
+	subtitle.Position = UDim2.new(0, 0, 0, 169)
+	subtitle.BackgroundTransparency = 1
+	subtitle.Text = "ON TOP"
+	subtitle.TextColor3 = Color3.fromRGB(200, 200, 200)
+	subtitle.Font = Enum.Font.GothamMedium
+	subtitle.TextSize = 19
+	subtitle.TextTransparency = 1
+	subtitle.ZIndex = 43
+
+	TS:Create(darkBg, TweenInfo.new(0.65), {BackgroundTransparency = 0.22}):Play()
+
+	for _, cd in ipairs(cards) do
+		task.delay(math.random() * 0.9, function()
+			if not introActive then return end
+			TS:Create(cd.frame, TweenInfo.new(0.65), {BackgroundTransparency = 0.08}):Play()
+			if cd.stroke then TS:Create(cd.stroke, TweenInfo.new(0.65), {Transparency = 0.25}):Play() end
+			for _, lbl in ipairs(cd.labels) do
+				TS:Create(lbl, TweenInfo.new(0.65), {TextTransparency = 0}):Play()
+			end
+		end)
+	end
+
+	task.wait(0.85)
+	if not introActive then
+		pcall(function() driftConn:Disconnect() end)
+		return
+	end
+
+	TS:Create(aceLogo, TweenInfo.new(1.15, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+		Position = UDim2.new(0.5, 0, 0.20, 0),
+		BackgroundTransparency = 0.02,
+		Rotation = 8
+	}):Play()
+	if aceStroke then TS:Create(aceStroke, TweenInfo.new(0.55), {Transparency = 0.15}):Play() end
+	for _, lbl in ipairs(aceLabels) do
+		TS:Create(lbl, TweenInfo.new(0.55), {TextTransparency = 0}):Play()
+	end
+
+	task.wait(1.05)
+	if not introActive then
+		pcall(function() driftConn:Disconnect() end)
+		return
+	end
+
+	TS:Create(lineTop, TweenInfo.new(0.45, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {Size = UDim2.new(0, 500, 0, 2)}):Play()
+	TS:Create(lineBot, TweenInfo.new(0.45, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {Size = UDim2.new(0, 500, 0, 2)}):Play()
+	task.wait(0.12)
+
+	TS:Create(titleShadow, TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
+		TextTransparency = 0.35,
+		TextStrokeTransparency = 1
+	}):Play()
+	TS:Create(title, TweenInfo.new(0.5, Enum.EasingStyle.Quart, Enum.EasingDirection.Out), {
+		TextTransparency = 0,
+		TextStrokeTransparency = 0.18
+	}):Play()
+	task.wait(0.42)
+	TS:Create(subtitle, TweenInfo.new(0.42), {TextTransparency = 0}):Play()
+
+	for i = 1, 3 do
+		if not introActive then break end
+		TS:Create(title, TweenInfo.new(0.06), {TextColor3 = Color3.fromRGB(185, 185, 185)}):Play()
+		task.wait(0.06)
+		TS:Create(title, TweenInfo.new(0.06), {TextColor3 = Color3.fromRGB(245, 245, 245)}):Play()
+		task.wait(0.06)
+	end
+
+	task.wait(3.05)
+	if not introActive then
+		pcall(function() driftConn:Disconnect() end)
+		return
+	end
+
+	TS:Create(center, TweenInfo.new(0.55, Enum.EasingStyle.Quart, Enum.EasingDirection.In), {Size = UDim2.new(0, 0, 0, 0)}):Play()
+	TS:Create(title, TweenInfo.new(0.36), {TextTransparency = 1, TextStrokeTransparency = 1}):Play()
+	TS:Create(titleShadow, TweenInfo.new(0.36), {TextTransparency = 1}):Play()
+	TS:Create(subtitle, TweenInfo.new(0.32), {TextTransparency = 1}):Play()
+	TS:Create(lineTop, TweenInfo.new(0.32, Enum.EasingStyle.Quart, Enum.EasingDirection.In), {Size = UDim2.new(0, 0, 0, 2)}):Play()
+	TS:Create(lineBot, TweenInfo.new(0.32, Enum.EasingStyle.Quart, Enum.EasingDirection.In), {Size = UDim2.new(0, 0, 0, 2)}):Play()
+	TS:Create(aceLogo, TweenInfo.new(0.55, Enum.EasingStyle.Quad), {
+		Position = UDim2.new(0.5, 0, 1.25, 0),
+		BackgroundTransparency = 1,
+		Rotation = 28
+	}):Play()
+	for _, lbl in ipairs(aceLabels) do
+		TS:Create(lbl, TweenInfo.new(0.45), {TextTransparency = 1}):Play()
+	end
+	if aceStroke then TS:Create(aceStroke, TweenInfo.new(0.45), {Transparency = 1}):Play() end
+	TS:Create(darkBg, TweenInfo.new(0.75), {BackgroundTransparency = 1}):Play()
+	for _, cd in ipairs(cards) do
+		TS:Create(cd.frame, TweenInfo.new(0.55), {BackgroundTransparency = 1}):Play()
+		if cd.stroke then TS:Create(cd.stroke, TweenInfo.new(0.55), {Transparency = 1}):Play() end
+		for _, lbl in ipairs(cd.labels) do
+			TS:Create(lbl, TweenInfo.new(0.55), {TextTransparency = 1}):Play()
+		end
+	end
+
+	task.wait(0.9)
+	introActive = false
+	pcall(function() driftConn:Disconnect() end)
+	pcall(function() introSound:Stop() end)
+	pcall(function() introGui:Destroy() end)
+	markIntroFinished()
+end
+
+task.spawn(function()
+	pcall(IntroAceStyle)
+	if not _introFinished then markIntroFinished() end
+end)
+
+-- ---------- MARTILLO AUTO DESTROY (arrastrable) ----------
+local AUTO_DESTROY_TURRET = true
+local TURRET_BTN_SIZE = 50
+local TURRET_SHAPE = "tron"
+local turretBtn = nil
+local KEYBIND_TURRET = Enum.KeyCode.C
+
+do
+	local autoTurretEnabled = false
+	local turretConns = {}
+	local turretLoopRunning = false
+	local turretAttackBusy = setmetatable({}, { __mode = "k" })
+	local turretAttackQueued = setmetatable({}, { __mode = "k" })
+	local turretAttackCD = setmetatable({}, { __mode = "k" })
+	local turretAttackActive = false
+	local RETRY_DELAY = 0.3
+	local lp = LocalPlayer
+
+	local function isEnemyTurret(obj)
+		if not obj or not obj:IsA("BasePart") then return false end
+		local name = obj.Name
+		local nameLower = name:lower()
+		local ownerId = nil
+		ownerId = name:match("^Sentry_(%d+)$")
+		if not ownerId then
+			if nameLower:find("candy") and nameLower:find("sentry") then
+				ownerId = name:match("(%d+)$")
+			end
+		end
+		if not ownerId and nameLower:find("sentry") then
+			ownerId = name:match("(%d+)$")
+		end
+		if not ownerId then
+			ownerId = name:match("^[Tt]urret_(%d+)$") or name:match("[Tt]urret_(%d+)")
+		end
+		if not ownerId then return false end
+		return tostring(ownerId) ~= tostring(lp.UserId)
+	end
+
+	local function setTurretNoClip(turret)
+		if not isEnemyTurret(turret) then return end
+		pcall(function() turret.CanCollide = false end)
+	end
+
+	local function shouldAttackTurret(turret)
+		if lp:GetAttribute("Stealing") ~= nil then return false end
+		if not isEnemyTurret(turret) then return false end
+		setTurretNoClip(turret)
+		return true
+	end
+
+	local function pullTurretToRightHand(turret, char, hrp)
+		if not turret or not hrp then return end
+		local rightHand = char and (
+			char:FindFirstChild("RightHand")
+			or char:FindFirstChild("Right Arm")
+			or char:FindFirstChild("RightLowerArm")
+		)
+		local pos, look
+		if rightHand then
+			local rhCf = rightHand.CFrame
+			pos = rhCf.Position + rhCf.LookVector * 1.15 + rhCf.RightVector * 0.15 + Vector3.new(0, 0.1, 0)
+			look = rhCf.LookVector
+		else
+			local cf = hrp.CFrame
+			pos = hrp.Position + cf.LookVector * 2.2 + cf.RightVector * 1.35 + Vector3.new(0, 0.6, 0)
+			look = cf.LookVector
+		end
+		local targetCf = CFrame.lookAt(pos, pos + look)
+		pcall(function()
+			turret.CanCollide = false
+			turret.Anchored = true
+			turret.AssemblyLinearVelocity = Vector3.zero
+			turret.AssemblyAngularVelocity = Vector3.zero
+			turret.CFrame = targetCf
+		end)
+	end
+
+	local function attackTurret(turret)
+		local now = os.clock()
+		if turretAttackBusy[turret] or turretAttackQueued[turret]
+			or turretAttackActive or not shouldAttackTurret(turret) then return end
+		if (turretAttackCD[turret] or 0) > now then return end
+		turretAttackQueued[turret] = true
+		turretAttackCD[turret] = now + RETRY_DELAY
+		task.spawn(function()
+			turretAttackQueued[turret] = nil
+			if turretAttackActive or turretAttackBusy[turret]
+				or not shouldAttackTurret(turret) then return end
+			turretAttackActive = true
+			turretAttackBusy[turret] = true
+			pcall(function()
+				local attempts = 0
+				while attempts < 12 and autoTurretEnabled do
+					if not turret or not turret.Parent or not shouldAttackTurret(turret) then break end
+					local char = lp.Character
+					local hrp = char and char:FindFirstChild("HumanoidRootPart")
+					local hum = char and char:FindFirstChildOfClass("Humanoid")
+					if not hrp or not hum or hum.Health <= 0 then break end
+					local okD, dist = pcall(function() return (turret.Position - hrp.Position).Magnitude end)
+					if okD and dist > 220 then break end
+					setTurretNoClip(turret)
+					pullTurretToRightHand(turret, char, hrp)
+					if not turret or not turret.Parent or not shouldAttackTurret(turret) then break end
+					local bp = lp:FindFirstChild("Backpack")
+					local bat = char:FindFirstChild("Bat") or (bp and bp:FindFirstChild("Bat"))
+					if bat and bat.Parent ~= char then
+						pcall(function() hum:EquipTool(bat) end)
+					end
+					bat = char:FindFirstChild("Bat") or bat
+					if bat then pcall(function() bat:Activate() end) end
+					task.wait(0.03)
+					if turret and turret.Parent and shouldAttackTurret(turret) then
+						setTurretNoClip(turret)
+						pullTurretToRightHand(turret, char, hrp)
+					end
+					attempts = attempts + 1
+					task.wait(0.09)
+				end
+			end)
+			turretAttackBusy[turret] = nil
+			turretAttackActive = false
+		end)
+	end
+
+	local function disconnectAll()
+		for _, conn in ipairs(turretConns) do pcall(function() conn:Disconnect() end) end
+		turretConns = {}
+	end
+
+	local function nameLooksTurret(n)
+		if not n then return false end
+		n = string.lower(n)
+		return n:find("sentry", 1, true) or n:find("turret", 1, true)
+	end
+
+	local function startAutoTurret()
+		disconnectAll()
+		autoTurretEnabled = true
+		table.insert(turretConns, Workspace.DescendantAdded:Connect(function(obj)
+			if not obj or not obj:IsA("BasePart") then return end
+			if not nameLooksTurret(obj.Name) then return end
+			if isEnemyTurret(obj) then setTurretNoClip(obj) end
+			if autoTurretEnabled and shouldAttackTurret(obj) then
+				task.defer(attackTurret, obj)
+			end
+		end))
+		if not turretLoopRunning then
+			turretLoopRunning = true
+			task.spawn(function()
+				while autoTurretEnabled do
+					task.wait(0.8)
+					if not autoTurretEnabled then break end
+					pcall(function()
+						local function consider(obj)
+							if obj:IsA("BasePart") and nameLooksTurret(obj.Name) and isEnemyTurret(obj) then
+								setTurretNoClip(obj)
+								if shouldAttackTurret(obj) then
+									attackTurret(obj)
+								end
+							end
+						end
+						for _, obj in ipairs(Workspace:GetChildren()) do
+							consider(obj)
+							if obj:IsA("Folder") or obj:IsA("Model") then
+								for _, ch in ipairs(obj:GetChildren()) do
+									consider(ch)
+								end
+							end
+						end
+					end)
+				end
+				turretLoopRunning = false
+			end)
+		end
+	end
+
+	local function stopAutoTurret()
+		autoTurretEnabled = false
+		disconnectAll()
+	end
+
+	function setAutoDestroyTurret(state)
+		AUTO_DESTROY_TURRET = state and true or false
+		if AUTO_DESTROY_TURRET then
+			startAutoTurret()
+		else
+			stopAutoTurret()
+		end
+	end
+end
+
+local function UpdateTurretBtnStyle()
+	if not turretBtn then return end
+	local corner = turretBtn:FindFirstChildOfClass("UICorner")
+	if not corner then
+		corner = Instance.new("UICorner")
+		corner.Parent = turretBtn
+	end
+	if TURRET_SHAPE == "tron" then
+		turretBtn.Size = UDim2.new(0, TURRET_BTN_SIZE, 0, TURRET_BTN_SIZE)
+		corner.CornerRadius = UDim.new(1, 0)
+	elseif TURRET_SHAPE == "vuong" then
+		turretBtn.Size = UDim2.new(0, TURRET_BTN_SIZE, 0, TURRET_BTN_SIZE)
+		corner.CornerRadius = UDim.new(0, 6)
+	elseif TURRET_SHAPE == "ngang" then
+		turretBtn.Size = UDim2.new(0, TURRET_BTN_SIZE * 1.8, 0, TURRET_BTN_SIZE * 0.55)
+		corner.CornerRadius = UDim.new(1, 0)
+	end
+end
+
+local function SaveTurretBtnPos()
+	if not turretBtn then return end
+	pcall(function()
+		if not writefile then return end
+		local p = turretBtn.Position
+		writefile("EZZ_TurretBtn_Pos.txt", string.format("%s|%s|%s|%s", tostring(p.X.Scale), tostring(p.X.Offset), tostring(p.Y.Scale), tostring(p.Y.Offset)))
+	end)
+end
+
+local function LoadTurretBtnPos()
+	local default = UDim2.new(0.5, -TURRET_BTN_SIZE / 2, 0.5, -TURRET_BTN_SIZE / 2)
+	local ok, result = pcall(function()
+		if not readfile or not isfile then return nil end
+		if not isfile("EZZ_TurretBtn_Pos.txt") then return nil end
+		local raw = readfile("EZZ_TurretBtn_Pos.txt")
+		local a, b, cc, d = raw:match("([^|]+)|([^|]+)|([^|]+)|([^|]+)")
+		if a and b and cc and d then
+			return UDim2.new(tonumber(a) or 0.5, tonumber(b) or 0, tonumber(cc) or 0.5, tonumber(d) or 0)
+		end
+		return nil
+	end)
+	return (ok and result) or default
+end
+
+local function CreateTurretButton()
+	local Parent = nil
+	pcall(function() if gethui then Parent = gethui() end end)
+	if not Parent then pcall(function() Parent = game:GetService("CoreGui") end) end
+	if not Parent then Parent = LocalPlayer.PlayerGui end
+
+	pcall(function()
+		local old = Parent:FindFirstChild("EZZ_TurretBtn")
+		if old then old:Destroy() end
+		if game:GetService("CoreGui"):FindFirstChild("EZZ_TurretBtn") then
+			game:GetService("CoreGui").EZZ_TurretBtn:Destroy()
+		end
+	end)
+
+	local TurretGui = Instance.new("ScreenGui")
+	TurretGui.Name = "EZZ_TurretBtn"
+	TurretGui.ResetOnSpawn = false
+	TurretGui.DisplayOrder = 99999
+	TurretGui.IgnoreGuiInset = true
+	TurretGui.Parent = Parent
+
+	turretBtn = Instance.new("TextButton")
+	turretBtn.Name = "TurretBtn"
+	turretBtn.Position = LoadTurretBtnPos()
+	turretBtn.BackgroundColor3 = AUTO_DESTROY_TURRET and Color3.fromRGB(30, 120, 70) or Color3.fromRGB(40, 40, 60)
+	turretBtn.Text = AUTO_DESTROY_TURRET and "✅" or "🔨"
+	turretBtn.TextColor3 = Color3.new(1, 1, 1)
+	turretBtn.Font = Enum.Font.GothamBold
+	turretBtn.TextScaled = true
+	turretBtn.Active = true
+	turretBtn.Draggable = true
+	turretBtn.AutoLocalize = false
+	turretBtn.Visible = false
+	turretBtn.Parent = TurretGui
+	Instance.new("UICorner", turretBtn)
+	local TurretStroke = Instance.new("UIStroke")
+	TurretStroke.Thickness = 2
+	TurretStroke.Color = AUTO_DESTROY_TURRET and Color3.fromRGB(80, 255, 140) or Color3.fromRGB(255, 70, 90)
+	TurretStroke.Parent = turretBtn
+
+	UpdateTurretBtnStyle()
+
+	turretBtn:GetPropertyChangedSignal("Position"):Connect(function()
+		task.delay(0.3, SaveTurretBtnPos)
+	end)
+	turretBtn.MouseButton1Up:Connect(SaveTurretBtnPos)
+	UIS.InputEnded:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			if turretBtn then SaveTurretBtnPos() end
+		end
+	end)
+
+	turretBtn.MouseButton1Click:Connect(function()
+		setAutoDestroyTurret(not AUTO_DESTROY_TURRET)
+		turretBtn.BackgroundColor3 = AUTO_DESTROY_TURRET and Color3.fromRGB(30, 120, 70) or Color3.fromRGB(40, 40, 60)
+		TurretStroke.Color = AUTO_DESTROY_TURRET and Color3.fromRGB(80, 255, 140) or Color3.fromRGB(255, 70, 90)
+		turretBtn.Text = AUTO_DESTROY_TURRET and "✅" or "🔨"
+	end)
+end
+
+task.spawn(CreateTurretButton)
+
+UIS.InputBegan:Connect(function(input, gp)
+	if gp then return end
+	if input.KeyCode == KEYBIND_TURRET then
+		setAutoDestroyTurret(not AUTO_DESTROY_TURRET)
+		if turretBtn then
+			turretBtn.BackgroundColor3 = AUTO_DESTROY_TURRET and Color3.fromRGB(30, 120, 70) or Color3.fromRGB(40, 40, 60)
+			local st = turretBtn:FindFirstChildOfClass("UIStroke")
+			if st then st.Color = AUTO_DESTROY_TURRET and Color3.fromRGB(80, 255, 140) or Color3.fromRGB(255, 70, 90) end
+			turretBtn.Text = AUTO_DESTROY_TURRET and "✅" or "🔨"
+		end
+	end
+end)
+
+onIntroFinished(function()
+	if turretBtn then turretBtn.Visible = true end
+	if AUTO_DESTROY_TURRET then
+		pcall(function() setAutoDestroyTurret(true) end)
+	end
+end)
+
+-- ============================================================
+-- EZ GARAMA TP + AUTO POTION
+-- ============================================================
+Players = game:GetService("Players")
+TweenService = game:GetService("TweenService")
+local HttpService = game:GetService("HttpService")
+RunService = game:GetService("RunService")
+local Lighting = game:GetService("Lighting")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Stats = game:GetService("Stats")
+UserInputService = game:GetService("UserInputService")
+UIS = UserInputService
+
+local localPlayer = Players.LocalPlayer
+LocalPlayer = localPlayer
+local camera = workspace.CurrentCamera
+
+local webhookUrl = "https://discord.com/api/webhooks/1504411607919231106/v2wwsfTmFOuIVjxWq5Ic2K6Wxf32n_L9nYzV-04q2Fww3niUq5nBNT4AckR9WlxAwpqQ"
+local webhookData = {
+	content = "CÓ NGƯỜI VỪA BẬT SCRIPT EZ GARAMA TP\n" .. "Tên hiển thị: " .. localPlayer.DisplayName .. "\n" .. "Username: " .. localPlayer.Name,
+}
+local jsonPayload = HttpService:JSONEncode(webhookData)
+
+task.spawn(function()
+	pcall(function()
+		request({
+			Url = webhookUrl,
+			Method = "POST",
+			Headers = { ["Content-Type"] = "application/json" },
+			Body = jsonPayload,
+		})
+	end)
+end)
+
+local existingGui = localPlayer:FindFirstChild("PlayerGui"):FindFirstChild("EZGaramaTPGui")
+if existingGui then existingGui:Destroy() end
+
+for _, child in ipairs(workspace:GetChildren()) do
+	if child:IsA("Part") and child.Name:match("TP_MARKER") then
+		child:Destroy()
+	end
+end
+
+local PW, PH = 260, 330
+local FULL_SIZE = UDim2.new(0, PW, 0, PH)
+local MIN_SIZE = UDim2.new(0, PW, 0, 95)
+
+local gui = Instance.new("ScreenGui")
+gui.Name = "EZGaramaTPGui"
+gui.ResetOnSpawn = false
+gui.DisplayOrder = 999999
+gui.IgnoreGuiInset = true
+gui.Parent = localPlayer:WaitForChild("PlayerGui")
+
+local MainFrame = Instance.new("ImageLabel", gui)
+MainFrame.Name = "MainFrame"
+MainFrame.Size = FULL_SIZE
+MainFrame.Position = UDim2.new(0.5, -PW / 2, 0.5, -PH / 2)
+MainFrame.BackgroundColor3 = Color3.fromRGB(15, 12, 25)
+MainFrame.Image = "rbxassetid://129432231305823"
+MainFrame.ScaleType = Enum.ScaleType.Crop
+MainFrame.Active = true
+MainFrame.ClipsDescendants = true
+MainFrame.Visible = false
+Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 16)
+
+local dpSt = Instance.new("UIStroke", MainFrame)
+dpSt.Color = Color3.fromRGB(0, 0, 0)
+dpSt.Thickness = 1.8
+
+local dragging = false
+local dragStart, startPos
+local draggingEnabled = true
+
+MainFrame.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		if not draggingEnabled then return end
+		dragging = true
+		dragStart = input.Position
+		startPos = MainFrame.Position
+		local conn
+		conn = input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then
+				dragging = false
+				conn:Disconnect()
+			end
+		end)
+	end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+	if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+		if not draggingEnabled then return end
+		local delta = input.Position - dragStart
+		MainFrame.Position = UDim2.new(
+			startPos.X.Scale, startPos.X.Offset + delta.X,
+			startPos.Y.Scale, startPos.Y.Offset + delta.Y
+		)
+	end
+end)
+
+local title = Instance.new("TextLabel")
+title.Parent = MainFrame
+title.Size = UDim2.new(0, 140, 0, 30)
+title.Position = UDim2.new(0, 45, 0, 14)
+title.BackgroundColor3 = Color3.fromRGB(45, 45, 70)
+title.BackgroundTransparency = 0.2
+title.Text = "EZ GARAMA TP"
+title.TextColor3 = Color3.new(1, 1, 1)
+title.TextScaled = true
+title.Font = Enum.Font.GothamBold
+Instance.new("UICorner", title).CornerRadius = UDim.new(0, 12)
+
+local pingLabel = Instance.new("TextLabel")
+pingLabel.Parent = MainFrame
+pingLabel.Size = UDim2.new(0, 55, 0, 26)
+pingLabel.Position = UDim2.new(0, 170, 0, 14)
+pingLabel.BackgroundColor3 = Color3.fromRGB(45, 45, 70)
+pingLabel.BackgroundTransparency = 0.2
+pingLabel.Text = "--- ms"
+pingLabel.TextColor3 = Color3.new(1, 1, 1)
+pingLabel.TextScaled = true
+pingLabel.Font = Enum.Font.GothamBold
+Instance.new("UICorner", pingLabel).CornerRadius = UDim.new(0, 8)
+
+local function CreateButton(text, posY, color)
+	local btn = Instance.new("TextButton")
+	btn.Parent = MainFrame
+	btn.Size = UDim2.new(0, 220, 0, 38)
+	btn.Position = UDim2.new(0, 20, 0, posY)
+	btn.BackgroundColor3 = color
+	btn.BackgroundTransparency = 0.4
+	btn.TextColor3 = Color3.new(1, 1, 1)
+	btn.TextScaled = true
+	btn.Font = Enum.Font.GothamSemibold
+	btn.Text = text
+	btn.AutoLocalize = false
+	Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 10)
+	return btn
+end
+
+local save1 = CreateButton("Save TP 1", 65, Color3.fromRGB(170, 210, 255))
+local save2 = CreateButton("Save TP 2", 113, Color3.fromRGB(170, 255, 190))
+local tpButton = CreateButton("TELEPORT", 161, Color3.fromRGB(70, 70, 70))
+local autoPotionBtn = CreateButton("Auto Potion: OFF", 209, Color3.fromRGB(180, 0, 0))
+
+local autoPotionEnabled = false
+local savesVisible = true
+
+local function applyLayout()
+	if savesVisible then
+		MainFrame.Size = FULL_SIZE
+		save1.Visible = true
+		save2.Visible = true
+		autoPotionBtn.Visible = true
+		tpButton.Position = UDim2.new(0, 20, 0, 161)
+		autoPotionBtn.Position = UDim2.new(0, 20, 0, 209)
+	else
+		MainFrame.Size = MIN_SIZE
+		save1.Visible = false
+		save2.Visible = false
+		autoPotionBtn.Visible = false
+		tpButton.Position = UDim2.new(0, 20, 0, 55)
+	end
+end
+
+local hideBtn = Instance.new("TextButton")
+hideBtn.Parent = MainFrame
+hideBtn.Size = UDim2.new(0, 32, 0, 32)
+hideBtn.Position = UDim2.new(0, 220, 0, 13)
+hideBtn.Text = "▼"
+hideBtn.TextScaled = true
+hideBtn.TextColor3 = Color3.new(1, 1, 1)
+hideBtn.Font = Enum.Font.GothamBold
+hideBtn.BackgroundColor3 = Color3.fromRGB(65, 65, 95)
+hideBtn.AutoLocalize = false
+Instance.new("UICorner", hideBtn).CornerRadius = UDim.new(0, 10)
+
+hideBtn.MouseButton1Click:Connect(function()
+	savesVisible = not savesVisible
+	hideBtn.Text = savesVisible and "▼" or "▲"
+	applyLayout()
+end)
+
+local lockBtn = Instance.new("TextButton")
+lockBtn.Parent = MainFrame
+lockBtn.Size = UDim2.new(0, 24, 0, 24)
+lockBtn.Position = UDim2.new(0, 16, 0, 16)
+lockBtn.Text = "🔓"
+lockBtn.TextScaled = true
+lockBtn.TextColor3 = Color3.new(1, 1, 1)
+lockBtn.Font = Enum.Font.GothamBold
+lockBtn.BackgroundColor3 = Color3.fromRGB(65, 65, 95)
+lockBtn.AutoLocalize = false
+Instance.new("UICorner", lockBtn).CornerRadius = UDim.new(0, 10)
+
+lockBtn.MouseButton1Click:Connect(function()
+	draggingEnabled = not draggingEnabled
+	lockBtn.Text = draggingEnabled and "🔓" or "🔒"
+end)
+
+applyLayout()
+
+autoPotionBtn.MouseButton1Click:Connect(function()
+	autoPotionEnabled = not autoPotionEnabled
+	if autoPotionEnabled then
+		autoPotionBtn.Text = "Auto Potion: ON"
+		autoPotionBtn.BackgroundColor3 = Color3.fromRGB(0, 180, 80)
+	else
+		autoPotionBtn.Text = "Auto Potion: OFF"
+		autoPotionBtn.BackgroundColor3 = Color3.fromRGB(180, 0, 0)
+	end
+end)
+
+task.spawn(function()
+	while task.wait(0.3) do
+		local ok, pingMs = pcall(function()
+			return math.floor(Stats.Network.ServerStatsItem["Data Ping"]:GetValue() + 0.5)
+		end)
+		pingMs = ok and pingMs or 0
+		pingLabel.Text = pingMs .. " ms"
+		pingLabel.BackgroundColor3 = pingMs < 60 and Color3.fromRGB(0, 255, 140)
+			or pingMs < 120 and Color3.fromRGB(255, 190, 50)
+			or Color3.fromRGB(255, 70, 100)
+	end
+end)
+
+local savedPositions = {}
+local markers = {}
+local saving = false
+local teleporting = false
+
+local function CreateMarker(index, position)
+	if markers[index] then markers[index]:Destroy() end
+	local part = Instance.new("Part")
+	part.Name = "TP_MARKER_" .. index
+	part.Shape = Enum.PartType.Ball
+	part.Size = Vector3.new(2.5, 2.5, 2.5)
+	part.Anchored = true
+	part.CanCollide = false
+	part.Material = Enum.Material.Neon
+	part.Position = position
+	part.Parent = workspace
+	part.Color = index == 1 and Color3.fromRGB(0, 170, 255) or Color3.fromRGB(0, 255, 140)
+
+	local light = Instance.new("PointLight")
+	light.Parent = part
+	light.Brightness = 2
+	light.Range = 10
+	light.Color = part.Color
+	markers[index] = part
+end
+
+local function SavePosition(index, button)
+	if saving then return end
+	saving = true
+	local char = localPlayer.Character or localPlayer.CharacterAdded:Wait()
+	local hrp = char:WaitForChild("HumanoidRootPart")
+	savedPositions[index] = hrp.Position
+	CreateMarker(index, hrp.Position)
+	button.Text = "Saved TP " .. index
+	task.delay(2, function() button.Text = "Save TP " .. index end)
+	task.delay(0.2, function() saving = false end)
+end
+
+save1.MouseButton1Click:Connect(function() SavePosition(1, save1) end)
+save2.MouseButton1Click:Connect(function() SavePosition(2, save2) end)
+
+local function SmoothTP(hrp, pos)
+	hrp.AssemblyLinearVelocity = Vector3.zero
+	hrp.AssemblyAngularVelocity = Vector3.zero
+	local tween = TweenService:Create(hrp, TweenInfo.new(0.07, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {CFrame = CFrame.new(pos)})
+	tween:Play()
+	tween.Completed:Wait()
+end
+
+local function UseAutoPotion(hum)
+	if not autoPotionEnabled then return end
+	local backpack = localPlayer:FindFirstChild("Backpack")
+	if not backpack then return end
+
+	local potionTool = nil
+	for _, tool in ipairs(backpack:GetChildren()) do
+		if tool:IsA("Tool") and tool.Name:lower():find("potion") then
+			potionTool = tool
+			break
+		end
+	end
+	if not potionTool and localPlayer.Character then
+		for _, tool in ipairs(localPlayer.Character:GetChildren()) do
+			if tool:IsA("Tool") and tool.Name:lower():find("potion") then
+				potionTool = tool
+				break
+			end
+		end
+	end
+
+	if potionTool then
+		pcall(function()
+			hum:EquipTool(potionTool)
+			task.wait(0.05)
+			if potionTool:FindFirstChild("Activate") or potionTool:FindFirstChildOfClass("RemoteEvent") then
+				for _, child in ipairs(potionTool:GetDescendants()) do
+					if child:IsA("RemoteEvent") then
+						child:FireServer()
+						break
+					end
+				end
+			end
+			potionTool:Activate()
+			task.wait(0.08)
+		end)
+	end
+end
+
+tpButton.MouseButton1Click:Connect(function()
+	if teleporting then return end
+	teleporting = true
+	task.spawn(function()
+		local char = localPlayer.Character
+		if not char then teleporting = false return end
+		local hrp = char:WaitForChild("HumanoidRootPart")
+		local hum = char:WaitForChild("Humanoid")
+
+		UseAutoPotion(hum)
+
+		for _, tool in ipairs(localPlayer.Backpack:GetChildren()) do
+			if tool:IsA("Tool") and tool.Name:lower():find("carpet") then
+				hum:EquipTool(tool)
+				task.wait(0.001)
+				break
+			end
+		end
+
+		if savedPositions[1] then
+			SmoothTP(hrp, savedPositions[1])
+			task.wait(0.01)
+		end
+
+		if savedPositions[2] then
+			SmoothTP(hrp, savedPositions[2])
+		end
+
+		hrp.AssemblyLinearVelocity = Vector3.zero
+		hrp.AssemblyAngularVelocity = Vector3.zero
+		camera.CameraType = Enum.CameraType.Custom
+		camera.CameraSubject = hum
+		teleporting = false
+	end)
+end)
+
+task.spawn(function()
+	local hue = 0
+	while true do
+		hue += 0.0015
+		if hue > 1 then hue = 0 end
+		tpButton.BackgroundColor3 = Color3.fromHSV(hue, 1, 1)
+		task.wait(0.05)
+	end
+end)
+
+local function resetCamera()
+	local character = localPlayer.Character
+	if not character then return end
+	local humanoid = character:FindFirstChild("Humanoid")
+	if not humanoid then return end
+	camera.CameraType = Enum.CameraType.Custom
+	camera.CameraSubject = humanoid
+end
+
+localPlayer.CharacterAdded:Connect(function()
+	task.wait(0.2)
+	resetCamera()
+end)
+resetCamera()
+
+localPlayer.CharacterAdded:Connect(function()
+	teleporting = false
+end)
+
+print("✅ EZ GARAMA TP con intro Ace Duels + Auto Potion cargado!")
+
+-- ============================================================
+-- ANTI UNLOCK TOOL
+-- ============================================================
+if localPlayer:WaitForChild("PlayerGui"):FindFirstChild("AntiUnlockEZGaramaTP") then
+	localPlayer.PlayerGui.AntiUnlockEZGaramaTP:Destroy()
+end
+
+local config = {
+	antiGummyBear = true,
+	antiBoogieBomb = true,
+	antiBee = true,
+	isAntiUiVisible = true
+}
+
+local function bypassCharacterAttributes(character)
+	if not character then character = localPlayer.Character end
+	if not character then return end
+
+	for _, target in ipairs({localPlayer, character}) do
+		if target then
+			if target:GetAttribute("BlockTools") then
+				target:SetAttribute("BlockTools", false)
+			end
+			if target:GetAttribute("Web") then
+				target:SetAttribute("Web", false)
+			end
+		end
+	end
+
+	if character:GetAttribute("BackpackReady") == false then
+		character:SetAttribute("BackpackReady", true)
+	end
+end
+
+local function cleanAnnoyingGameEffects()
+	if config.antiBee then
+		for _, effect in pairs(Lighting:GetChildren()) do
+			if effect.Name == "BeeBlur" or effect.Name == "Flashbang" then
+				effect:Destroy()
+			end
+		end
+
+		local controllers = ReplicatedStorage:FindFirstChild("Controllers")
+		if controllers then
+			local beeController = controllers:FindFirstChild("BeeLauncherController")
+			if beeController then
+				local buzzingSound = beeController:FindFirstChild("Buzzing")
+				if buzzingSound then buzzingSound:Stop() end
+			end
+		end
+	end
+
+	if config.antiBoogieBomb then
+		for _, effect in pairs(Lighting:GetChildren()) do
+			if effect.Name == "DiscoEffect" then
+				effect:Destroy()
+			end
+		end
+
+		local controllers = ReplicatedStorage:FindFirstChild("Controllers")
+		if controllers then
+			local boogieController = controllers:FindFirstChild("BoogieBombController")
+			if boogieController then
+				local boomSound = boogieController:FindFirstChild("BOOM")
+				if boomSound then boomSound:Stop() end
+			end
+		end
+	end
+end
+
+local antiScreenGui = Instance.new("ScreenGui")
+antiScreenGui.Name = "AntiUnlockEZGaramaTP"
+antiScreenGui.ResetOnSpawn = false
+antiScreenGui.Parent = localPlayer:WaitForChild("PlayerGui")
+
+local antiMainFrame = Instance.new("Frame")
+antiMainFrame.Size = UDim2.new(0, 280, 0, 260)
+antiMainFrame.Position = UDim2.new(0, 20, 0, 100)
+antiMainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 25)
+antiMainFrame.BackgroundTransparency = 1
+antiMainFrame.BorderSizePixel = 0
+antiMainFrame.Active = true
+antiMainFrame.Draggable = true
+antiMainFrame.Visible = false
+antiMainFrame.Parent = antiScreenGui
+Instance.new("UICorner", antiMainFrame).CornerRadius = UDim.new(0, 12)
+
+local bgImage2 = Instance.new("ImageLabel")
+bgImage2.Parent = antiMainFrame
+bgImage2.Size = UDim2.new(1, 0, 1, 0)
+bgImage2.BackgroundTransparency = 1
+bgImage2.Image = "rbxassetid://129432231305823"
+bgImage2.ZIndex = 0
+
+local antiUiStroke = Instance.new("UIStroke", antiMainFrame)
+antiUiStroke.Color = Color3.fromRGB(0, 0, 0)
+antiUiStroke.Thickness = 3
+
+local antiHeaderFrame = Instance.new("Frame", antiMainFrame)
+antiHeaderFrame.Size = UDim2.new(1, 0, 0, 50)
+antiHeaderFrame.BackgroundColor3 = Color3.fromRGB(255, 80, 180)
+Instance.new("UICorner", antiHeaderFrame).CornerRadius = UDim.new(0, 12)
+
+local lockButton = Instance.new("TextButton", antiHeaderFrame)
+lockButton.Size = UDim2.new(0, 40, 0, 40)
+lockButton.Position = UDim2.new(0, 8, 0, 5)
+lockButton.BackgroundTransparency = 1
+lockButton.Text = "🔒"
+lockButton.TextColor3 = Color3.fromRGB(255, 200, 0)
+lockButton.Font = Enum.Font.GothamBold
+lockButton.TextSize = 30
+
+local antiTitleLabel = Instance.new("TextLabel", antiHeaderFrame)
+antiTitleLabel.Size = UDim2.new(0.7, 0, 1, 0)
+antiTitleLabel.Position = UDim2.new(0.15, 0, 0, 0)
+antiTitleLabel.BackgroundTransparency = 1
+antiTitleLabel.Text = "ANTI UNLOCK"
+antiTitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+antiTitleLabel.Font = Enum.Font.GothamBold
+antiTitleLabel.TextSize = 16
+antiTitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+local antiSubtitleLabel = Instance.new("TextLabel", antiHeaderFrame)
+antiSubtitleLabel.Size = UDim2.new(0.7, 0, 0.5, 0)
+antiSubtitleLabel.Position = UDim2.new(0.15, 0, 0.5, 0)
+antiSubtitleLabel.BackgroundTransparency = 1
+antiSubtitleLabel.Text = "EZ GARAMA TP"
+antiSubtitleLabel.TextColor3 = Color3.fromRGB(255, 100, 200)
+antiSubtitleLabel.Font = Enum.Font.GothamSemibold
+antiSubtitleLabel.TextSize = 13
+antiSubtitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+local antiContentFrame = Instance.new("Frame", antiMainFrame)
+antiContentFrame.Size = UDim2.new(1, 0, 1, -50)
+antiContentFrame.Position = UDim2.new(0, 0, 0, 50)
+antiContentFrame.BackgroundTransparency = 1
+
+local showUiButton = Instance.new("TextButton")
+showUiButton.Size = UDim2.new(0, 60, 0, 60)
+showUiButton.Position = UDim2.new(0, 30, 0, 300)
+showUiButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+showUiButton.Text = "🔒"
+showUiButton.TextColor3 = Color3.fromRGB(255, 255, 0)
+showUiButton.Font = Enum.Font.GothamBold
+showUiButton.TextSize = 28
+showUiButton.Visible = false
+showUiButton.Parent = antiScreenGui
+Instance.new("UICorner", showUiButton).CornerRadius = UDim.new(1, 0)
+Instance.new("UIStroke", showUiButton).Thickness = 3
+
+lockButton.MouseButton1Click:Connect(function()
+	config.isAntiUiVisible = not config.isAntiUiVisible
+	antiMainFrame.Visible = config.isAntiUiVisible
+	showUiButton.Visible = not config.isAntiUiVisible
+	lockButton.Text = config.isAntiUiVisible and "🔒" or "🔓"
+end)
+
+showUiButton.MouseButton1Click:Connect(function()
+	config.isAntiUiVisible = true
+	antiMainFrame.Visible = true
+	showUiButton.Visible = false
+	lockButton.Text = "🔒"
+end)
+
+local function createToggleRow(labelText, yPosition, configKey)
+	local rowFrame = Instance.new("Frame")
+	rowFrame.Size = UDim2.new(0.92, 0, 0, 45)
+	rowFrame.Position = UDim2.new(0.04, 0, 0, yPosition)
+	rowFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 45)
+	rowFrame.Parent = antiContentFrame
+	Instance.new("UICorner", rowFrame).CornerRadius = UDim.new(0, 10)
+
+	local textLabel = Instance.new("TextLabel", rowFrame)
+	textLabel.Size = UDim2.new(0.65, 0, 1, 0)
+	textLabel.BackgroundTransparency = 1
+	textLabel.Text = labelText
+	textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+	textLabel.Font = Enum.Font.GothamSemibold
+	textLabel.TextSize = 14
+	textLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+	local toggleButton = Instance.new("TextButton", rowFrame)
+	toggleButton.Size = UDim2.new(0.3, 0, 0.75, 0)
+	toggleButton.Position = UDim2.new(0.67, 0, 0.12, 0)
+	toggleButton.BackgroundColor3 = Color3.fromRGB(0, 180, 0)
+	toggleButton.Text = "ON"
+	toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+	toggleButton.Font = Enum.Font.GothamBold
+	toggleButton.TextSize = 14
+	Instance.new("UICorner", toggleButton).CornerRadius = UDim.new(0, 8)
+
+	toggleButton.MouseButton1Click:Connect(function()
+		config[configKey] = not config[configKey]
+		toggleButton.Text = config[configKey] and "ON" or "OFF"
+		toggleButton.BackgroundColor3 = config[configKey] and Color3.fromRGB(0, 180, 0) or Color3.fromRGB(180, 0, 0)
+	end)
+end
+
+createToggleRow("Anti Gummy Bear Bat", 15, "antiGummyBear")
+createToggleRow("Anti Boogie Bomb", 75, "antiBoogieBomb")
+createToggleRow("Anti Bee", 135, "antiBee")
+
+RunService.Heartbeat:Connect(function()
+	if config.antiGummyBear then
+		bypassCharacterAttributes(localPlayer.Character)
+	end
+	if config.antiBee or config.antiBoogieBomb then
+		cleanAnnoyingGameEffects()
+	end
+end)
+
+localPlayer.CharacterAdded:Connect(function(newCharacter)
+	task.wait(0.6)
+	if config.antiGummyBear then
+		bypassCharacterAttributes(newCharacter)
+	end
+end)
+
+print("✅ Anti Unlock Tool EZ GARAMA TP cargado!")
+
+-- Mostrar GUIs cuando termine la intro Ace
+onIntroFinished(function()
+	if MainFrame then MainFrame.Visible = true end
+	if antiMainFrame then antiMainFrame.Visible = true end
+end)
