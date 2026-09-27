@@ -1,0 +1,297 @@
+-- This file was generated at discord.gg/syncrypt
+
+local _task = task
+local _game = game
+local CoreGui = _game:GetService("CoreGui")
+local LocalPlayer = _game:GetService("Players").LocalPlayer
+if CoreGui:FindFirstChild("TIGY_FPS_Devour") then
+	CoreGui:FindFirstChild("TIGY_FPS_Devour"):Destroy()
+end
+local function v5(p1)
+	local v27 = p1:IsA("Accessory")
+
+	if not v27 then
+		v27 = p1:IsA("Hat")
+	end
+
+	if v27 then
+		p1:Destroy()
+
+		return
+	end
+
+	local v28 = p1:IsA("ParticleEmitter")
+
+	if not v28 then
+		v28 = p1:IsA("Trail")
+	end
+
+	if v28 then
+		p1.Enabled = false
+	end
+end
+for _, descendant in ipairs(workspace:GetDescendants()) do
+	v5(descendant)
+end
+workspace.DescendantAdded:Connect(v5)
+
+local ScreenGui = Instance.new("ScreenGui")
+
+ScreenGui.Name = "TIGY_FPS_Devour"
+ScreenGui.Parent = CoreGui
+ScreenGui.ResetOnSpawn = false
+local TextButton = Instance.new("TextButton")
+
+TextButton.Parent = ScreenGui
+TextButton.Size = UDim2.new(0, 45, 0, 45)
+TextButton.Position = UDim2.new(0, 10, 0.5, -22)
+TextButton.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+TextButton.Text = "T"
+TextButton.TextColor3 = Color3.fromRGB(0, 150, 255)
+TextButton.Font = Enum.Font.GothamBlack
+TextButton.TextSize = 20
+TextButton.Draggable = true
+Instance.new("UICorner", TextButton).CornerRadius = UDim.new(1, 0)
+
+local Frame = Instance.new("Frame")
+
+Frame.Size = UDim2.new(1, 4, 1, 4)
+Frame.Position = UDim2.new(0, -2, 0, -2)
+Frame.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+Frame.ZIndex = 0
+Frame.Parent = TextButton
+Instance.new("UICorner", Frame).CornerRadius = UDim.new(1, 0)
+
+local Frame2 = Instance.new("Frame")
+
+Frame2.Parent = ScreenGui
+Frame2.Size = UDim2.new(0, 320, 0, 300)
+Frame2.Position = UDim2.new(0.5, -160, 0.5, -150)
+Frame2.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+Frame2.BorderSizePixel = 0
+Frame2.Active = true
+Frame2.Draggable = true
+Instance.new("UICorner", Frame2).CornerRadius = UDim.new(0, 12)
+
+local Frame3 = Instance.new("Frame")
+
+Frame3.Parent = Frame2
+Frame3.Size = UDim2.new(1, 4, 1, 4)
+Frame3.Position = UDim2.new(0, -2, 0, -2)
+Frame3.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+Frame3.ZIndex = 0
+Instance.new("UICorner", Frame3).CornerRadius = UDim.new(0, 14)
+TextButton.MouseButton1Click:Connect(function()
+	Frame2.Visible = not Frame2.Visible
+end)
+
+local TextLabel = Instance.new("TextLabel")
+
+TextLabel.Parent = Frame2
+TextLabel.Size = UDim2.new(1, 0, 0, 35)
+TextLabel.Position = UDim2.new(0, 0, 0, 8)
+TextLabel.BackgroundTransparency = 1
+TextLabel.Text = "TIGY'S FPS DEVOUR"
+TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.Font = Enum.Font.GothamBlack
+TextLabel.TextSize = 18
+local Frame4 = Instance.new("Frame")
+
+Frame4.Parent = Frame2
+Frame4.Size = UDim2.new(1, 0, 0, 25)
+Frame4.Position = UDim2.new(0, 0, 0, 40)
+Frame4.BackgroundTransparency = 1
+local TextLabel2 = Instance.new("TextLabel")
+
+TextLabel2.Parent = Frame4
+TextLabel2.Size = UDim2.new(0.7, 0, 1, 0)
+TextLabel2.Position = UDim2.new(0, 15, 0, 0)
+TextLabel2.BackgroundTransparency = 1
+TextLabel2.Text = "https://discord.gg/EesJC34QEu"
+TextLabel2.TextColor3 = Color3.fromRGB(0, 150, 255)
+TextLabel2.Font = Enum.Font.GothamSemibold
+TextLabel2.TextSize = 10
+TextLabel2.TextXAlignment = Enum.TextXAlignment.Left
+local TextButton2 = Instance.new("TextButton")
+
+TextButton2.Parent = Frame4
+TextButton2.Size = UDim2.new(0, 60, 0, 20)
+TextButton2.Position = UDim2.new(1, -75, 0, 0)
+TextButton2.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+TextButton2.Text = "COPY"
+TextButton2.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextButton2.Font = Enum.Font.GothamBold
+TextButton2.TextSize = 10
+Instance.new("UICorner", TextButton2).CornerRadius = UDim.new(0, 4)
+TextButton2.MouseButton1Click:Connect(function()
+	if setclipboard then
+		setclipboard("https://discord.gg/EesJC34QEu")
+		TextButton2.Text = "COPIED!"
+		_task.wait(1)
+		TextButton2.Text = "COPY"
+	end
+end)
+
+local Frame5 = Instance.new("Frame")
+
+Frame5.Parent = Frame2
+Frame5.Size = UDim2.new(0.9, 0, 0, 40)
+Frame5.Position = UDim2.new(0.05, 0, 0, 85)
+Frame5.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+Instance.new("UICorner", Frame5)
+
+local TextLabel3 = Instance.new("TextLabel")
+
+TextLabel3.Parent = Frame5
+TextLabel3.Size = UDim2.new(1, -40, 1, 0)
+TextLabel3.Position = UDim2.new(0, 12, 0, 0)
+TextLabel3.BackgroundTransparency = 1
+TextLabel3.Text = "Selected: Slaps"
+TextLabel3.TextColor3 = Color3.fromRGB(200, 200, 200)
+TextLabel3.Font = Enum.Font.GothamBold
+TextLabel3.TextSize = 14
+TextLabel3.TextXAlignment = Enum.TextXAlignment.Left
+local TextButton3 = Instance.new("TextButton")
+
+TextButton3.Parent = Frame5
+TextButton3.Size = UDim2.new(1, 0, 1, 0)
+TextButton3.BackgroundTransparency = 1
+TextButton3.Text = "▼ "
+TextButton3.TextColor3 = Color3.fromRGB(0, 150, 255)
+TextButton3.TextXAlignment = Enum.TextXAlignment.Right
+TextButton3.Font = Enum.Font.GothamBold
+local Frame6 = Instance.new("Frame")
+
+Frame6.Parent = Frame5
+Frame6.Size = UDim2.new(1, 0, 0, 80)
+Frame6.Position = UDim2.new(0, 0, 1, 5)
+Frame6.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+Frame6.Visible = false
+Frame6.ZIndex = 5
+Instance.new("UICorner", Frame6)
+
+local s1 = "Slaps"
+local function v22(p2, p3, p4)
+	local TextButton4 = Instance.new("TextButton")
+
+	TextButton4.Parent = Frame6
+	TextButton4.Size = UDim2.new(1, 0, 0, 40)
+	TextButton4.Position = UDim2.new(0, 0, 0, p3)
+	TextButton4.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+	TextButton4.BackgroundTransparency = 0.9
+	TextButton4.Text = p4
+	TextButton4.TextColor3 = Color3.fromRGB(255, 255, 255)
+	TextButton4.Font = Enum.Font.Gotham
+	TextButton4.TextSize = 14
+	TextButton4.ZIndex = 6
+	TextButton4.MouseButton1Click:Connect(function()
+		s1 = p2
+		TextLabel3.Text = "Selected: " .. p4
+		Frame6.Visible = false
+	end)
+end
+v22("Slaps", 0, "Slaps")
+v22("AllGears", 40, "All Gears (Stronger)")
+TextButton3.MouseButton1Click:Connect(function()
+	Frame6.Visible = not Frame6.Visible
+end)
+
+local TextButton5 = Instance.new("TextButton")
+
+TextButton5.Parent = Frame2
+TextButton5.Size = UDim2.new(0.9, 0, 0, 50)
+TextButton5.Position = UDim2.new(0.05, 0, 0, 185)
+TextButton5.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+TextButton5.Text = "FPS Devour (needs auras)"
+TextButton5.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextButton5.Font = Enum.Font.GothamBlack
+TextButton5.TextSize = 15
+Instance.new("UICorner", TextButton5)
+
+local TextLabel4 = Instance.new("TextLabel")
+
+TextLabel4.Parent = Frame2
+TextLabel4.Size = UDim2.new(1, 0, 0, 30)
+TextLabel4.Position = UDim2.new(0, 0, 0, 245)
+TextLabel4.BackgroundTransparency = 1
+TextLabel4.Text = "Status: Waiting..."
+TextLabel4.TextColor3 = Color3.fromRGB(120, 120, 120)
+TextLabel4.Font = Enum.Font.GothamSemibold
+TextLabel4.TextSize = 12
+TextButton5.MouseButton1Click:Connect(function()
+	local Character = LocalPlayer.Character
+	local Backpack = LocalPlayer:FindFirstChild("Backpack")
+
+	if not Character or not Backpack then
+		return
+	end
+
+	TextLabel4.Text = "Status: Equipping..."
+
+	for _, child in ipairs(Backpack:GetChildren()) do
+		if child:IsA("Tool") then
+			if s1 == "AllGears" then
+				child.Parent = Character
+			else
+				local v37 = s1 == "Slaps"
+
+				if v37 then
+					v37 = string.find(string.lower(child.Name), "slap")
+				end
+
+				if v37 then
+					child.Parent = Character
+				end
+			end
+		end
+	end
+
+	_task.wait(0.2)
+
+	local v38 = Character:FindFirstChild("Quantum Cloner")
+
+	if not v38 then
+		v38 = Backpack:FindFirstChild("Quantum Cloner")
+	end
+
+	if v38 then
+		TextLabel4.Text = "Status: Cloning..."
+
+		if Backpack == v38.Parent then
+			v38.Parent = Character
+		end
+
+		_task.wait(0.05)
+		v38:Activate()
+		_task.wait(0.4)
+		TextLabel4.Text = "Status: Clearing..."
+
+		for _, child in ipairs(Character:GetChildren()) do
+			if child:IsA("Tool") then
+				child.Parent = Backpack
+			end
+		end
+
+		TextLabel4.Text = "Status: SUCCESS"
+	else
+		TextLabel4.Text = "Status: Cloner Missing"
+	end
+
+	_task.delay(1.5, function()
+		TextLabel4.Text = "Status: Waiting..."
+	end)
+end)
+
+local TextButton6 = Instance.new("TextButton")
+
+TextButton6.Parent = Frame2
+TextButton6.Size = UDim2.new(0, 40, 0, 40)
+TextButton6.Position = UDim2.new(1, -45, 0, 5)
+TextButton6.BackgroundTransparency = 1
+TextButton6.Text = "×"
+TextButton6.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextButton6.Font = Enum.Font.GothamBold
+TextButton6.TextSize = 24
+TextButton6.MouseButton1Click:Connect(function()
+	ScreenGui:Destroy()
+end)
