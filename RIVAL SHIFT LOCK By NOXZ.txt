@@ -1,0 +1,494 @@
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UIS = game:GetService("UserInputService")
+local LP = Players.LocalPlayer
+
+print("[1] Script iniciado")
+
+if getgenv and getgenv().AntiDieShiftCleanup then
+    pcall(getgenv().AntiDieShiftCleanup)
+end
+
+local conns = {}
+local function bind(c) table.insert(conns, c) return c end
+
+-- ==================================================
+-- CONFIG (se guarda en el archivo del executor)
+-- ==================================================
+local CONFIG_FILE = "ShiftLockConfig.json"
+local HttpService = game:GetService("HttpService")
+
+local function loadConfig()
+    local ok, result = pcall(function()
+        if isfile and readfile and isfile(CONFIG_FILE) then
+            return HttpService:JSONDecode(readfile(CONFIG_FILE))
+        end
+    end)
+    if ok and type(result) == "table" then return result end
+    return {}
+end
+
+local function saveConfig(data)
+    pcall(function()
+        if writefile then
+            writefile(CONFIG_FILE, HttpService:JSONEncode(data))
+        end
+    end)
+end
+
+local config = loadConfig()
+
+-- ANTI DIE
+local antiDieActive = true
+local function protectChar(char)
+    local hum = char:WaitForChild("Humanoid", 5)
+    if not hum then return end
+    pcall(function() hum:SetStateEnabled(Enum.HumanoidStateType.Dead, false) end)
+    pcall(function() hum.MaxHealth = math.huge end)
+    local hb
+    hb = RunService.Heartbeat:Connect(function()
+        if not antiDieActive or hum.Parent ~= char then
+            hb:Disconnect()
+            return
+        end
+        pcall(function() hum.Health = hum.MaxHealth end)
+    end)
+    bind(hb)
+end
+if LP.Character then task.spawn(protectChar, LP.Character) end
+bind(LP.CharacterAdded:Connect(function(c) task.wait(0.05) protectChar(c) end))
+print("[2] Anti die listo")
+
+-- SHIFT LOCK
+local OFFSET_CORRECTO = Vector3.new(1.75, 0, 0)
+local gamepadKey = Enum.KeyCode.ButtonR3
+
+-- carga la keybind guardada
+if config.gamepadKey then
+    local okKey, saved = pcall(function() return Enum.KeyCode[config.gamepadKey] end)
+    if okKey and saved then
+        gamepadKey = saved
+        print("Keybind cargada:", gamepadKey.Name)
+    end
+end
+
+local listening = false
+local shiftLock = false
+local keyCooldown = false
+
+local function keyLabel()
+    return (gamepadKey.Name:gsub("Button", ""))
+end
+
+local function getParts()
+    local char = LP.Character
+    return char and char:FindFirstChildOfClass("Humanoid"), char and char:FindFirstChild("HumanoidRootPart")
+end
+
+local function restore()
+    UIS.MouseBehavior = Enum.MouseBehavior.Default
+    local hum = getParts()
+    if hum then
+        hum.AutoRotate = true
+        hum.CameraOffset = Vector3.new(0, 0, 0)
+    end
+end
+
+-- ==================================================
+-- NUEVA INTERFAZ GRÁFICA (Estilo Rival - Más pequeña)
+-- ==================================================
+
+local gui = Instance.new("ScreenGui")
+gui.Name = "RivalShiftLockGui"
+gui.ResetOnSpawn = false
+gui.IgnoreGuiInset = true
+
+local ok = pcall(function()
+    gui.Parent = (gethui and gethui()) or game:GetService("CoreGui")
+end)
+if not ok or not gui.Parent then
+    gui.Parent = LP:WaitForChild("PlayerGui")
+end
+
+-- Colores
+local COLOR_BG = Color3.fromRGB(8, 16, 32)
+local COLOR_BTN = Color3.fromRGB(16, 32, 64)
+local COLOR_BORDER = Color3.fromRGB(40, 80, 160)
+local COLOR_TEXT = Color3.fromRGB(255, 255, 255)
+local COLOR_SUBTEXT = Color3.fromRGB(120, 150, 200)
+local COLOR_ACCENT = Color3.fromRGB(0, 150, 255)
+local COLOR_OFF = Color3.fromRGB(100, 100, 100)
+
+-- Main Frame (Más pequeño: 260x200)
+local mainFrame = Instance.new("Frame")
+mainFrame.Name = "MainFrame"
+mainFrame.Size = UDim2.new(0, 260, 0, 200)
+mainFrame.Position = UDim2.new(0.5, -130, 0.5, -100)
+mainFrame.BackgroundColor3 = COLOR_BG
+mainFrame.BackgroundTransparency = 1 -- Transparente para que se vea la imagen
+mainFrame.BorderSizePixel = 0
+mainFrame.Active = true
+mainFrame.Draggable = true
+mainFrame.Parent = gui
+
+local mainCorner = Instance.new("UICorner", mainFrame)
+mainCorner.CornerRadius = UDim.new(0, 10)
+
+local mainStroke = Instance.new("UIStroke", mainFrame)
+mainStroke.Color = COLOR_BORDER
+mainStroke.Thickness = 1.5
+
+-- Imagen de Fondo
+local bgImage = Instance.new("ImageLabel")
+bgImage.Name = "BgImage"
+bgImage.Size = UDim2.new(1, 0, 1, 0)
+bgImage.Position = UDim2.new(0, 0, 0, 0)
+bgImage.BackgroundTransparency = 1
+bgImage.Image = "rbxassetid://124933522832604"
+bgImage.ZIndex = 0
+bgImage.Parent = mainFrame
+
+local bgCorner = Instance.new("UICorner", bgImage)
+bgCorner.CornerRadius = UDim.new(0, 10)
+
+-- Header: R4 Button
+local r4Btn = Instance.new("TextButton")
+r4Btn.Size = UDim2.new(0, 35, 0, 35)
+r4Btn.Position = UDim2.new(0, 10, 0, 10)
+r4Btn.BackgroundColor3 = COLOR_BTN
+r4Btn.Text = "R4"
+r4Btn.TextColor3 = COLOR_TEXT
+r4Btn.Font = Enum.Font.GothamBold
+r4Btn.TextSize = 14
+r4Btn.BorderSizePixel = 0
+r4Btn.AutoButtonColor = false
+r4Btn.ZIndex = 1
+r4Btn.Parent = mainFrame
+local r4Corner = Instance.new("UICorner", r4Btn)
+r4Corner.CornerRadius = UDim.new(0, 6)
+local r4Stroke = Instance.new("UIStroke", r4Btn)
+r4Stroke.Color = COLOR_BORDER
+r4Stroke.Thickness = 1
+
+-- Header: Title
+local titleLbl = Instance.new("TextLabel")
+titleLbl.Size = UDim2.new(0, 120, 0, 22)
+titleLbl.Position = UDim2.new(0, 55, 0, 8)
+titleLbl.BackgroundTransparency = 1
+titleLbl.Text = "RIVAL IS GAY"
+titleLbl.TextColor3 = COLOR_TEXT
+titleLbl.Font = Enum.Font.GothamBlack
+titleLbl.TextSize = 20
+titleLbl.TextXAlignment = Enum.TextXAlignment.Left
+titleLbl.ZIndex = 1
+titleLbl.Parent = mainFrame
+
+local subtitleLbl = Instance.new("TextLabel")
+subtitleLbl.Size = UDim2.new(0, 120, 0, 15)
+subtitleLbl.Position = UDim2.new(0, 55, 0, 28)
+subtitleLbl.BackgroundTransparency = 1
+subtitleLbl.Text = "SHIFT LOCK"
+subtitleLbl.TextColor3 = COLOR_SUBTEXT
+subtitleLbl.Font = Enum.Font.GothamBold
+subtitleLbl.TextSize = 10
+subtitleLbl.TextXAlignment = Enum.TextXAlignment.Left
+subtitleLbl.ZIndex = 1
+subtitleLbl.Parent = mainFrame
+
+-- Header: R and - Buttons
+local mBtn = Instance.new("TextButton")
+mBtn.Size = UDim2.new(0, 30, 0, 30)
+mBtn.Position = UDim2.new(1, -75, 0, 12)
+mBtn.BackgroundColor3 = COLOR_BTN
+mBtn.Text = "R"
+mBtn.TextColor3 = COLOR_TEXT
+mBtn.Font = Enum.Font.GothamBold
+mBtn.TextSize = 14
+mBtn.BorderSizePixel = 0
+mBtn.AutoButtonColor = false
+mBtn.ZIndex = 1
+mBtn.Parent = mainFrame
+local mCorner = Instance.new("UICorner", mBtn)
+mCorner.CornerRadius = UDim.new(0, 6)
+local mStroke = Instance.new("UIStroke", mBtn)
+mStroke.Color = COLOR_BORDER
+mStroke.Thickness = 1
+
+local minBtn = Instance.new("TextButton")
+minBtn.Size = UDim2.new(0, 30, 0, 30)
+minBtn.Position = UDim2.new(1, -40, 0, 12)
+minBtn.BackgroundColor3 = COLOR_BTN
+minBtn.Text = "-"
+minBtn.TextColor3 = COLOR_TEXT
+minBtn.Font = Enum.Font.GothamBold
+minBtn.TextSize = 18
+minBtn.BorderSizePixel = 0
+minBtn.AutoButtonColor = false
+minBtn.ZIndex = 1
+minBtn.Parent = mainFrame
+local minCorner = Instance.new("UICorner", minBtn)
+minCorner.CornerRadius = UDim.new(0, 6)
+local minStroke = Instance.new("UIStroke", minBtn)
+minStroke.Color = COLOR_BORDER
+minStroke.Thickness = 1
+
+-- Row 1: Status Pill (30px de alto)
+local statusFrame = Instance.new("Frame")
+statusFrame.Size = UDim2.new(1, -20, 0, 30)
+statusFrame.Position = UDim2.new(0, 10, 0, 55)
+statusFrame.BackgroundColor3 = COLOR_BTN
+statusFrame.BorderSizePixel = 0
+statusFrame.ZIndex = 1
+statusFrame.Parent = mainFrame
+local statusCorner = Instance.new("UICorner", statusFrame)
+statusCorner.CornerRadius = UDim.new(1, 0)
+local statusStroke = Instance.new("UIStroke", statusFrame)
+statusStroke.Color = COLOR_BORDER
+statusStroke.Thickness = 1
+
+local indicator = Instance.new("Frame")
+indicator.Size = UDim2.new(0, 12, 0, 12)
+indicator.Position = UDim2.new(0, 8, 0.5, -6)
+indicator.BackgroundColor3 = COLOR_OFF
+indicator.BorderSizePixel = 0
+indicator.ZIndex = 1
+indicator.Parent = statusFrame
+local indCorner = Instance.new("UICorner", indicator)
+indCorner.CornerRadius = UDim.new(1, 0)
+
+local statusText = Instance.new("TextLabel")
+statusText.Size = UDim2.new(1, -28, 1, 0)
+statusText.Position = UDim2.new(0, 25, 0, 0)
+statusText.BackgroundTransparency = 1
+statusText.Text = "SHIFT LOCK DESACTIVADO"
+statusText.TextColor3 = COLOR_TEXT
+statusText.Font = Enum.Font.GothamBold
+statusText.TextSize = 11
+statusText.TextXAlignment = Enum.TextXAlignment.Left
+statusText.ZIndex = 1
+statusText.Parent = statusFrame
+
+-- Row 2: Action Button (30px de alto)
+local actionBtn = Instance.new("TextButton")
+actionBtn.Size = UDim2.new(1, -20, 0, 30)
+actionBtn.Position = UDim2.new(0, 10, 0, 95)
+actionBtn.BackgroundColor3 = COLOR_BTN
+actionBtn.Text = "ACTIVAR SHIFT LOCK"
+actionBtn.TextColor3 = COLOR_TEXT
+actionBtn.Font = Enum.Font.GothamBold
+actionBtn.TextSize = 12
+actionBtn.BorderSizePixel = 0
+actionBtn.AutoButtonColor = false
+actionBtn.ZIndex = 1
+actionBtn.Parent = mainFrame
+local actionCorner = Instance.new("UICorner", actionBtn)
+actionCorner.CornerRadius = UDim.new(1, 0)
+local actionStroke = Instance.new("UIStroke", actionBtn)
+actionStroke.Color = COLOR_BORDER
+actionStroke.Thickness = 1
+
+-- Row 3: Bind and State Buttons (30px de alto)
+local bindBtn = Instance.new("TextButton")
+bindBtn.Size = UDim2.new(0.5, -15, 0, 30)
+bindBtn.Position = UDim2.new(0, 10, 0, 135)
+bindBtn.BackgroundColor3 = COLOR_BTN
+bindBtn.Text = "BIND  •  " .. keyLabel()
+bindBtn.TextColor3 = COLOR_TEXT
+bindBtn.Font = Enum.Font.GothamBold
+bindBtn.TextSize = 9
+bindBtn.BorderSizePixel = 0
+bindBtn.AutoButtonColor = false
+bindBtn.ZIndex = 1
+bindBtn.Parent = mainFrame
+local bindCorner = Instance.new("UICorner", bindBtn)
+bindCorner.CornerRadius = UDim.new(1, 0)
+local bindStroke = Instance.new("UIStroke", bindBtn)
+bindStroke.Color = COLOR_BORDER
+bindStroke.Thickness = 1
+
+local stateBtn = Instance.new("TextButton")
+stateBtn.Size = UDim2.new(0.5, -15, 0, 30)
+stateBtn.Position = UDim2.new(0.5, 5, 0, 135)
+stateBtn.BackgroundColor3 = COLOR_BTN
+stateBtn.Text = "BOTON  •  ON"
+stateBtn.TextColor3 = COLOR_TEXT
+stateBtn.Font = Enum.Font.GothamBold
+stateBtn.TextSize = 9
+stateBtn.BorderSizePixel = 0
+stateBtn.AutoButtonColor = false
+stateBtn.ZIndex = 1
+stateBtn.Parent = mainFrame
+local stateCorner = Instance.new("UICorner", stateBtn)
+stateCorner.CornerRadius = UDim.new(1, 0)
+local stateStroke = Instance.new("UIStroke", stateBtn)
+stateStroke.Color = COLOR_BORDER
+stateStroke.Thickness = 1
+
+-- Credits
+local creditsLbl = Instance.new("TextLabel")
+creditsLbl.Size = UDim2.new(0, 80, 0, 15)
+creditsLbl.Position = UDim2.new(1, -90, 1, -18)
+creditsLbl.BackgroundTransparency = 1
+creditsLbl.Text = "EZZ DEOBF  BY NOXZ"
+creditsLbl.TextColor3 = COLOR_TEXT
+creditsLbl.Font = Enum.Font.GothamBold
+creditsLbl.TextSize = 10
+creditsLbl.TextXAlignment = Enum.TextXAlignment.Right
+creditsLbl.ZIndex = 1
+creditsLbl.Parent = mainFrame
+
+-- ==================================================
+-- LÓGICA DE LA INTERFAZ
+-- ==================================================
+
+local function updateUI()
+    if shiftLock then
+        statusText.Text = "SHIFT LOCK ACTIVADO"
+        actionBtn.Text = "DESACTIVAR SHIFT LOCK"
+        indicator.BackgroundColor3 = COLOR_ACCENT
+        actionStroke.Color = COLOR_ACCENT
+        statusStroke.Color = COLOR_ACCENT
+    else
+        statusText.Text = "SHIFT LOCK DESACTIVADO"
+        actionBtn.Text = "ACTIVAR SHIFT LOCK"
+        indicator.BackgroundColor3 = COLOR_OFF
+        actionStroke.Color = COLOR_BORDER
+        statusStroke.Color = COLOR_BORDER
+    end
+end
+
+local function updateBindUI()
+    bindBtn.Text = "BIND  •  " .. keyLabel()
+end
+
+local function toggleShiftLock()
+    if keyCooldown then return end
+    keyCooldown = true
+    shiftLock = not shiftLock
+    if not shiftLock then restore() end
+    updateUI()
+    print("Shift lock:", shiftLock)
+    task.delay(0.15, function() keyCooldown = false end)
+end
+
+-- Botones de la interfaz
+actionBtn.MouseButton1Click:Connect(toggleShiftLock)
+
+bindBtn.MouseButton1Click:Connect(function()
+    if listening then
+        listening = false
+        bindBtn.Text = "BIND  •  " .. keyLabel()
+        bindBtn.TextColor3 = COLOR_TEXT
+        return
+    end
+    listening = true
+    bindBtn.Text = "BIND  •  ..."
+    bindBtn.TextColor3 = Color3.fromRGB(255, 190, 40)
+    task.delay(6, function()
+        if listening then
+            listening = false
+            bindBtn.Text = "BIND  •  " .. keyLabel()
+            bindBtn.TextColor3 = COLOR_TEXT
+        end
+    end)
+end)
+
+-- Botón de minimizar (Mantiene la imagen visible)
+local isMinimized = false
+minBtn.MouseButton1Click:Connect(function()
+    isMinimized = not isMinimized
+    if isMinimized then
+        mainFrame.Size = UDim2.new(0, 260, 0, 60)
+        actionBtn.Visible = false
+        statusFrame.Visible = false
+        bindBtn.Visible = false
+        stateBtn.Visible = false
+        creditsLbl.Visible = false
+        
+        -- Mantener la imagen visible y ajustarla para que no se deforme
+        bgImage.Visible = true
+        bgImage.ScaleType = Enum.ScaleType.Crop 
+    else
+        mainFrame.Size = UDim2.new(0, 260, 0, 200)
+        actionBtn.Visible = true
+        statusFrame.Visible = true
+        bindBtn.Visible = true
+        stateBtn.Visible = true
+        creditsLbl.Visible = true
+        
+        -- Restaurar la imagen a su estado original
+        bgImage.Visible = true
+        bgImage.ScaleType = Enum.ScaleType.Stretch
+    end
+end)
+
+-- Botón de estado (Visual solamente por ahora)
+stateBtn.MouseButton1Click:Connect(function()
+    if stateBtn.Text == "BOTON  •  ON" then
+        stateBtn.Text = "BOTON  •  OFF"
+        stateBtn.TextColor3 = COLOR_OFF
+    else
+        stateBtn.Text = "BOTON  •  ON"
+        stateBtn.TextColor3 = COLOR_TEXT
+    end
+end)
+
+-- Actualizar UI inicial
+updateUI()
+updateBindUI()
+
+-- Render Step para el Shift Lock
+RunService:BindToRenderStep("RivalShiftLock", Enum.RenderPriority.Camera.Value + 1, function()
+    if not shiftLock then return end
+    local hum, root = getParts()
+    local cam = workspace.CurrentCamera
+    if not (hum and root and cam) then return end
+    UIS.MouseBehavior = Enum.MouseBehavior.LockCenter
+    hum.AutoRotate = false
+    hum.CameraOffset = OFFSET_CORRECTO
+    local look = cam.CFrame.LookVector
+    local flat = Vector3.new(look.X, 0, look.Z)
+    if flat.Magnitude > 0.001 then
+        root.CFrame = CFrame.new(root.Position, root.Position + flat)
+    end
+end)
+print("[3] Shift lock listo")
+
+-- KEYBINDS: mando (configurable) y teclado (Shift+F)
+bind(UIS.InputBegan:Connect(function(input)
+    if listening then
+        if input.UserInputType.Name:find("Gamepad") then
+            gamepadKey = input.KeyCode
+            listening = false
+            config.gamepadKey = gamepadKey.Name
+            saveConfig(config) -- guarda la nueva keybind
+            updateBindUI()
+            bindBtn.TextColor3 = COLOR_TEXT
+            print("Botón del mando guardado:", gamepadKey.Name)
+        end
+        return
+    end
+
+    if input.KeyCode == gamepadKey then
+        toggleShiftLock()
+        return
+    end
+    if input.KeyCode == Enum.KeyCode.F and not UIS:GetFocusedTextBox() then
+        if UIS:IsKeyDown(Enum.KeyCode.LeftShift) or UIS:IsKeyDown(Enum.KeyCode.RightShift) then
+            toggleShiftLock()
+        end
+    end
+end))
+
+print("[4] GUI creado")
+
+if getgenv then
+    getgenv().AntiDieShiftCleanup = function()
+        shiftLock = false
+        antiDieActive = false
+        restore()
+        pcall(function() RunService:UnbindFromRenderStep("RivalShiftLock") end)
+        pcall(function() gui:Destroy() end)
+        for _, c in ipairs(conns) do pcall(function() c:Disconnect() end) end
+    end
+end
