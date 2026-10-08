@@ -1,0 +1,392 @@
+--// AUTO ANTI TRAP - EXTREME FAST + RGB GAMER UI
+--// By Alejandrillo
+--// LocalScript
+--// StarterPlayer > StarterPlayerScripts
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+
+local player = Players.LocalPlayer
+
+--==================================================
+-- CONFIGURACIÓN
+--==================================================
+
+local CHECK_TIME = 0.025
+local MOVEMENT_THRESHOLD = 0.015
+local COOLDOWN = 0.025
+
+--==================================================
+-- VARIABLES
+--==================================================
+
+local enabled = false
+local selectedToolName = nil
+
+local stuckTime = 0
+local lastPosition = nil
+local lastEquip = 0
+
+local minimized = false
+local locked = false
+
+--==================================================
+-- GUI
+--==================================================
+
+local gui = Instance.new("ScreenGui")
+gui.Name = "AntiTrap"
+gui.ResetOnSpawn = false
+gui.Parent = player:WaitForChild("PlayerGui")
+
+local main = Instance.new("Frame")
+main.Size = UDim2.fromOffset(230,285)
+main.Position = UDim2.new(0,20,0.5,-142)
+main.BackgroundColor3 = Color3.fromRGB(18,18,22)
+main.BorderSizePixel = 0
+main.Active = true
+main.Parent = gui
+
+local mainCorner = Instance.new("UICorner")
+mainCorner.CornerRadius = UDim.new(0,12)
+mainCorner.Parent = main
+
+local stroke = Instance.new("UIStroke")
+stroke.Thickness = 2.5
+stroke.Transparency = 0
+stroke.Parent = main
+
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1,-85,0,35)
+title.Position = UDim2.fromOffset(5,5)
+title.BackgroundTransparency = 1
+title.Text = "ANTI TRAP"
+title.TextColor3 = Color3.fromRGB(240,240,255)
+title.TextScaled = true
+title.Font = Enum.Font.GothamBold
+title.Active = true
+title.Parent = main
+
+local titleStroke = Instance.new("UIStroke")
+titleStroke.Thickness = 1.2
+titleStroke.Transparency = 0.35
+titleStroke.Parent = title
+
+local arrow = Instance.new("TextButton")
+arrow.Size = UDim2.fromOffset(30,30)
+arrow.Position = UDim2.new(1,-70,0,7)
+arrow.BackgroundColor3 = Color3.fromRGB(30,30,38)
+arrow.Text = "◀️"
+arrow.TextColor3 = Color3.fromRGB(240,240,255)
+arrow.TextScaled = true
+arrow.Font = Enum.Font.GothamBold
+arrow.Parent = main
+
+local arrowCorner = Instance.new("UICorner")
+arrowCorner.CornerRadius = UDim.new(0,7)
+arrowCorner.Parent = arrow
+
+local arrowStroke = Instance.new("UIStroke")
+arrowStroke.Thickness = 1.5
+arrowStroke.Parent = arrow
+
+local lockButton = Instance.new("TextButton")
+lockButton.Size = UDim2.fromOffset(30,30)
+lockButton.Position = UDim2.new(1,-35,0,7)
+lockButton.BackgroundColor3 = Color3.fromRGB(30,30,38)
+lockButton.Text = "🔓"
+lockButton.TextColor3 = Color3.fromRGB(240,240,255)
+lockButton.TextScaled = true
+lockButton.Font = Enum.Font.GothamBold
+lockButton.Parent = main
+
+local lockCorner = Instance.new("UICorner")
+lockCorner.CornerRadius = UDim.new(0,7)
+lockCorner.Parent = lockButton
+
+local lockStroke = Instance.new("UIStroke")
+lockStroke.Thickness = 1.5
+lockStroke.Parent = lockButton
+
+local objectLabel = Instance.new("TextLabel")
+objectLabel.Size = UDim2.new(1,-10,0,25)
+objectLabel.Position = UDim2.fromOffset(5,42)
+objectLabel.BackgroundTransparency = 1
+objectLabel.Text = "OBJECT-"
+objectLabel.TextColor3 = Color3.fromRGB(150,180,255)
+objectLabel.TextScaled = true
+objectLabel.Font = Enum.Font.GothamBold
+objectLabel.Parent = main
+
+local selectedLabel = Instance.new("TextLabel")
+selectedLabel.Size = UDim2.new(1,-10,0,20)
+selectedLabel.Position = UDim2.fromOffset(5,67)
+selectedLabel.BackgroundTransparency = 1
+selectedLabel.Text = "Ninguno"
+selectedLabel.TextColor3 = Color3.fromRGB(170,170,185)
+selectedLabel.TextScaled = true
+selectedLabel.Font = Enum.Font.Gotham
+selectedLabel.Parent = main
+
+local list = Instance.new("ScrollingFrame")
+list.Size = UDim2.new(1,-10,0,90)
+list.Position = UDim2.fromOffset(5,90)
+list.BackgroundColor3 = Color3.fromRGB(22,22,28)
+list.BorderSizePixel = 0
+list.ScrollBarThickness = 4
+list.CanvasSize = UDim2.new(0,0,0,0)
+list.Parent = main
+
+local listCorner = Instance.new("UICorner")
+listCorner.CornerRadius = UDim.new(0,7)
+listCorner.Parent = list
+
+local listStroke = Instance.new("UIStroke")
+listStroke.Thickness = 1.2
+listStroke.Transparency = 0.3
+listStroke.Parent = list
+
+local layout = Instance.new("UIListLayout")
+layout.Padding = UDim.new(0,3)
+layout.Parent = list
+
+local toggle = Instance.new("TextButton")
+toggle.Size = UDim2.new(1,-20,0,35)
+toggle.Position = UDim2.new(0,10,1,-45)
+toggle.BackgroundColor3 = Color3.fromRGB(28,28,35)
+toggle.Text = "OFF"
+toggle.TextColor3 = Color3.fromRGB(235,235,245)
+toggle.TextScaled = true
+toggle.Font = Enum.Font.GothamBold
+toggle.Parent = main
+
+local toggleCorner = Instance.new("UICorner")
+toggleCorner.CornerRadius = UDim.new(0,7)
+toggleCorner.Parent = toggle
+
+local toggleStroke = Instance.new("UIStroke")
+toggleStroke.Thickness = 1.8
+toggleStroke.Parent = toggle
+
+local byLabel = Instance.new("TextLabel")
+byLabel.Size = UDim2.fromOffset(230,22)
+byLabel.Position = UDim2.new(0,20,0.5,143)
+byLabel.BackgroundTransparency = 1
+byLabel.Text = "By Alejandrillo"
+byLabel.TextColor3 = Color3.fromRGB(170,170,185)
+byLabel.TextScaled = true
+byLabel.Font = Enum.Font.GothamBold
+byLabel.Parent = gui
+
+local function findTool(name)
+	if not name then return nil end
+	local backpack = player:FindFirstChildOfClass("Backpack")
+	if backpack then
+		local tool = backpack:FindFirstChild(name)
+		if tool and tool:IsA("Tool") then return tool end
+	end
+	local character = player.Character
+	if character then
+		local tool = character:FindFirstChild(name)
+		if tool and tool:IsA("Tool") then return tool end
+	end
+	return nil
+end
+
+local function equipAndInstantUnequip()
+	if not enabled or not selectedToolName then return end
+	local now = os.clock()
+	if now - lastEquip < COOLDOWN then return end
+	local character = player.Character
+	if not character then return end
+	local humanoid = character:FindFirstChildOfClass("Humanoid")
+	if not humanoid then return end
+	local tool = findTool(selectedToolName)
+	if not tool then return end
+	lastEquip = now
+	pcall(function() humanoid:EquipTool(tool) end)
+	task.spawn(function()
+		pcall(function() tool:Activate() end)
+		pcall(function() humanoid:UnequipTools() end)
+	end)
+end
+
+local function getTools()
+	local tools = {}
+	local backpack = player:FindFirstChildOfClass("Backpack")
+	if backpack then
+		for _,obj in ipairs(backpack:GetChildren()) do
+			if obj:IsA("Tool") then tools[obj.Name] = true end
+		end
+	end
+	local character = player.Character
+	if character then
+		for _,obj in ipairs(character:GetChildren()) do
+			if obj:IsA("Tool") then tools[obj.Name] = true end
+		end
+	end
+	return tools
+end
+
+local function refresh()
+	for _,obj in ipairs(list:GetChildren()) do
+		if obj:IsA("TextButton") then obj:Destroy() end
+	end
+	local tools = getTools()
+	for name in pairs(tools) do
+		local button = Instance.new("TextButton")
+		button.Size = UDim2.new(1,-8,0,28)
+		button.BackgroundColor3 = Color3.fromRGB(32,32,40)
+		button.BorderSizePixel = 0
+		button.Text = name
+		button.TextColor3 = Color3.fromRGB(220,220,235)
+		button.TextScaled = true
+		button.Font = Enum.Font.Gotham
+		button.Parent = list
+		local c = Instance.new("UICorner")
+		c.CornerRadius = UDim.new(0,6)
+		c.Parent = button
+		local s = Instance.new("UIStroke")
+		s.Thickness = 1
+		s.Transparency = 0.4
+		s.Parent = button
+		if selectedToolName == name then
+			button.BackgroundColor3 = Color3.fromRGB(45,45,65)
+		end
+		button.MouseButton1Click:Connect(function()
+			selectedToolName = name
+			selectedLabel.Text = name
+			for _,other in ipairs(list:GetChildren()) do
+				if other:IsA("TextButton") then
+					other.BackgroundColor3 = Color3.fromRGB(32,32,40)
+				end
+			end
+			button.BackgroundColor3 = Color3.fromRGB(45,45,65)
+		end)
+	end
+	list.CanvasSize = UDim2.new(0,0,0,layout.AbsoluteContentSize.Y + 5)
+end
+
+refresh()
+
+task.spawn(function()
+	while gui.Parent do
+		refresh()
+		task.wait(0.5)
+	end
+end)
+
+local dragging = false
+local dragStart
+local startPos
+
+local function updateDrag(input)
+	local delta = input.Position - dragStart
+	main.Position = UDim2.new(startPos.X.Scale,startPos.X.Offset + delta.X,startPos.Y.Scale,startPos.Y.Offset + delta.Y)
+	byLabel.Position = UDim2.new(main.Position.X.Scale,main.Position.X.Offset,main.Position.Y.Scale,main.Position.Y.Offset + main.AbsoluteSize.Y + 3)
+end
+
+title.InputBegan:Connect(function(input)
+	if locked then return end
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		dragging = true
+		dragStart = input.Position
+		startPos = main.Position
+	end
+end)
+
+title.InputEnded:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		dragging = false
+	end
+end)
+
+UserInputService.InputChanged:Connect(function(input)
+	if dragging and not locked then
+		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+			updateDrag(input)
+		end
+	end
+end)
+
+lockButton.MouseButton1Click:Connect(function()
+	locked = not locked
+	lockButton.Text = locked and "🔒" or "🔓"
+end)
+
+arrow.MouseButton1Click:Connect(function()
+	minimized = not minimized
+	if minimized then
+		list.Visible = false
+		objectLabel.Visible = false
+		selectedLabel.Visible = false
+		main.Size = UDim2.fromOffset(230,90)
+		toggle.Position = UDim2.new(0,10,0,50)
+		arrow.Text = "▶️"
+	else
+		list.Visible = true
+		objectLabel.Visible = true
+		selectedLabel.Visible = true
+		main.Size = UDim2.fromOffset(230,285)
+		toggle.Position = UDim2.new(0,10,1,-45)
+		arrow.Text = "◀️"
+	end
+	byLabel.Position = UDim2.new(main.Position.X.Scale,main.Position.X.Offset,main.Position.Y.Scale,main.Position.Y.Offset + main.AbsoluteSize.Y + 3)
+end)
+
+toggle.MouseButton1Click:Connect(function()
+	enabled = not enabled
+	stuckTime = 0
+	local character = player.Character
+	if character then
+		local root = character:FindFirstChild("HumanoidRootPart")
+		if root then lastPosition = root.Position end
+	end
+	toggle.Text = enabled and "ON" or "OFF"
+end)
+
+RunService.Heartbeat:Connect(function(deltaTime)
+	if not enabled or not selectedToolName then return end
+	local character = player.Character
+	if not character then return end
+	local humanoid = character:FindFirstChildOfClass("Humanoid")
+	local root = character:FindFirstChild("HumanoidRootPart")
+	if not humanoid or not root then return end
+	if not lastPosition then
+		lastPosition = root.Position
+		return
+	end
+	local tryingToMove = humanoid.MoveDirection.Magnitude > 0.05
+	local distance = (root.Position - lastPosition).Magnitude
+	local actuallyMoving = distance > MOVEMENT_THRESHOLD
+	if tryingToMove and not actuallyMoving then
+		stuckTime += deltaTime
+	else
+		stuckTime = 0
+	end
+	lastPosition = root.Position
+	if stuckTime >= CHECK_TIME then
+		stuckTime = 0
+		task.spawn(equipAndInstantUnequip)
+	end
+end)
+
+local rgbTime = 0
+RunService.RenderStepped:Connect(function(deltaTime)
+	rgbTime += deltaTime * 0.25
+	local rainbow = Color3.fromHSV(rgbTime % 1,0.85,1)
+	stroke.Color = rainbow
+	titleStroke.Color = rainbow
+	arrowStroke.Color = rainbow
+	lockStroke.Color = rainbow
+	toggleStroke.Color = rainbow
+	objectLabel.TextColor3 = Color3.fromHSV((rgbTime + 0.15) % 1,0.65,1)
+end)
+
+player.CharacterAdded:Connect(function()
+	lastPosition = nil
+	stuckTime = 0
+	task.wait(0.25)
+	refresh()
+end)
