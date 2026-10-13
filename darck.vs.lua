@@ -1,5 +1,5 @@
 --[[
- darck.vs — Full Menu
+ Elblue873 — Full Menu
  Tab 1 Player: Anti Gummy/Ragdoll/Paintball/Boogie + Speed 3-mode (Vis S2 loop)
  + Tool Aimbot + Drop Jump/Stand + Insta V1/V2 + TP Down keybinds
  Tab 2 ESP: Player ESP + Tracker + Anti Lag (Vis logic)
@@ -135,13 +135,13 @@ do
 	    flash.BorderSizePixel = 0
 	    flash.ZIndex = 400
 
-	    -- Main Title - "darck.vs" (RED)
+	    -- Main Title - "Elblue873" (RED)
 	    local introTitle = Instance.new("TextLabel", background)
 	    introTitle.AnchorPoint = Vector2.new(0.5, 0.5)
 	    introTitle.Position = UDim2.fromScale(0.5, 0.47)
 	    introTitle.Size = UDim2.fromScale(1.1, 0.22)
 	    introTitle.BackgroundTransparency = 1
-	    introTitle.Text = "darck.vs"
+	    introTitle.Text = "Elblue873"
 	    introTitle.TextColor3 = Color3.fromRGB(255, 0, 0)
 	    introTitle.TextTransparency = 1
 	    introTitle.TextScaled = true
@@ -1822,7 +1822,7 @@ task.spawn(function()
 	if not gui.Parent then gui.Parent = PlayerGui end
 
 	local function corner(o, r)
- local c = Instance.new("UICorner"); c.CornerRadius = UDim.new(0, r or 8); c.Parent = o
+ local c = Instance.new("UICorner"); c.CornerRadius = UDim.new(0, r or 10); c.Parent = o
 	end
 	local COL = {
  bg = Color3.fromRGB(10,10,12), header = Color3.fromRGB(16,16,18), row = Color3.fromRGB(22,22,26),
@@ -4026,7 +4026,7 @@ end
 
 function corner(p, r)
 	local c = Instance.new("UICorner")
-	c.CornerRadius = UDim.new(0, r or 8)
+	c.CornerRadius = UDim.new(0, r or 10)
 	c.Parent = p
 	return c
 end
@@ -10121,7 +10121,7 @@ task.spawn(function()
 
 	local function corner(p, r)
  local x = Instance.new("UICorner")
- x.CornerRadius = UDim.new(0, r or 8)
+ x.CornerRadius = UDim.new(0, r or 10)
  x.Parent = p
  return x
 	end
