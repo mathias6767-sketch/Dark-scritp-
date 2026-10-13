@@ -1,0 +1,212 @@
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local UserInputService = game:GetService("UserInputService")
+local player = Players.LocalPlayer
+local char = player.Character or player.CharacterAdded:Wait()
+local HRP = char:WaitForChild("HumanoidRootPart")
+local backpack = player:WaitForChild("Backpack")
+local Event = ReplicatedStorage:WaitForChild("Packages"):WaitForChild("Net"):WaitForChild("RE/UseItem")
+
+local autoAimEnabled = false
+local range = 100
+
+local function getNearestPlayer(maxRange)
+    maxRange = maxRange or math.huge
+    if not player.Character then return nil end
+    local myPos = HRP.Position
+    local nearest = nil
+    local shortest = maxRange
+    for _, pl in ipairs(Players:GetPlayers()) do
+        if pl ~= player and pl.Character and pl.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = pl.Character.HumanoidRootPart
+            local dist = (hrp.Position - myPos).Magnitude
+            if dist < shortest then
+                shortest = dist
+                nearest = pl
+            end
+        end
+    end
+    return nearest
+end
+
+local function hasTool(toolName)
+    return backpack:FindFirstChild(toolName) ~= nil or (char and char:FindFirstChild(toolName) ~= nil)
+end
+
+local function equipTool(toolName)
+    local tool = backpack:FindFirstChild(toolName) or (char and char:FindFirstChild(toolName))
+    if tool and tool.Parent == backpack then
+        tool.Parent = char
+        return true
+    end
+    return tool ~= nil
+end
+
+local function equipOnlyTool(toolName)
+    for _, tool in ipairs(char:GetChildren()) do
+        if tool:IsA("Tool") and tool.Name ~= toolName then
+            tool.Parent = backpack
+        end
+    end
+    return equipTool(toolName)
+end
+
+local function useLaserCape(targetPart)
+    if not targetPart then return end
+    local args = {targetPart.Position, targetPart}
+    pcall(function()
+        Event:FireServer(unpack(args))
+    end)
+end
+
+local function useWebSlinger(targetPart)
+    if not targetPart then return end
+    local tool = backpack:FindFirstChild("Web Slinger") or (char and char:FindFirstChild("Web Slinger"))
+    if tool and tool:FindFirstChild("Handle") then
+        local handle = tool.Handle
+        local args = {
+            Vector3.new(targetPart.Position.X, targetPart.Position.Y, targetPart.Position.Z),
+            targetPart,
+            handle
+        }
+        pcall(function()
+            Event:FireServer(unpack(args))
+        end)
+    end
+end
+
+local screen = Instance.new("ScreenGui")
+screen.Name = "AimBotGUI"
+screen.ResetOnSpawn = false
+screen.Parent = player:WaitForChild("PlayerGui")
+
+local frame = Instance.new("Frame", screen)
+frame.Size = UDim2.new(0, 240, 0, 100)
+frame.Position = UDim2.new(0.7, 0, 0.3, 0)
+frame.BackgroundColor3 = Color3.fromRGB(30,30,30)
+frame.BackgroundTransparency = 0.15
+frame.BorderColor3 = Color3.fromRGB(255, 210, 0)
+frame.BorderSizePixel = 2
+frame.Active = true
+frame.Draggable = true
+
+local uicorner = Instance.new("UICorner", frame)
+uicorner.CornerRadius = UDim.new(0,12)
+
+local title = Instance.new("TextLabel", frame)
+title.Size = UDim2.new(1,0,0,28)
+title.Position = UDim2.new(0,0,0,0)
+title.BackgroundTransparency = 1
+title.Text = "DUAL AIM BOT"
+title.TextColor3 = Color3.fromRGB(255, 210, 0)
+title.Font = Enum.Font.Arcade
+title.TextScaled = true
+
+local autoAimBtn = Instance.new("TextButton", frame)
+autoAimBtn.Size = UDim2.new(0,200,0,36)
+autoAimBtn.Position = UDim2.new(0,20,0,50)
+autoAimBtn.BackgroundColor3 = Color3.fromRGB(25,25,25)
+autoAimBtn.BorderSizePixel = 0
+autoAimBtn.TextColor3 = Color3.fromRGB(255,255,255)
+autoAimBtn.Font = Enum.Font.Arcade
+autoAimBtn.TextSize = 18
+autoAimBtn.Text = "DUAL AIM: OFF"
+
+local btnCorner = Instance.new("UICorner", autoAimBtn)
+btnCorner.CornerRadius = UDim.new(0,8)
+
+autoAimBtn.MouseEnter:Connect(function()
+    autoAimBtn.BackgroundTransparency = 0.3
+end)
+autoAimBtn.MouseLeave:Connect(function()
+    autoAimBtn.BackgroundTransparency = 0
+end)
+
+local laserConnection = nil
+local webConnection = nil
+
+local function setupLaserAim()
+    local laserTool = backpack:FindFirstChild("Laser Cape") or (char and char:FindFirstChild("Laser Cape"))
+    if not laserTool then return end
+    
+    if laserConnection then
+        laserConnection:Disconnect()
+    end
+    
+    laserConnection = laserTool.Activated:Connect(function()
+        local target = getNearestPlayer(range)
+        if target and target.Character then
+            local targetPart = target.Character:FindFirstChild("HumanoidRootPart")
+            if targetPart then
+                useLaserCape(targetPart)
+            end
+        end
+    end)
+end
+
+local function setupWebAim()
+    local webTool = backpack:FindFirstChild("Web Slinger") or (char and char:FindFirstChild("Web Slinger"))
+    
+    if not webTool then
+        local args = {"Web Slinger"}
+        pcall(function()
+            ReplicatedStorage:WaitForChild("Packages"):WaitForChild("Net"):WaitForChild("RF/CoinsShopService/RequestBuy"):InvokeServer(unpack(args))
+        end)
+        task.wait(1)
+        webTool = backpack:FindFirstChild("Web Slinger") or (char and char:FindFirstChild("Web Slinger"))
+    end
+    
+    if not webTool then return end
+    
+    if webConnection then
+        webConnection:Disconnect()
+    end
+    
+    webConnection = webTool.Activated:Connect(function()
+        local target = getNearestPlayer(range)
+        if target and target.Character then
+            local targetPart = target.Character:FindFirstChild("HumanoidRootPart")
+            if targetPart then
+                useWebSlinger(targetPart)
+            end
+        end
+    end)
+end
+
+autoAimBtn.MouseButton1Click:Connect(function()
+    autoAimEnabled = not autoAimEnabled
+    autoAimBtn.Text = "DUAL AIM: " .. (autoAimEnabled and "ON" or "OFF")
+    
+    if autoAimEnabled then
+        setupLaserAim()
+        setupWebAim()
+    else
+        if laserConnection then
+            laserConnection:Disconnect()
+            laserConnection = nil
+        end
+        if webConnection then
+            webConnection:Disconnect()
+            webConnection = nil
+        end
+    end
+end)
+
+player.CharacterAdded:Connect(function(character)
+    char = character
+    HRP = character:WaitForChild("HumanoidRootPart")
+    
+    if autoAimEnabled then
+        task.wait(2)
+        setupLaserAim()
+        setupWebAim()
+    end
+end)
+
+if player.Character then
+    task.wait(1)
+    if autoAimEnabled then
+        setupLaserAim()
+        setupWebAim()
+    end
+end
