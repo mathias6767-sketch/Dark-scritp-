@@ -26,7 +26,7 @@ local PlayerGui = LP:WaitForChild("PlayerGui", 30) or LP:FindFirstChild("PlayerG
 
 pcall(function()
 	for _, n in ipairs({
- "darck.vsHubFullMenu", "darck.vsHubFullMini", "darck.vsHubModeBar", "darck.vsHubActionButtons", "darck.vsIntro", "darck.vsHubIntro",
+ "Elblue873HubFullMenu", "Elblue873HubFullMini", "Elblue873HubModeBar", "Elblue873HubActionButtons", "Elblue873Intro", "Elblue873HubIntro",
 	}) do
  local g = PlayerGui:FindFirstChild(n)
  if g then g:Destroy() end
@@ -34,7 +34,7 @@ pcall(function()
 end)
 
 ----------------------------------------------------------------
--- darck.vs.CC INTRO (red/black/white, music + skip)
+-- Elblue873.CC INTRO (red/black/white, music + skip)
 ----------------------------------------------------------------
 do
 	local TweenService = TS
@@ -65,13 +65,13 @@ do
 
 	local function createIntro()
 	    -- Clean old intro
-	    for _, name in ipairs({"darck.vsIntro"}) do
+	    for _, name in ipairs({"Elblue873Intro"}) do
 	        local old = PlayerGui:FindFirstChild(name)
 	        if old then old:Destroy() end
 	    end
 
 	    introGui = Instance.new("ScreenGui")
-	    introGui.Name = "darck.vsIntro"
+	    introGui.Name = "Elblue873Intro"
 	    introGui.IgnoreGuiInset = true
 	    introGui.ResetOnSpawn = false
 	    introGui.DisplayOrder = 999999
@@ -120,7 +120,7 @@ do
 	    skip.ZIndex = 500
 
 	    local skipCorner = Instance.new("UICorner", skip)
-	    skipCorner.CornerRadius = UDim.new(0, 8)
+	    skipCorner.CornerRadius = UDim.new(0, 7)
 
 	    local skipStroke = Instance.new("UIStroke", skip)
 	    skipStroke.Color = Color3.fromRGB(255, 0, 0)
@@ -205,7 +205,7 @@ do
 	        local asset = loadMusic()
 	        if not asset or not introActive then return end
 	        introSound = Instance.new("Sound")
-	        introSound.Name = "darck.vsIntroMusic"
+	        introSound.Name = "Elblue873IntroMusic"
 	        introSound.SoundId = asset
 	        introSound.Volume = MUSIC_VOLUME
 	        introSound.Looped = false
@@ -384,11 +384,11 @@ local C = {
 	-- Empire-style palette
 	bg = Color3.fromRGB(12, 12, 16), bg2 = Color3.fromRGB(18, 18, 24),
 	card = Color3.fromRGB(24, 24, 32), stroke = Color3.fromRGB(60, 60, 80),
-	accent = Color3.fromRGB(230, 25, 25), text = Color3.fromRGB(255, 255, 255),
+	accent = Color3.fromRGB(255, 0, 0), text = Color3.fromRGB(255, 255, 255),
 	textDim = Color3.fromRGB(160, 160, 180), on = Color3.fromRGB(60, 220, 110),
 	off = Color3.fromRGB(40, 40, 52), box = Color3.fromRGB(32, 32, 44),
 	danger = Color3.fromRGB(220, 70, 90),
-	modeOnBg = Color3.fromRGB(230, 25, 25), modeOnTxt = Color3.fromRGB(255, 255, 255),
+	modeOnBg = Color3.fromRGB(255, 0, 0), modeOnTxt = Color3.fromRGB(255, 255, 255),
 	modeOffBg = Color3.fromRGB(255, 255, 255), modeOffTxt = Color3.fromRGB(25, 25, 30),
 	btnOn = Color3.fromRGB(50, 210, 100), -- xanh khi ON (Empire style)
 	btnOff = Color3.fromRGB(16, 16, 22),
@@ -398,8 +398,8 @@ local C = {
 -- Auto-write Vis Auto Steal for loadstring
 pcall(function()
 	if writefile then
- writefile("darck.vs_Auto_Steal_Embedded.lua", [==[--[[
- Auto Steal — full darck.vs logic V1 / Semi V1-V2 / V3
+ writefile("Elblue873_Auto_Steal_Embedded.lua", [==[--[[
+ Auto Steal — full Elblue873 logic V1 / Semi V1-V2 / V3
 ]]
 if _G.__VisAutoStealRunning then
 	pcall(function()
@@ -417,7 +417,7 @@ local HttpService = game:GetService("HttpService")
 local LP = Players.LocalPlayer
 local PlayerGui = LP:WaitForChild("PlayerGui")
 
--- Shared state (must match darck.vs names used in steal logic)
+-- Shared state (must match Elblue873 names used in steal logic)
 autoStealEnabled = false
 selectedStealMode = "Normal"
 autoStealRadius = 60
@@ -519,8 +519,8 @@ _G.__AceSetupNormalAutoSteal = function()
  return math.clamp(r, 1, 500)
  end
  local function getAutoGrabPauseFraction()
- -- no pause by default: if _G.darck.vsStealPause ~= true → treat as close-enough always (100%)
- if _G.darck.vsStealPause ~= true then
+ -- no pause by default: if _G.Elblue873StealPause ~= true → treat as close-enough always (100%)
+ if _G.Elblue873StealPause ~= true then
  return 1.0 -- full 0-100 without waiting
  end
  local pct = tonumber(autoStealV1PausePercent) or 75
@@ -651,7 +651,7 @@ _G.__AceSetupNormalAutoSteal = function()
  local targetPart = prompt:FindFirstAncestorWhichIsA("BasePart")
  local restarting = false
  local pauseFraction = (function()
- if _G.darck.vsStealPause == true or (St and St.stealPause == true) then
+ if _G.Elblue873StealPause == true or (St and St.stealPause == true) then
  return math.clamp(((St and St.stealPausePct) or 75) / 100, 0.3, 0.95)
  end
  return 1 -- không pause: full 0→100 liên tục
@@ -788,7 +788,7 @@ _G.__AceSetupNormalAutoSteal = function()
  local wasAbleToGrab = false
 
  -- Đã đứng sẵn ở cột (≤2 stud): steal NORMAL full 0 → 100%
- if isCloseEnoughToGrab() or (not (_G.darck.vsStealPause == true or (St and St.stealPause == true))) then
+ if isCloseEnoughToGrab() or (not (_G.Elblue873StealPause == true or (St and St.stealPause == true))) then
  -- No pause / đang sát cột: full 0→100, chỉ hủy nếu prompt mất / quá xa
  while tick() - holdStart < dur do
  if not modeStillActive() or not canStillGrab() then
@@ -1754,7 +1754,7 @@ end
 -- AUTO STEAL GUI
 -- ============================================================
 task.spawn(function()
-	local CONFIG_FILE = "darck.vsHubAutoSteal"
+	local CONFIG_FILE = "Elblue873HubAutoSteal"
 	local BackgroundIDs = {"89504528485163","108697485255882","71211662493854","118953269416540","106345334781345","103042929344358","126137370200580","129236724255771","109053968018578","76085007631338","99416158073201","126860692354524","73226092831324","90280869222992","90746158236678","107977050874654","124475159163140","117085976067902","76582249427748","131388128481309","106050493494582","71852104184395","84453255265251","98541566010518","118963313877514","82757811555212","130451097419605","129030262345273","76292842640935","92910922537368","105960347086002","116720305084998","90341354549871","72399600208480","81834484116440","135088241492683","90453834580322","90631990302263","109619268613730","88369503310562","80708025126373","102253425322931","135181794444219","111941119745474","138739435956313","92966351305582","127008542588565","81233250155347","77446891363466","93417009946836","102729289645203","113953274092851","116355482429334","133090961209841","84995781107338"}
 
 	local BASE_W, BASE_H, BASE_H_EXP = 300, 96, 240
@@ -1808,12 +1808,12 @@ task.spawn(function()
 
 	local parent = (typeof(gethui) == "function" and gethui()) or game:GetService("CoreGui")
 	pcall(function()
- local o = parent:FindFirstChild("darck.vsAutoStealGui"); if o then o:Destroy() end
- local b = PlayerGui:FindFirstChild("darck.vsAutoStealBarGui"); if b then b:Destroy() end
+ local o = parent:FindFirstChild("Elblue873AutoStealGui"); if o then o:Destroy() end
+ local b = PlayerGui:FindFirstChild("Elblue873AutoStealBarGui"); if b then b:Destroy() end
 	end)
 
 	local gui = Instance.new("ScreenGui")
-	gui.Name = "darck.vsAutoStealGui"
+	gui.Name = "Elblue873AutoStealGui"
 	gui.Enabled = false -- disabled: menu-only steal
 	gui.ResetOnSpawn = false
 	gui.IgnoreGuiInset = true
@@ -2355,7 +2355,7 @@ local St = {
 }
 local ToggleRefs = {} -- để Reset All cập nhật UI
 
-local CFG = "darck.vsAllgear.json"
+local CFG = "Elblue873Allgear.json"
 local _saveToken = 0
 function autoSaveDebounced()
 	_saveToken = _saveToken + 1
@@ -2427,7 +2427,7 @@ function saveCfg()
 	writefile(CFG, HttpService:JSONEncode(d))
 	end)
 	if not ok then
- warn("[darck.vs] saveCfg fail:", err)
+ warn("[Elblue873] saveCfg fail:", err)
 	end
 	return ok
 end
@@ -2437,7 +2437,7 @@ function loadCfg()
  if isfile(CFG) then
  return HttpService:JSONDecode(readfile(CFG))
  end
- for _, old in ipairs({"RaraOnflop.json", "darck.vsHub_FullMenu_v1.json", "darck.vsHub_Config.json", "darck.vs.json"}) do
+ for _, old in ipairs({"RaraOnflop.json", "Elblue873Hub_FullMenu_v1.json", "Elblue873Hub_Config.json", "Elblue873.json"}) do
  if isfile(old) then
  local d = HttpService:JSONDecode(readfile(old))
  pcall(function() writefile(CFG, HttpService:JSONEncode(d)) end)
@@ -2489,7 +2489,7 @@ task.spawn(function()
 	while true do
  task.wait(3)
  local ok, err = pcall(saveCfg)
- if not ok then warn("[darck.vs] autosave 3s fail:", err) end
+ if not ok then warn("[Elblue873] autosave 3s fail:", err) end
 	end
 end)
 
@@ -2583,7 +2583,7 @@ function ensureSpeedAttachment(hrp, key, name)
 	if not att or att.Parent ~= hrp then
  if att then pcall(function() att:Destroy() end) end
  att = Instance.new("Attachment")
- att.Name = name or "darck.vsEmpireSpeedAtt"
+ att.Name = name or "Elblue873EmpireSpeedAtt"
  att.Parent = hrp
  _spd[key] = att
 	end
@@ -2668,9 +2668,9 @@ function setActiveMode(mode)
 	if St.speedOn then
  startSpeedBoost() -- restart Empire loop
 	end
-	if _G.darck.vsRefreshModeBar then pcall(_G.darck.vsRefreshModeBar) end
-	if _G.darck.vsRefreshV2ModeBar then pcall(_G.darck.vsRefreshV2ModeBar) end
-	if _G.darck.vsRefreshModeCards then pcall(_G.darck.vsRefreshModeCards) end
+	if _G.Elblue873RefreshModeBar then pcall(_G.Elblue873RefreshModeBar) end
+	if _G.Elblue873RefreshV2ModeBar then pcall(_G.Elblue873RefreshV2ModeBar) end
+	if _G.Elblue873RefreshModeCards then pcall(_G.Elblue873RefreshModeCards) end
 	pcall(saveCfg)
 end
 
@@ -2749,8 +2749,8 @@ if not _G._VisEmpireJumpHook then
  local pg = LP:WaitForChild("PlayerGui", 15)
  if not pg then return end
  local function hookJumpButton(btn)
- if btn:IsA("GuiButton") and btn.Name == "JumpButton" and not btn:GetAttribute("darck.vsInfJumpHooked") then
- btn:SetAttribute("darck.vsInfJumpHooked", true)
+ if btn:IsA("GuiButton") and btn.Name == "JumpButton" and not btn:GetAttribute("Elblue873InfJumpHooked") then
+ btn:SetAttribute("Elblue873InfJumpHooked", true)
  btn.MouseButton1Down:Connect(function()
  if InfJumpState.enabled then InfJumpState.jumpHeld = true end
  end)
@@ -2966,15 +2966,15 @@ function setAntiRagdollMode(mode)
  stopAntiRagdoll()
  startAntiRagdoll()
 	end
-	pcall(function() if _G.darck.vsRefreshAntiRagMode then _G.darck.vsRefreshAntiRagMode() end end)
+	pcall(function() if _G.Elblue873RefreshAntiRagMode then _G.Elblue873RefreshAntiRagMode() end end)
 	pcall(saveCfg)
 end
-_G.darck.vsSetAntiRagdollMode = setAntiRagdollMode
+_G.Elblue873SetAntiRagdollMode = setAntiRagdollMode
 
 
 
 ----------------------------------------------------------------
--- ANTI GUMMY / BOOGIE / PAINTBALL (darck.vs full) — LUÔN BẬT
+-- ANTI GUMMY / BOOGIE / PAINTBALL (Elblue873 full) — LUÔN BẬT
 --------------------------------------------------------------
 -- Anti Gummy / Boogie / Bee / Paintball (from Tp Heatseeker)
 -- Always ON, no GUI
@@ -3154,7 +3154,7 @@ function setAntiPaint(on)
 end
 
 ----------------------------------------------------------------
--- TOOL AIMBOT (darck.vs full) — LUÔN BẬT
+-- TOOL AIMBOT (Elblue873 full) — LUÔN BẬT
 ----------------------------------------------------------------
 local aimOn = true
 local TOOLS = { ["Web Slinger"] = true, ["Paintball Gun"] = true, ["Laser Cape"] = true }
@@ -3347,7 +3347,7 @@ function InstaResetV2()
 	local lockCF = cam and cam.CFrame
 	pcall(function()
  if cam then cam.CameraType = Enum.CameraType.Scriptable; cam.CFrame = lockCF end
- RS:BindToRenderStep("darck.vsInstaV2Cam", Enum.RenderPriority.Camera.Value + 1, function()
+ RS:BindToRenderStep("Elblue873InstaV2Cam", Enum.RenderPriority.Camera.Value + 1, function()
  pcall(function()
  if cam then cam.CameraType = Enum.CameraType.Scriptable; if lockCF then cam.CFrame = lockCF end end
  local ac = LP.Character
@@ -3362,7 +3362,7 @@ function InstaResetV2()
 	local conn
 	conn = LP.CharacterAdded:Connect(function(newChar)
  if conn then conn:Disconnect() end
- pcall(function() RS:UnbindFromRenderStep("darck.vsInstaV2Cam") end)
+ pcall(function() RS:UnbindFromRenderStep("Elblue873InstaV2Cam") end)
  local nh = newChar:WaitForChild("Humanoid", 5)
  task.wait(0.05)
  pcall(function()
@@ -3372,7 +3372,7 @@ function InstaResetV2()
 	end)
 	task.delay(8, function()
  if _resetBusy then
- pcall(function() RS:UnbindFromRenderStep("darck.vsInstaV2Cam") end)
+ pcall(function() RS:UnbindFromRenderStep("Elblue873InstaV2Cam") end)
  _resetBusy = false
  end
 	end)
@@ -3396,8 +3396,8 @@ function InstaResetV1()
  cam.CameraType = Enum.CameraType.Custom
  if humanoid then cam.CameraSubject = humanoid end
  end
- pcall(function() RS:UnbindFromRenderStep("darck.vsInstaV1Cam") end)
- pcall(function() RS:UnbindFromRenderStep("darck.vsInstaV2Cam") end)
+ pcall(function() RS:UnbindFromRenderStep("Elblue873InstaV1Cam") end)
+ pcall(function() RS:UnbindFromRenderStep("Elblue873InstaV2Cam") end)
 	end)
 
 	local charConn
@@ -3798,7 +3798,7 @@ end)
 function setDestroySentry(on)
 	St.destroySentry = on and true or false
 	GTurret.AutoDestroyTurret = St.destroySentry
-	if _G.darck.vsRefreshSentryBtn then _G.darck.vsRefreshSentryBtn() end
+	if _G.Elblue873RefreshSentryBtn then _G.Elblue873RefreshSentryBtn() end
 	saveCfg()
 end
 
@@ -3959,7 +3959,7 @@ function setEquipOnDrop(on)
 end
 
 -- Equip + activate khi Drop xong
-_G.darck.vsCounterOnDrop = function()
+_G.Elblue873CounterOnDrop = function()
 	-- Counter đã chọn: equip 1 + activate 2 khi Drop (Fling & Jump)
 	local anyCounter = St.counterLaser or St.counterBoogie or St.counterSwapBody
 	if not anyCounter and not St.equipOnDrop then return end
@@ -4006,7 +4006,7 @@ _G.darck.vsCounterOnDrop = function()
 end
 
 -- Bật toggle Counter: equip 1 + activate 2 (một lần)
-_G.darck.vsCounterOneShot = function(kind)
+_G.Elblue873CounterOneShot = function(kind)
 	if _G._VisCounterDropBusy then return end
 	_G._VisCounterDropBusy = true
 	task.spawn(function()
@@ -4040,7 +4040,7 @@ function stroke(p, col)
 end
 
 local Gui = Instance.new("ScreenGui")
-Gui.Name = "darck.vsHubFullMenu"
+Gui.Name = "Elblue873HubFullMenu"
 Gui.ResetOnSpawn = false
 Gui.IgnoreGuiInset = true
 Gui.DisplayOrder = 200
@@ -4059,7 +4059,7 @@ Main.Parent = Gui
 
 -- Menu scale (to/nhỏ menu chính)
 local menuScaleObj = Instance.new("UIScale")
-menuScaleObj.Name = "darck.vsMenuScale"
+menuScaleObj.Name = "Elblue873MenuScale"
 menuScaleObj.Scale = tonumber(St.menuScale) or 1
 menuScaleObj.Parent = Main
 function applyMenuScale()
@@ -4211,7 +4211,7 @@ tabList.HorizontalAlignment = Enum.HorizontalAlignment.Center
 tabList.SortOrder = Enum.SortOrder.LayoutOrder
 local tabPad = Instance.new("UIPadding", TabBar)
 tabPad.PaddingTop = UDim.new(0, 4)
-tabPad.PaddingBottom = UDim.new(0, 8)
+tabPad.PaddingBottom = UDim.new(0, 6)
 tabPad.PaddingLeft = UDim.new(0, 3)
 tabPad.PaddingRight = UDim.new(0, 3)
 
@@ -4236,8 +4236,8 @@ function makePage(name)
 	sc.Parent = Main
 	local pad = Instance.new("UIPadding", sc)
 	pad.PaddingTop = UDim.new(0, 4)
-	pad.PaddingBottom = UDim.new(0, 8)
-	pad.PaddingLeft = UDim.new(0, 8)
+	pad.PaddingBottom = UDim.new(0, 10)
+	pad.PaddingLeft = UDim.new(0, 6)
 	pad.PaddingRight = UDim.new(0, 8)
 	local lay = Instance.new("UIListLayout", sc)
 	lay.Padding = UDim.new(0, 5)
@@ -4537,7 +4537,7 @@ do
 	slide.ZIndex = 2
 	slide.Parent = holder
 	local sc = Instance.new("UICorner")
-	sc.CornerRadius = UDim.new(0, 8)
+	sc.CornerRadius = UDim.new(0, 6)
 	sc.Parent = slide
 	local t1 = Instance.new("TextLabel")
 	t1.BackgroundTransparency = 1
@@ -4564,7 +4564,7 @@ do
  t1.TextTransparency = isV2 and 0.35 or 0
  t2.TextTransparency = isV2 and 0 or 0.35
 	end
-	_G.darck.vsRefreshAntiRagMode = refresh
+	_G.Elblue873RefreshAntiRagMode = refresh
 	local b1 = Instance.new("TextButton")
 	b1.BackgroundTransparency = 1
 	b1.Size = UDim2.new(0.5, 0, 1, 0)
@@ -4664,7 +4664,7 @@ end
 modeCard("Normal", "default mode", 12)
 modeCard("Lagger", "use against lagger", 13)
 modeCard("Custom", "custom spd", 14)
-function _G.darck.vsRefreshModeCards()
+function _G.Elblue873RefreshModeCards()
 	for n, card in pairs(modeCards) do
  local st = card:FindFirstChildOfClass("UIStroke")
  if st then
@@ -4674,7 +4674,7 @@ function _G.darck.vsRefreshModeCards()
  end
 	end
 end
-_G.darck.vsRefreshModeCards()
+_G.Elblue873RefreshModeCards()
 
 
 -- ============================================================
@@ -4947,29 +4947,29 @@ spamTxt.Parent = spamInfo
 section(pageSet, "* — MOBILE / LOCK", 1)
 toggleNamed(pageSet, "Mobile Buttons", St.mobileBtns, function(on)
 	St.mobileBtns = on
-	if _G.darck.vsApplyMobile then _G.darck.vsApplyMobile() end
+	if _G.Elblue873ApplyMobile then _G.Elblue873ApplyMobile() end
 	saveCfg()
 end, 2, "mobileBtns")
 toggleNamed(pageSet, "Show Auto Steal Button", St.showStealBtn ~= false, function(on)
 	St.showStealBtn = on and true or false
-	if _G.darck.vsRefreshStealBtn then pcall(_G.darck.vsRefreshStealBtn) end
+	if _G.Elblue873RefreshStealBtn then pcall(_G.Elblue873RefreshStealBtn) end
 	-- nếu ON show mà chưa có nút → rebuild
-	if St.showStealBtn and (not actRefs or not actRefs.steal) and _G.darck.vsApplyMobile then
- pcall(_G.darck.vsApplyMobile)
+	if St.showStealBtn and (not actRefs or not actRefs.steal) and _G.Elblue873ApplyMobile then
+ pcall(_G.Elblue873ApplyMobile)
 	end
 	saveCfg()
 end, 2.5, "showStealBtn")
 toggleNamed(pageSet, "Show Panel TP", St.showTPPanel ~= false, function(on)
 	St.showTPPanel = on and true or false
-	local g = PlayerGui:FindFirstChild("darck.vsHubbTP")
+	local g = PlayerGui:FindFirstChild("Elblue873HubbTP")
 	if g then g.Enabled = St.showTPPanel end
 	saveCfg()
 end, 25, "showTPPanel")
 toggleNamed(pageSet, "Show Panel Lagger", St.showLaggerPanel == true, function(on)
-	if _G.darck.vsSetLaggerPanel then _G.darck.vsSetLaggerPanel(on) else St.showLaggerPanel = on; saveCfg() end
+	if _G.Elblue873SetLaggerPanel then _G.Elblue873SetLaggerPanel(on) else St.showLaggerPanel = on; saveCfg() end
 end, 25.1, "showLaggerPanel")
 toggleNamed(pageSet, "Show Panel Speed Bypass", St.showSpeedBypassPanel == true, function(on)
-	if _G.darck.vsSetSpeedBypassPanel then _G.darck.vsSetSpeedBypassPanel(on) else St.showSpeedBypassPanel = on; saveCfg() end
+	if _G.Elblue873SetSpeedBypassPanel then _G.Elblue873SetSpeedBypassPanel(on) else St.showSpeedBypassPanel = on; saveCfg() end
 end, 25.3, "showSpeedBypassPanel")
 -- Panel GUI size (to/nhỏ + rộng) dưới các panel
 do
@@ -5008,7 +5008,7 @@ do
  local function fire()
  St.panelGuiScale = math.clamp((tonumber(St.panelGuiScale) or 1) + (info[1] == "+" and 0.05 or -0.05), 0.6, 1.6)
  val.Text = tostring(math.floor(St.panelGuiScale * 100)) .. "%"
- if _G.darck.vsApplyPanelGuiScale then pcall(_G.darck.vsApplyPanelGuiScale) end
+ if _G.Elblue873ApplyPanelGuiScale then pcall(_G.Elblue873ApplyPanelGuiScale) end
  saveCfg()
  end
  b.MouseButton1Click:Connect(fire)
@@ -5051,7 +5051,7 @@ do
  local function fire()
  St.panelGuiWidth = math.clamp((tonumber(St.panelGuiWidth) or 1) + (info[1] == "+" and 0.05 or -0.05), 0.7, 1.5)
  val.Text = tostring(math.floor(St.panelGuiWidth * 100)) .. "%"
- if _G.darck.vsApplyPanelGuiScale then pcall(_G.darck.vsApplyPanelGuiScale) end
+ if _G.Elblue873ApplyPanelGuiScale then pcall(_G.Elblue873ApplyPanelGuiScale) end
  saveCfg()
  end
  b.MouseButton1Click:Connect(fire)
@@ -5066,12 +5066,12 @@ toggleNamed(pageSet, "Lock UI", St.guiLock, function(on)
  St._mainPos = {Main.Position.X.Scale, Main.Position.X.Offset, Main.Position.Y.Scale, Main.Position.Y.Offset}
  St.menuOpen = Main.Visible == true
  end
- local miniGui = PlayerGui:FindFirstChild("darck.vsHubFullMini")
+ local miniGui = PlayerGui:FindFirstChild("Elblue873HubFullMini")
  local mini = miniGui and miniGui:FindFirstChildWhichIsA("TextButton")
  if mini then
  St._miniPos = {mini.Position.X.Scale, mini.Position.X.Offset, mini.Position.Y.Scale, mini.Position.Y.Offset}
  end
- local mb = PlayerGui:FindFirstChild("darck.vsHubModeBar")
+ local mb = PlayerGui:FindFirstChild("Elblue873HubModeBar")
  local mf = mb and mb:FindFirstChildWhichIsA("Frame")
  if mf then
  St._modeBarPos = {mf.Position.X.Scale, mf.Position.X.Offset, mf.Position.Y.Scale, mf.Position.Y.Offset}
@@ -5092,8 +5092,8 @@ toggleNamed(pageSet, "Lock UI", St.guiLock, function(on)
  end
  end
  end
- snapHoldersLock(PlayerGui:FindFirstChild("darck.vsHubActionButtons"))
- snapHoldersLock(PlayerGui:FindFirstChild("darck.vsHubModeBar"))
+ snapHoldersLock(PlayerGui:FindFirstChild("Elblue873HubActionButtons"))
+ snapHoldersLock(PlayerGui:FindFirstChild("Elblue873HubModeBar"))
 	end)
 	pcall(saveCfg)
 end, 3, "guiLock")
@@ -5139,8 +5139,8 @@ for i, name in ipairs({ "Round", "Box", "Square" }) do
  end
  end
  end)
- if _G.darck.vsUpdateMobileVisuals then pcall(_G.darck.vsUpdateMobileVisuals) end
- if _G.darck.vsForceApplyShape then pcall(_G.darck.vsForceApplyShape, name) end
+ if _G.Elblue873UpdateMobileVisuals then pcall(_G.Elblue873UpdateMobileVisuals) end
+ if _G.Elblue873ForceApplyShape then pcall(_G.Elblue873ForceApplyShape, name) end
  for _, ch in ipairs(shapeRow:GetChildren()) do
  if ch:IsA("TextButton") then
  local on = ch.Text == name
@@ -5196,10 +5196,10 @@ function sizeRow(label, key, order)
  cur = math.clamp(cur + (sign == "+" and 5 or -5), 20, 200)
  St.btnSizes[key] = cur
  val.Text = tostring(cur)
- if _G.darck.vsUpdateMobileVisuals then pcall(_G.darck.vsUpdateMobileVisuals) end
- if _G.darck.vsApplyMobile then pcall(_G.darck.vsApplyMobile) end
+ if _G.Elblue873UpdateMobileVisuals then pcall(_G.Elblue873UpdateMobileVisuals) end
+ if _G.Elblue873ApplyMobile then pcall(_G.Elblue873ApplyMobile) end
  -- Speed 3Mode: rebuild để áp chiều cao mới
- if key == "mode" and _G.darck.vsBuildV2ModeBar then pcall(_G.darck.vsBuildV2ModeBar) end
+ if key == "mode" and _G.Elblue873BuildV2ModeBar then pcall(_G.Elblue873BuildV2ModeBar) end
  saveCfg()
  end
  b.MouseButton1Click:Connect(fire)
@@ -5247,10 +5247,10 @@ for _, info in ipairs({ { "-", -80 }, { "+", -44 } }) do
 	function fire()
  St.btnScale = math.clamp((tonumber(St.btnScale) or 1) + (info[1] == "+" and 0.05 or -0.05), 0.3, 2.0)
  scaleVal.Text = tostring(math.floor(St.btnScale * 100)) .. "%"
- if _G.darck.vsUpdateMobileVisuals then pcall(_G.darck.vsUpdateMobileVisuals) end
- if _G.darck.vsApplyMobile then pcall(_G.darck.vsApplyMobile) end
+ if _G.Elblue873UpdateMobileVisuals then pcall(_G.Elblue873UpdateMobileVisuals) end
+ if _G.Elblue873ApplyMobile then pcall(_G.Elblue873ApplyMobile) end
  -- rebuild V2 bar to pick new scale defaults
- if _G.darck.vsBuildV2ModeBar then pcall(_G.darck.vsBuildV2ModeBar) end
+ if _G.Elblue873BuildV2ModeBar then pcall(_G.Elblue873BuildV2ModeBar) end
  saveCfg()
 	end
 	b.MouseButton1Click:Connect(fire)
@@ -5311,7 +5311,7 @@ end
 
 section(pageSet, "* — RESET", 30)
 actionBtn(pageSet, "Reset Mobile Positions", C.accent, function()
-	if _G.darck.vsResetMobilePos then _G.darck.vsResetMobilePos() end
+	if _G.Elblue873ResetMobilePos then _G.Elblue873ResetMobilePos() end
 	saveCfg()
 end, 31)
 actionBtn(pageSet, "Reset All Settings", C.danger, function()
@@ -5379,11 +5379,11 @@ actionBtn(pageSet, "Reset All Settings", C.danger, function()
  pcall(function() ToggleRefs[k].set(v) end)
  end
 	end
-	if _G.darck.vsResetMobilePos then pcall(_G.darck.vsResetMobilePos) end
-	if _G.darck.vsApplyMobile then pcall(_G.darck.vsApplyMobile) end
-	if _G.darck.vsRefreshModeCards then pcall(_G.darck.vsRefreshModeCards) end
+	if _G.Elblue873ResetMobilePos then pcall(_G.Elblue873ResetMobilePos) end
+	if _G.Elblue873ApplyMobile then pcall(_G.Elblue873ApplyMobile) end
+	if _G.Elblue873RefreshModeCards then pcall(_G.Elblue873RefreshModeCards) end
 	pcall(applyMenuScale)
-	if _G.darck.vsSyncAutoSteal then pcall(_G.darck.vsSyncAutoSteal) end
+	if _G.Elblue873SyncAutoSteal then pcall(_G.Elblue873SyncAutoSteal) end
 	pcall(saveCfg)
 	showToast("RESET ALL ✓ Free Sell La Tuat Ngu Lon")
 end, 32)
@@ -5393,7 +5393,7 @@ actionBtn(pageSet, "Save Now", C.accent, function()
  if Main then
  St._mainPos = {Main.Position.X.Scale, Main.Position.X.Offset, Main.Position.Y.Scale, Main.Position.Y.Offset}
  end
- local mini = PlayerGui:FindFirstChild("darck.vsHubFullMini")
+ local mini = PlayerGui:FindFirstChild("Elblue873HubFullMini")
  local mb = mini and mini:FindFirstChildWhichIsA("GuiObject")
  if mb then
  St._miniPos = {mb.Position.X.Scale, mb.Position.X.Offset, mb.Position.Y.Scale, mb.Position.Y.Offset}
@@ -5412,7 +5412,7 @@ end, 33)
 -- MINI + CLOSE (no keybind)
 ----------------------------------------------------------------
 local MiniGui = Instance.new("ScreenGui")
-MiniGui.Name = "darck.vsHubFullMini"
+MiniGui.Name = "Elblue873HubFullMini"
 MiniGui.ResetOnSpawn = false
 MiniGui.IgnoreGuiInset = true
 MiniGui.DisplayOrder = 121
@@ -5422,7 +5422,7 @@ local Mini = Instance.new("TextButton")
 Mini.Size = UDim2.new(0, 110, 0, 36)
 Mini.Position = UDim2.new(0, 14, 0, 90)
 Mini.BackgroundColor3 = Color3.fromRGB(18, 18, 26)
-Mini.Text = "darck.vs"
+Mini.Text = "Elblue873"
 Mini.TextColor3 = C.accent
 Mini.TextSize = 12
 Mini.Font = Enum.Font.GothamBold
@@ -5528,7 +5528,7 @@ function closeMenu()
  end
  end)
  Mini.Visible = true
- Mini.Text = "darck.vs"
+ Mini.Text = "Elblue873"
  -- Giữ vị trí mini đã lưu; nếu chưa có thì đặt gần chỗ menu
  pcall(function()
  local p = St._miniPos
@@ -5555,7 +5555,7 @@ end
 -- MOBILE: 3 mode + Drop + Insta + TP
 ----------------------------------------------------------------
 local ModeGui = Instance.new("ScreenGui")
-ModeGui.Name = "darck.vsHubModeBar"
+ModeGui.Name = "Elblue873HubModeBar"
 ModeGui.ResetOnSpawn = false
 ModeGui.IgnoreGuiInset = true
 ModeGui.DisplayOrder = 2501
@@ -5563,7 +5563,7 @@ ModeGui.Enabled = false
 ModeGui.Parent = PlayerGui
 
 local ActGui = Instance.new("ScreenGui")
-ActGui.Name = "darck.vsHubActionButtons"
+ActGui.Name = "Elblue873HubActionButtons"
 ActGui.ResetOnSpawn = false
 ActGui.IgnoreGuiInset = true
 ActGui.DisplayOrder = 2500
@@ -5586,7 +5586,7 @@ function applyCorner(btn, forceShape)
 	if shape == "Round" then
  rad = UDim.new(1, 0) -- tròn
 	elseif shape == "Box" then
- rad = UDim.new(0, 8) -- bo vừa
+ rad = UDim.new(0, 12) -- bo vừa
 	elseif shape == "Pill" then
  rad = UDim.new(0, 16)
 	else
@@ -5615,7 +5615,7 @@ function applyCornerToChildren(btn, shape)
 	shape = shape or St.btnShape or "Square"
 	local rad
 	if shape == "Round" then rad = UDim.new(1, 0)
-	elseif shape == "Box" then rad = UDim.new(0, 8)
+	elseif shape == "Box" then rad = UDim.new(0, 12)
 	elseif shape == "Pill" then rad = UDim.new(0, 16)
 	else rad = UDim.new(0, 2)
 	end
@@ -5644,7 +5644,7 @@ function applyEmpireBtnBg(btn, index)
 	local list = MOB_BTN_IMAGE_IDS
 	local id = list[((tonumber(index) or 1) - 1) % #list + 1]
 	if not id or id <= 0 then return end
-	-- nền đậm hơn (darck.vs style) nhưng chữ vẫn đọc được
+	-- nền đậm hơn (Elblue873 style) nhưng chữ vẫn đọc được
 	btn.BackgroundTransparency = 0.35
 	btn.BackgroundColor3 = Color3.fromRGB(8, 8, 12)
 	local bgImg = Instance.new("ImageLabel")
@@ -5670,7 +5670,7 @@ function applyEmpireBtnBg(btn, index)
 	dim.Selectable = false
 	dim.Parent = btn
 	local rad = UDim.new(1, 0)
-	if St.btnShape == "Box" then rad = UDim.new(0, 8)
+	if St.btnShape == "Box" then rad = UDim.new(0, 10)
 	elseif St.btnShape == "Square" then rad = UDim.new(0, 4)
 	end
 	local c = Instance.new("UICorner")
@@ -5709,12 +5709,12 @@ function applyEmpireBtnBg(btn, index)
 end
 
 ----------------------------------------------------------------
--- SPEED V2 MODE BAR (full GUI from darck.vs Clean) — 3 mode
+-- SPEED V2 MODE BAR (full GUI from Elblue873 Clean) — 3 mode
 ----------------------------------------------------------------
 local v2BarButtons = {}
-function _G.darck.vsBuildV2ModeBar()
+function _G.Elblue873BuildV2ModeBar()
 	pcall(function()
- local old = PlayerGui:FindFirstChild("darck.vsV2ModeBar")
+ local old = PlayerGui:FindFirstChild("Elblue873V2ModeBar")
  if old then old:Destroy() end
 	end)
 	if not St.mobileBtns then return end
@@ -5741,7 +5741,7 @@ function _G.darck.vsBuildV2ModeBar()
  },
 	}
 	local gui = Instance.new("ScreenGui")
-	gui.Name = "darck.vsV2ModeBar"
+	gui.Name = "Elblue873V2ModeBar"
 	gui.ResetOnSpawn = false
 	gui.IgnoreGuiInset = true
 	gui.DisplayOrder = 95
@@ -5867,7 +5867,7 @@ function _G.darck.vsBuildV2ModeBar()
 	makeV2ModeBtn("Normal", "NORMAL", 1)
 	makeV2ModeBtn("Lagger", "LAGGER", 2)
 	makeV2ModeBtn("Custom", "CUSTOM", 3)
-	_G.darck.vsRefreshV2ModeBar = function()
+	_G.Elblue873RefreshV2ModeBar = function()
  for n, e in pairs(v2BarButtons) do
  if e and e.btn then styleV2Btn(e.btn, n, St.activeMode == n) end
  end
@@ -6104,9 +6104,9 @@ function makeActBtn(key, label, pos, cb)
  btn:SetAttribute("_lastTap", tick())
  pcall(cb)
  if key == "sentry" then
- if _G.darck.vsRefreshSentryBtn then pcall(_G.darck.vsRefreshSentryBtn) end
+ if _G.Elblue873RefreshSentryBtn then pcall(_G.Elblue873RefreshSentryBtn) end
  elseif key == "steal" then
- if _G.darck.vsRefreshStealBtn then pcall(_G.darck.vsRefreshStealBtn) end
+ if _G.Elblue873RefreshStealBtn then pcall(_G.Elblue873RefreshStealBtn) end
  end
  end
  else
@@ -6122,8 +6122,8 @@ function makeActBtn(key, label, pos, cb)
  if tick() - last < 0.15 then return end
  btn:SetAttribute("_lastTap", tick())
  if cb then pcall(cb) end
- if key == "sentry" and _G.darck.vsRefreshSentryBtn then pcall(_G.darck.vsRefreshSentryBtn) end
- if key == "steal" and _G.darck.vsRefreshStealBtn then pcall(_G.darck.vsRefreshStealBtn) end
+ if key == "sentry" and _G.Elblue873RefreshSentryBtn then pcall(_G.Elblue873RefreshSentryBtn) end
+ if key == "steal" and _G.Elblue873RefreshStealBtn then pcall(_G.Elblue873RefreshStealBtn) end
 	end
 	btn.MouseButton1Click:Connect(backupClick)
 	btn.Activated:Connect(backupClick)
@@ -6148,13 +6148,13 @@ function makeActBtn(key, label, pos, cb)
  elseif (not on) and type(stopAutoSteal)=="function" then pcall(stopAutoSteal) end
  end
  applyActBtnState(btn, St.autoSteal == true, "STEAL\nON", "AUTO\nSTEAL")
- if _G.darck.vsRefreshStealBtn then pcall(_G.darck.vsRefreshStealBtn) end
+ if _G.Elblue873RefreshStealBtn then pcall(_G.Elblue873RefreshStealBtn) end
  else
  local on = not (St.destroySentry == true)
  if type(setDestroySentry) == "function" then pcall(setDestroySentry, on)
  else St.destroySentry = on end
  applyActBtnState(btn, St.destroySentry == true, "SENTRY\nON", "SENTRY")
- if _G.darck.vsRefreshSentryBtn then pcall(_G.darck.vsRefreshSentryBtn) end
+ if _G.Elblue873RefreshSentryBtn then pcall(_G.Elblue873RefreshSentryBtn) end
  end
  end
  btn.MouseButton1Down:Connect(instantToggle)
@@ -6208,13 +6208,13 @@ function rebuildMobile()
  end
  end
  end
- if _G.darck.vsBuildV2ModeBar then _G.darck.vsBuildV2ModeBar() end
+ if _G.Elblue873BuildV2ModeBar then _G.Elblue873BuildV2ModeBar() end
  if St.speedOn then
  currentSpeedValue = getActiveMoveSpeed()
  pcall(startSpeedBoost)
  end
 	end)
-	makeActBtn("drop", "DROP", UDim2.new(1, -150, 0.5, -40), function() runDrop() if _G.darck.vsCounterOnDrop then pcall(_G.darck.vsCounterOnDrop) end end)
+	makeActBtn("drop", "DROP", UDim2.new(1, -150, 0.5, -40), function() runDrop() if _G.Elblue873CounterOnDrop then pcall(_G.Elblue873CounterOnDrop) end end)
 	makeActBtn("insta", "INSTA\nRESET", UDim2.new(1, -80, 0.5, -40), doInstaReset)
 	makeActBtn("tp", "TP\nDOWN", UDim2.new(1, -80, 0.5, 30), function() doTPDown(true) end)
 	makeActBtn("sentry", "SENTRY", UDim2.new(1, -150, 0.5, 30), function()
@@ -6224,7 +6224,7 @@ function rebuildMobile()
  else
  St.destroySentry = on
  end
- if _G.darck.vsRefreshSentryBtn then pcall(_G.darck.vsRefreshSentryBtn) end
+ if _G.Elblue873RefreshSentryBtn then pcall(_G.Elblue873RefreshSentryBtn) end
 	end)
 	makeActBtn("steal", "AUTO\nSTEAL", UDim2.new(1, -150, 0.5, 100), function()
  local on = not (St.autoSteal == true)
@@ -6237,7 +6237,7 @@ function rebuildMobile()
  autoStealEnabled = on
  if on and startAutoSteal then startAutoSteal() elseif stopAutoSteal then stopAutoSteal() end
  end
- if _G.darck.vsRefreshStealBtn then pcall(_G.darck.vsRefreshStealBtn) end
+ if _G.Elblue873RefreshStealBtn then pcall(_G.Elblue873RefreshStealBtn) end
  if ToggleRefs and ToggleRefs.autoSteal and ToggleRefs.autoSteal.setVisual then
  pcall(ToggleRefs.autoSteal.setVisual, St.autoSteal == true)
  end
@@ -6249,9 +6249,9 @@ function rebuildMobile()
 	for key, e in pairs(modeRefs) do
  if e.holder then restorePos(e.holder, "M_" .. key) end
 	end
-	_G.darck.vsRefreshModeBar()
-	_G.darck.vsRefreshSentryBtn()
-	if _G.darck.vsRefreshStealBtn then pcall(_G.darck.vsRefreshStealBtn) end
+	_G.Elblue873RefreshModeBar()
+	_G.Elblue873RefreshSentryBtn()
+	if _G.Elblue873RefreshStealBtn then pcall(_G.Elblue873RefreshStealBtn) end
 end
 
 
@@ -6316,7 +6316,7 @@ function applyActBtnState(btn, on, onText, offText)
 	end
 end
 
-function _G.darck.vsRefreshStealBtn()
+function _G.Elblue873RefreshStealBtn()
 	local e = actRefs and actRefs.steal
 	if not e or not e.holder then return end
 	local show = (St.showStealBtn ~= false)
@@ -6327,7 +6327,7 @@ function _G.darck.vsRefreshStealBtn()
 	end
 end
 
-function _G.darck.vsRefreshSentryBtn()
+function _G.Elblue873RefreshSentryBtn()
 	local e = actRefs and actRefs.sentry
 	if e and e.btn then
  applyActBtnState(e.btn, St.destroySentry == true, "SENTRY\nON", "SENTRY")
@@ -6335,13 +6335,13 @@ function _G.darck.vsRefreshSentryBtn()
 end
 
 
-function _G.darck.vsRefreshModeBar()
+function _G.Elblue873RefreshModeBar()
 	for n, e in pairs(modeRefs) do
  if e and e.btn then
  local on = St.activeMode == n
  applyCorner(e.btn, "Pill")
  if on then
- e.btn.BackgroundColor3 = C.modeOnBg or Color3.fromRGB(230, 25, 25)
+ e.btn.BackgroundColor3 = C.modeOnBg or Color3.fromRGB(255, 0, 0)
  e.btn.BackgroundTransparency = 0
  e.btn.TextColor3 = C.modeOnTxt or Color3.fromRGB(255, 255, 255)
  local tl = e.btn:FindFirstChild("BtnTextOverlay")
@@ -6368,7 +6368,7 @@ function _G.darck.vsRefreshModeBar()
 end
 
 -- Cập nhật size + shape TRỰC TIẾP (không destroy → giữ vị trí kéo)
-_G.darck.vsForceApplyShape = function(shape)
+_G.Elblue873ForceApplyShape = function(shape)
 	shape = shape or (St and St.btnShape) or "Square"
 	if St then St.btnShape = shape end
 	local refs = actRefs
@@ -6383,7 +6383,7 @@ _G.darck.vsForceApplyShape = function(shape)
 	end
 end
 
-function _G.darck.vsUpdateMobileVisuals()
+function _G.Elblue873UpdateMobileVisuals()
 	for n, e in pairs(modeRefs) do
  if e and e.holder and e.btn then
  local sc = tonumber(St.btnScale) or 1
@@ -6392,7 +6392,7 @@ function _G.darck.vsUpdateMobileVisuals()
  e.holder.Size = UDim2.new(0, w, 0, h)
  e.btn.TextSize = math.clamp(math.floor(h * 0.36), 11, 14)
  local c = e.btn:FindFirstChildOfClass("UICorner") or Instance.new("UICorner", e.btn)
- c.CornerRadius = UDim.new(0, 8) -- V2 bo góc chữ nhật
+ c.CornerRadius = UDim.new(0, 12) -- V2 bo góc chữ nhật
  if e.style then e.style(St.activeMode == n) end
  end
 	end
@@ -6417,12 +6417,12 @@ function _G.darck.vsUpdateMobileVisuals()
  s.Transparency = 0.15
  end
 	end
-	if _G.darck.vsRefreshModeBar then pcall(_G.darck.vsRefreshModeBar) end
-	if _G.darck.vsRefreshSentryBtn then pcall(_G.darck.vsRefreshSentryBtn) end
-	if _G.darck.vsRefreshStealBtn then pcall(_G.darck.vsRefreshStealBtn) end
+	if _G.Elblue873RefreshModeBar then pcall(_G.Elblue873RefreshModeBar) end
+	if _G.Elblue873RefreshSentryBtn then pcall(_G.Elblue873RefreshSentryBtn) end
+	if _G.Elblue873RefreshStealBtn then pcall(_G.Elblue873RefreshStealBtn) end
 	-- Scale Speed V2 mode bar
 	pcall(function()
- local gui = PlayerGui:FindFirstChild("darck.vsV2ModeBar")
+ local gui = PlayerGui:FindFirstChild("Elblue873V2ModeBar")
  if not gui then return end
  local sc = tonumber(St.btnScale) or 1
  local modeSz = tonumber(St.btnSizes and St.btnSizes.mode) or 50
@@ -6441,7 +6441,7 @@ function _G.darck.vsUpdateMobileVisuals()
 	end)
 end
 
-function _G.darck.vsApplyMobile()
+function _G.Elblue873ApplyMobile()
 	ModeGui.Enabled = St.mobileBtns == true
 	ActGui.Enabled = St.mobileBtns == true
 	local hasMode = next(modeRefs) ~= nil
@@ -6450,14 +6450,14 @@ function _G.darck.vsApplyMobile()
  rebuildMobile()
 	end
 	-- luôn áp shape/size (Box/Round/Square) kể cả khi đã có nút
-	if _G.darck.vsUpdateMobileVisuals then pcall(_G.darck.vsUpdateMobileVisuals) end
+	if _G.Elblue873UpdateMobileVisuals then pcall(_G.Elblue873UpdateMobileVisuals) end
 end
-function _G.darck.vsResetMobilePos()
+function _G.Elblue873ResetMobilePos()
 	St._btnPos = {}
 	rebuildMobile()
 	pcall(saveCfg)
 end
-_G.darck.vsApplyMobile()
+_G.Elblue873ApplyMobile()
 
 ----------------------------------------------------------------
 -- KEYBINDS (Drop / TP / Insta / Mode) — no menu toggle key
@@ -6565,7 +6565,7 @@ function reapplyAllLogic(reason)
 	pcall(function()
  if St.autoSteal then
  if type(setAutoSteal) == "function" then setAutoSteal(true) end
- if _G.darck.vsSyncAutoSteal then pcall(_G.darck.vsSyncAutoSteal) end
+ if _G.Elblue873SyncAutoSteal then pcall(_G.Elblue873SyncAutoSteal) end
  end
 	end)
 	-- Ragdoll TP
@@ -6575,7 +6575,7 @@ function reapplyAllLogic(reason)
 	pcall(function()
  if ModeGui then ModeGui.Enabled = St.mobileBtns == true end
  if ActGui then ActGui.Enabled = St.mobileBtns == true end
- if _G.darck.vsApplyMobile then pcall(_G.darck.vsApplyMobile) end
+ if _G.Elblue873ApplyMobile then pcall(_G.Elblue873ApplyMobile) end
 	end)
 	-- Sync toggle UI + ép logic chạy nếu đang ON
 	pcall(function()
@@ -6589,7 +6589,7 @@ function reapplyAllLogic(reason)
  end
 	end)
 end
-_G.darck.vsReapplyAllLogic = reapplyAllLogic
+_G.Elblue873ReapplyAllLogic = reapplyAllLogic
 
 
 -- Re-apply ALL saved states so toggles that show ON actually work
@@ -6613,8 +6613,8 @@ task.defer(function()
  if type(setAutoSteal) == "function" then
  setAutoSteal(St.autoSteal == true)
  end
- if St.autoSteal and _G.darck.vsSyncAutoSteal then
- pcall(_G.darck.vsSyncAutoSteal)
+ if St.autoSteal and _G.Elblue873SyncAutoSteal then
+ pcall(_G.Elblue873SyncAutoSteal)
  end
 	end)
 end)
@@ -6651,7 +6651,7 @@ task.defer(function()
  if ModeGui then ModeGui.Enabled = St.mobileBtns == true end
  if ActGui then ActGui.Enabled = St.mobileBtns == true end
  if next(modeRefs) == nil or next(actRefs) == nil then
- if _G.darck.vsApplyMobile then _G.darck.vsApplyMobile() end
+ if _G.Elblue873ApplyMobile then _G.Elblue873ApplyMobile() end
  end
 	end)
 	pcall(function() if St.activeMode and setActiveMode then setActiveMode(St.activeMode) end end)
@@ -6678,12 +6678,12 @@ _G._VisHubCharReapplyConn = LP.CharacterAdded:Connect(function(char)
  if St.infJump and setInfJump then setInfJump(true) end
  if St.antiRagdoll and startAntiRagdoll then startAntiRagdoll() end
  if St.toolAim and setToolAim then setToolAim(true) end
- if St.autoSteal and _G.darck.vsSyncAutoSteal then pcall(_G.darck.vsSyncAutoSteal) end
+ if St.autoSteal and _G.Elblue873SyncAutoSteal then pcall(_G.Elblue873SyncAutoSteal) end
  end
 	end)
 end)
 
-print("[darck.vs Full] Player(Anti+Speed S2+Aim+Drop+Insta) | ESP | Settings mobile/lock/shape/size")
+print("[Elblue873 Full] Player(Anti+Speed S2+Aim+Drop+Insta) | ESP | Settings mobile/lock/shape/size")
 
 
 
@@ -6801,22 +6801,22 @@ function executeStealV1(prompt, part)
  local t0 = tick()
  while tick() - t0 < dur * pausePct do
  if not StealA.enabled or not stillInRange() then
- _G.darck.vsStealBar.Reset()
+ _G.Elblue873StealBar.Reset()
  StealA.busy = false
  return
  end
  local p = (tick() - t0) / dur
- _G.darck.vsStealBar.Set(math.clamp(p, 0, pausePct), "STEALING")
+ _G.Elblue873StealBar.Set(math.clamp(p, 0, pausePct), "STEALING")
  task.wait()
  end
- _G.darck.vsStealBar.Set(pausePct, "WAIT")
+ _G.Elblue873StealBar.Set(pausePct, "WAIT")
  -- wait until close
  while StealA.enabled and stillInRange() and not closeEnough() do
- _G.darck.vsStealBar.Set(pausePct, "WAIT")
+ _G.Elblue873StealBar.Set(pausePct, "WAIT")
  task.wait(0.05)
  end
  if not StealA.enabled or not stillInRange() then
- _G.darck.vsStealBar.Reset()
+ _G.Elblue873StealBar.Reset()
  StealA.busy = false
  return
  end
@@ -6824,12 +6824,12 @@ function executeStealV1(prompt, part)
  local remain = dur * (1 - pausePct)
  while tick() - t1 < remain do
  if not StealA.enabled or not stillInRange() then
- _G.darck.vsStealBar.Reset()
+ _G.Elblue873StealBar.Reset()
  StealA.busy = false
  return
  end
  local p = pausePct + (tick() - t1) / remain * (1 - pausePct)
- _G.darck.vsStealBar.Set(p, "STEALING")
+ _G.Elblue873StealBar.Set(p, "STEALING")
  task.wait()
  end
  else
@@ -6838,23 +6838,23 @@ function executeStealV1(prompt, part)
  local t0 = tick()
  while tick() - t0 < dur do
  if not StealA.enabled or not stillInRange() then
- _G.darck.vsStealBar.Reset()
+ _G.Elblue873StealBar.Reset()
  StealA.busy = false
  return
  end
- _G.darck.vsStealBar.Set((tick() - t0) / dur, "STEALING")
+ _G.Elblue873StealBar.Set((tick() - t0) / dur, "STEALING")
  task.wait()
  end
- _G.darck.vsStealBar.Set(1, "SUCCESS")
+ _G.Elblue873StealBar.Set(1, "SUCCESS")
  fireSteal(prompt)
- _G.darck.vsStealBar.Reset() -- 100% → 0 ngay, loop tiếp trong radius
+ _G.Elblue873StealBar.Reset() -- 100% → 0 ngay, loop tiếp trong radius
  end
  StealA.busy = false
  return
  end
- _G.darck.vsStealBar.Set(1, "SUCCESS")
+ _G.Elblue873StealBar.Set(1, "SUCCESS")
  fireSteal(prompt)
- _G.darck.vsStealBar.Reset() -- 100% → 0 ngay
+ _G.Elblue873StealBar.Reset() -- 100% → 0 ngay
  StealA.busy = false
  -- tiếp tục nếu còn trong radius (heartbeat startAutoSteal sẽ pick lại)
 	end)
@@ -6869,27 +6869,27 @@ function executeStealV2(prompt, part)
  local t0 = tick()
  while tick() - t0 < dur do
  if not StealA.enabled then
- _G.darck.vsStealBar.Reset()
+ _G.Elblue873StealBar.Reset()
  StealA.busy = false
  return
  end
  local r = LP.Character and LP.Character:FindFirstChild("HumanoidRootPart")
  if not r or not part or not part.Parent then
- _G.darck.vsStealBar.Reset()
+ _G.Elblue873StealBar.Reset()
  StealA.busy = false
  return
  end
  if (r.Position - part.Position).Magnitude > (St.stealRadius or 60) then
- _G.darck.vsStealBar.Reset()
+ _G.Elblue873StealBar.Reset()
  StealA.busy = false
  return
  end
- _G.darck.vsStealBar.Set((tick() - t0) / dur, "STEALING")
+ _G.Elblue873StealBar.Set((tick() - t0) / dur, "STEALING")
  task.wait()
  end
- _G.darck.vsStealBar.Set(1, "SUCCESS")
+ _G.Elblue873StealBar.Set(1, "SUCCESS")
  fireSteal(prompt)
- _G.darck.vsStealBar.Reset() -- 100% → 0 ngay
+ _G.Elblue873StealBar.Reset() -- 100% → 0 ngay
  StealA.busy = false
 	end)
 end
@@ -6916,7 +6916,7 @@ function stopAutoSteal()
 	-- Chỉ về 0%, KHÔNG ẩn / destroy steal bar
 	_G.AceStealBarProgress = 0
 	pcall(function() if _G.StealBar and _G.StealBar.Reset then _G.StealBar.Reset() end end)
-	pcall(function() if _G.darck.vsStealBar and _G.darck.vsStealBar.Reset then _G.darck.vsStealBar.Reset() end end)
+	pcall(function() if _G.Elblue873StealBar and _G.Elblue873StealBar.Reset then _G.Elblue873StealBar.Reset() end end)
 end
 function setAutoSteal(on)
 	-- exported below
@@ -6925,17 +6925,17 @@ function setAutoSteal(on)
 	autoStealRadius = tonumber(St.stealRadius) or 60
 	selectedStealMode = St.stealVer or "V1"
 	if St.autoSteal then startAutoSteal() else stopAutoSteal() end
-	if _G.darck.vsSyncAutoSteal then pcall(_G.darck.vsSyncAutoSteal) end
-	if _G.darck.vsRefreshStealBtn then pcall(_G.darck.vsRefreshStealBtn) end
+	if _G.Elblue873SyncAutoSteal then pcall(_G.Elblue873SyncAutoSteal) end
+	if _G.Elblue873RefreshStealBtn then pcall(_G.Elblue873RefreshStealBtn) end
 	-- đảm bảo nút mobile tồn tại
-	if St.autoSteal and (not actRefs or not actRefs.steal) and _G.darck.vsApplyMobile then
- pcall(_G.darck.vsApplyMobile)
+	if St.autoSteal and (not actRefs or not actRefs.steal) and _G.Elblue873ApplyMobile then
+ pcall(_G.Elblue873ApplyMobile)
 	end
 	saveCfg()
 end
 
 ----------------------------------------------------------------
--- PANEL TP (from darck.vs, no music / no image / no sentry)
+-- PANEL TP (from Elblue873, no music / no image / no sentry)
 ----------------------------------------------------------------
 local TP = {
 	base = nil, pet = nil,
@@ -6955,7 +6955,7 @@ function tpMarker(pos, col)
 	P.CanCollide = false
 	P.Position = pos + Vector3.new(0, 2, 0)
 	P.Color = col
-	P.Name = "darck.vsTP_SavePoint"
+	P.Name = "Elblue873TP_SavePoint"
 	P.Parent = workspace
 	return P
 end
@@ -7042,16 +7042,16 @@ function runPanelTP()
  end
  end)
  TP.busy = false
- if _G.darck.vsRefreshTPBtn then _G.darck.vsRefreshTPBtn() end
+ if _G.Elblue873RefreshTPBtn then _G.Elblue873RefreshTPBtn() end
 	end)
 end
 
 -- Panel TP GUI (popup)
 function openPanelTP()
-	local old = PlayerGui:FindFirstChild("darck.vsPanelTP")
+	local old = PlayerGui:FindFirstChild("Elblue873PanelTP")
 	if old then old:Destroy() end
 	local gui = Instance.new("ScreenGui")
-	gui.Name = "darck.vsPanelTP"
+	gui.Name = "Elblue873PanelTP"
 	gui.ResetOnSpawn = false
 	gui.IgnoreGuiInset = true
 	gui.DisplayOrder = 130
@@ -7063,7 +7063,7 @@ function openPanelTP()
 	f.BorderSizePixel = 0
 	f.Active = true
 	f.Parent = gui
-	Instance.new("UICorner", f).CornerRadius = UDim.new(0, 8)
+	Instance.new("UICorner", f).CornerRadius = UDim.new(0, 12)
 	local st = Instance.new("UIStroke", f)
 	st.Color = Color3.fromRGB(120, 90, 200)
 	st.Thickness = 1.5
@@ -7112,7 +7112,7 @@ function openPanelTP()
 	close.TextColor3 = Color3.new(1, 1, 1)
 	close.Font = Enum.Font.GothamBold
 	close.Parent = f
-	Instance.new("UICorner", close).CornerRadius = UDim.new(0, 8)
+	Instance.new("UICorner", close).CornerRadius = UDim.new(0, 6)
 	close.MouseButton1Click:Connect(function() gui:Destroy() end)
 	local lockB = Instance.new("TextButton")
 	lockB.Size = UDim2.new(0, 64, 0, 24)
@@ -7123,7 +7123,7 @@ function openPanelTP()
 	lockB.Font = Enum.Font.GothamBold
 	lockB.TextSize = 10
 	lockB.Parent = f
-	Instance.new("UICorner", lockB).CornerRadius = UDim.new(0, 8)
+	Instance.new("UICorner", lockB).CornerRadius = UDim.new(0, 6)
 	lockB.MouseButton1Click:Connect(function()
  panelLocked = not panelLocked
  lockB.Text = panelLocked and "LOCK" or "UNLOCK"
@@ -7155,7 +7155,7 @@ function openPanelTP()
  if TP.markers.base then TP.markers.base:Destroy() end
  TP.markers.base = tpMarker(TP.base, Color3.fromRGB(255, 105, 180))
  showToast("BASE SAVED")
- if _G.darck.vsRefreshTPBtn then _G.darck.vsRefreshTPBtn() end
+ if _G.Elblue873RefreshTPBtn then _G.Elblue873RefreshTPBtn() end
 	end)
 	mkBtn("Luu Pet (diem 2)", 84, Color3.fromRGB(200, 120, 40), function()
  local hrp = LP.Character and LP.Character:FindFirstChild("HumanoidRootPart")
@@ -7164,7 +7164,7 @@ function openPanelTP()
  if TP.markers.pet then TP.markers.pet:Destroy() end
  TP.markers.pet = tpMarker(TP.pet, Color3.fromRGB(255, 140, 0))
  showToast("PET SAVED")
- if _G.darck.vsRefreshTPBtn then _G.darck.vsRefreshTPBtn() end
+ if _G.Elblue873RefreshTPBtn then _G.Elblue873RefreshTPBtn() end
 	end)
 	mkBtn("Xoa diem", 124, Color3.fromRGB(80, 40, 40), function()
  TP.base, TP.pet = nil, nil
@@ -7172,7 +7172,7 @@ function openPanelTP()
  if TP.markers.pet then TP.markers.pet:Destroy() end
  TP.markers = {}
  showToast("CLEARED")
- if _G.darck.vsRefreshTPBtn then _G.darck.vsRefreshTPBtn() end
+ if _G.Elblue873RefreshTPBtn then _G.Elblue873RefreshTPBtn() end
 	end)
 	mkBtn("TP NOW", 164, Color3.fromRGB(90, 70, 180), function()
  runPanelTP()
@@ -7207,7 +7207,7 @@ function openPanelTP()
  b.TextColor3 = Color3.new(1, 1, 1)
  b.Font = Enum.Font.GothamBold
  b.Parent = f
- Instance.new("UICorner", b).CornerRadius = UDim.new(0, 8)
+ Instance.new("UICorner", b).CornerRadius = UDim.new(0, 6)
  b.MouseButton1Click:Connect(function()
  TP[key] = math.clamp(TP[key] + (sign == "+" and 0.01 or -0.01), 0.01, 0.5)
  val.Text = string.format("%.2f", TP[key])
@@ -7233,7 +7233,7 @@ end
 -- Center TP button when 2 points saved
 do
 	local tpg = Instance.new("ScreenGui")
-	tpg.Name = "darck.vsCenterTP"
+	tpg.Name = "Elblue873CenterTP"
 	tpg.ResetOnSpawn = false
 	tpg.IgnoreGuiInset = true
 	tpg.DisplayOrder = 1002
@@ -7249,11 +7249,11 @@ do
 	btn.TextSize = 14
 	btn.Visible = false
 	btn.Parent = tpg
-	Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 8)
+	Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 12)
 	local bst = Instance.new("UIStroke", btn)
 	bst.Color = Color3.fromRGB(140, 100, 255)
 	btn.MouseButton1Click:Connect(runPanelTP)
-	function _G.darck.vsRefreshTPBtn()
+	function _G.Elblue873RefreshTPBtn()
  local has = TP.base ~= nil or TP.pet ~= nil
  btn.Visible = has
  local kn = tostring(TP.key):gsub("Enum.KeyCode.", "")
@@ -7276,7 +7276,7 @@ end)
 
 
 ----------------------------------------------------------------
--- BODY LOCK (full darck.vs Clean / BloodHounds)
+-- BODY LOCK (full Elblue873 Clean / BloodHounds)
 ----------------------------------------------------------------
 local bodyLockEnabled = false
 local bodyLockRange = 20
@@ -7445,7 +7445,7 @@ end
 ----------------------------------------------------------------
 task.defer(function()
 	-- Auto steal on Player page
-	if not pagePlayer then warn("[darck.vs] pagePlayer nil") return end
+	if not pagePlayer then warn("[Elblue873] pagePlayer nil") return end
 	section(pagePlayer, "* — AUTO STEAL", 20)
 	local function safeSetAS(on)
  if type(setAutoSteal) == "function" then
@@ -7480,7 +7480,7 @@ task.defer(function()
  b.Active = true
  b.ZIndex = 40
  b.Parent = verRow
- Instance.new("UICorner", b).CornerRadius = UDim.new(0, 8)
+ Instance.new("UICorner", b).CornerRadius = UDim.new(0, 7)
  local function pickVer()
  St.stealVer = name
  for _, ch in ipairs(verRow:GetChildren()) do
@@ -7498,8 +7498,8 @@ task.defer(function()
  autoStealRadius = tonumber(St.stealRadius) or 60
  if type(setAutoSteal) == "function" and St.autoSteal then
  pcall(function() setAutoSteal(true) end)
- elseif _G.darck.vsSyncAutoSteal then
- pcall(_G.darck.vsSyncAutoSteal)
+ elseif _G.Elblue873SyncAutoSteal then
+ pcall(_G.Elblue873SyncAutoSteal)
  end
  pcall(saveCfg)
  end
@@ -7508,8 +7508,8 @@ task.defer(function()
 	end
 	toggleNamed(pagePlayer, "Pause (chi khi ON)", St.stealPause == true, function(on)
  St.stealPause = on and true or false
- _G.darck.vsStealPause = St.stealPause
- if _G.darck.vsSyncAutoSteal then pcall(_G.darck.vsSyncAutoSteal) end
+ _G.Elblue873StealPause = St.stealPause
+ if _G.Elblue873SyncAutoSteal then pcall(_G.Elblue873SyncAutoSteal) end
  saveCfg()
 	end, 23, "stealPause")
 	-- radius box
@@ -7549,7 +7549,7 @@ task.defer(function()
  b.TextSize = 11
  b.Font = Enum.Font.GothamBold
  b.Parent = ij
- Instance.new("UICorner", b).CornerRadius = UDim.new(0, 8)
+ Instance.new("UICorner", b).CornerRadius = UDim.new(0, 7)
  b.MouseButton1Click:Connect(function()
  setInfJumpMode(name)
  for _, ch in ipairs(ij:GetChildren()) do
@@ -7565,7 +7565,7 @@ task.defer(function()
 	setTab("Panel")
 end)
 
-print("[darck.vs Ext] Panel TP | AutoSteal V1/V2 + bar | InfJump hold/manual | ToolAim ON")
+print("[Elblue873 Ext] Panel TP | AutoSteal V1/V2 + bar | InfJump hold/manual | ToolAim ON")
 
 
 
@@ -7772,7 +7772,7 @@ local tpBestBusy = false
 function tpToBestChilli()
 	-- removed per request
 end
-_G.darck.vsTpToBest = tpToBestChilli
+_G.Elblue873TpToBest = tpToBestChilli
 
 -- UI: button on Panel + mobile + keybind
 St.keys.TpBest = St.keys.TpBest or Enum.KeyCode.B
@@ -7805,7 +7805,7 @@ end)
 -- Mobile external button
 task.defer(function()
 	local g = Instance.new("ScreenGui")
-	g.Name = "darck.vsTpBestBtn"
+	g.Name = "Elblue873TpBestBtn"
 	g.Enabled = false -- removed TP BEST
 	g.ResetOnSpawn = false
 	g.IgnoreGuiInset = true
@@ -7820,7 +7820,7 @@ task.defer(function()
 	b.Font = Enum.Font.GothamBlack
 	b.TextSize = 13
 	b.Parent = g
-	Instance.new("UICorner", b).CornerRadius = UDim.new(0, 8)
+	Instance.new("UICorner", b).CornerRadius = UDim.new(0, 10)
 	local s = Instance.new("UIStroke", b)
 	s.Color = Color3.fromRGB(80, 220, 120)
 	s.Thickness = 1.5
@@ -7858,7 +7858,7 @@ end)
 
 
 ----------------------------------------------------------------
--- OVERHEAD: real speed + discord (from darck.vs)
+-- OVERHEAD: real speed + discord (from Elblue873)
 ----------------------------------------------------------------
 local overheadGui, overheadSpeedLabel
 function setupOverheadInfo(char)
@@ -7871,12 +7871,12 @@ function setupOverheadInfo(char)
  if not head then return end
 	end
 	pcall(function()
- local old = head:FindFirstChild("darck.vsOverheadInfo")
+ local old = head:FindFirstChild("Elblue873OverheadInfo")
  if old then old:Destroy() end
 	end)
 	if overheadGui then pcall(function() overheadGui:Destroy() end) end
 	overheadGui = Instance.new("BillboardGui")
-	overheadGui.Name = "darck.vsOverheadInfo"
+	overheadGui.Name = "Elblue873OverheadInfo"
 	overheadGui.Size = UDim2.new(0, 300, 0, 96)
 	overheadGui.StudsOffset = Vector3.new(0, 2.8, 0)
 	overheadGui.AlwaysOnTop = true
@@ -7943,19 +7943,19 @@ if not _G._VisOverheadLoop then
 end
 
 
-print("[darck.vs] TP TO BEST (Chilli) ready | key B | nut TP BEST")
+print("[Elblue873] TP TO BEST (Chilli) ready | key B | nut TP BEST")
 
 
 
 -- ============================================================
 -- LOAD FULL VIS AUTO STEAL (V1 / Semi V1-V2 / V3)
 -- ============================================================
-_G.darck.vsStealPause = (St.stealPause == true)
+_G.Elblue873StealPause = (St.stealPause == true)
 task.spawn(function()
 	local src
 	pcall(function()
- if readfile and isfile and isfile("darck.vs_Auto_Steal_Embedded.lua") then
- src = readfile("darck.vs_Auto_Steal_Embedded.lua")
+ if readfile and isfile and isfile("Elblue873_Auto_Steal_Embedded.lua") then
+ src = readfile("Elblue873_Auto_Steal_Embedded.lua")
  end
 	end)
 	-- fallback: try workspace artifact path won't work in-game; embed minimal wire
@@ -7973,7 +7973,7 @@ task.spawn(function()
 	end
 	-- Wire toggles to Ace sync
 	local function syncSteal()
- _G.darck.vsStealPause = (St.stealPause == true)
+ _G.Elblue873StealPause = (St.stealPause == true)
  autoStealEnabled = St.autoSteal == true
  _G.autoStealEnabled = autoStealEnabled
  if St.stealVer == "V1" then
@@ -8001,7 +8001,7 @@ task.spawn(function()
  end
  if _G.AceAutoStealSync then pcall(_G.AceAutoStealSync) end
 	end
-	_G.darck.vsSyncAutoSteal = syncSteal
+	_G.Elblue873SyncAutoSteal = syncSteal
 	-- override setAutoSteal (giữ bar + refresh nút mobile)
 	local _oldSet = setAutoSteal
 	setAutoSteal = function(on)
@@ -8013,7 +8013,7 @@ task.spawn(function()
  if type(stopAutoSteal) == "function" then pcall(stopAutoSteal) end
  end
  syncSteal()
- if _G.darck.vsRefreshStealBtn then pcall(_G.darck.vsRefreshStealBtn) end
+ if _G.Elblue873RefreshStealBtn then pcall(_G.Elblue873RefreshStealBtn) end
  if ToggleRefs and ToggleRefs.autoSteal and ToggleRefs.autoSteal.setVisual then
  pcall(ToggleRefs.autoSteal.setVisual, St.autoSteal == true)
  end
@@ -8021,7 +8021,7 @@ task.spawn(function()
 	end
 end)
 
--- Wallpaper list (darck.vs style)
+-- Wallpaper list (Elblue873 style)
 local VIS_WALLS = {
 	-- Empire BG only
 	"rbxassetid://126832513729779","rbxassetid://81347949983999","rbxassetid://76940707345653",
@@ -8042,7 +8042,7 @@ task.defer(function()
 	img.Image = VIS_WALLS[St.wallIndex] or VIS_WALLS[1]
 	img.ZIndex = 2
 	img.Parent = wr
-	Instance.new("UICorner", img).CornerRadius = UDim.new(0, 8)
+	Instance.new("UICorner", img).CornerRadius = UDim.new(0, 6)
 	local idxLbl = Instance.new("TextLabel")
 	idxLbl.Size = UDim2.new(0, 48, 0, 20)
 	idxLbl.Position = UDim2.new(0, 70, 0.5, -10)
@@ -8084,7 +8084,7 @@ task.defer(function()
  dim.Active = false
  dim.Selectable = false
  dim.Parent = Main
- Instance.new("UICorner", bg).CornerRadius = UDim.new(0, 8)
+ Instance.new("UICorner", bg).CornerRadius = UDim.new(0, 12)
  for _, ch in ipairs(Main:GetChildren()) do
  if ch ~= bg and ch.Name ~= "WallDim" and ch:IsA("GuiObject") then
  if ch.ZIndex < 2 then ch.ZIndex = 2 end
@@ -8114,7 +8114,7 @@ task.defer(function()
  b.Active = true
  b.ZIndex = 3
  b.Parent = wr
- Instance.new("UICorner", b).CornerRadius = UDim.new(0, 8)
+ Instance.new("UICorner", b).CornerRadius = UDim.new(0, 6)
  local function step()
  local n = #VIS_WALLS
  if n < 1 then return end
@@ -8134,17 +8134,17 @@ end)
 
 -- Mini = circle combat when closed
 task.defer(function()
-	local miniGui = PlayerGui:FindFirstChild("darck.vsHubFullMini")
+	local miniGui = PlayerGui:FindFirstChild("Elblue873HubFullMini")
 	local mini = miniGui and miniGui:FindFirstChildWhichIsA("TextButton")
 	if mini then
  mini.Size = UDim2.new(0, 110, 0, 36)
- mini.Text = "darck.vs"
+ mini.Text = "Elblue873"
  mini.TextSize = 22
  local c0 = mini:FindFirstChildOfClass("UICorner")
  if c0 then c0.CornerRadius = UDim.new(0, 8) end
 	end
 	-- Title bar rectangle text
-	local mainGui = PlayerGui:FindFirstChild("darck.vsHubFullMenu")
+	local mainGui = PlayerGui:FindFirstChild("Elblue873HubFullMenu")
 	local main = mainGui and mainGui:FindFirstChild("Main")
 	if main then
  local top = main:FindFirstChild("TopBar") or main:FindFirstChildWhichIsA("Frame")
@@ -8179,8 +8179,8 @@ if not _G._VisLogicWatchdog then
  if St.antiRagdoll and AntiRagdollV2 and not AntiRagdollV2.Enabled then
  if startAntiRagdoll then startAntiRagdoll() end
  end
- if St.autoSteal and _G.darck.vsSyncAutoSteal then
- pcall(_G.darck.vsSyncAutoSteal)
+ if St.autoSteal and _G.Elblue873SyncAutoSteal then
+ pcall(_G.Elblue873SyncAutoSteal)
  end
  end)
  end
@@ -8200,13 +8200,13 @@ task.spawn(function()
  St.menuOpen = Main.Visible == true
  end
  -- Mini open button
- local miniGui = PlayerGui:FindFirstChild("darck.vsHubFullMini")
+ local miniGui = PlayerGui:FindFirstChild("Elblue873HubFullMini")
  local mini = miniGui and miniGui:FindFirstChildWhichIsA("TextButton")
  if mini then
  St._miniPos = {mini.Position.X.Scale, mini.Position.X.Offset, mini.Position.Y.Scale, mini.Position.Y.Offset}
  end
  -- Mode bar
- local mb = PlayerGui:FindFirstChild("darck.vsHubModeBar")
+ local mb = PlayerGui:FindFirstChild("Elblue873HubModeBar")
  if mb then
  local f = mb:FindFirstChildWhichIsA("Frame")
  if f then
@@ -8230,10 +8230,10 @@ task.spawn(function()
  end
  end
  end
- snapHolders(PlayerGui:FindFirstChild("darck.vsHubActionButtons"))
- snapHolders(PlayerGui:FindFirstChild("darck.vsHubModeBar"))
+ snapHolders(PlayerGui:FindFirstChild("Elblue873HubActionButtons"))
+ snapHolders(PlayerGui:FindFirstChild("Elblue873HubModeBar"))
  -- Panel TP
- local tp = PlayerGui:FindFirstChild("darck.vsHubbTP")
+ local tp = PlayerGui:FindFirstChild("Elblue873HubbTP")
  if tp then
  local m = tp:FindFirstChild("TPMain")
  if m then
@@ -8242,7 +8242,7 @@ task.spawn(function()
  end
  end
  -- Auto Steal floating GUI pos if any
- local asg = PlayerGui:FindFirstChild("darck.vsAutoStealGui")
+ local asg = PlayerGui:FindFirstChild("Elblue873AutoStealGui")
  if asg then
  local mf = asg:FindFirstChildWhichIsA("Frame")
  if mf then
@@ -8260,7 +8260,7 @@ task.defer(function()
  if St._mainPos and Main then
  Main.Position = UDim2.new(St._mainPos[1], St._mainPos[2], St._mainPos[3], St._mainPos[4])
  end
- local miniGui = PlayerGui:FindFirstChild("darck.vsHubFullMini")
+ local miniGui = PlayerGui:FindFirstChild("Elblue873HubFullMini")
  local mini = miniGui and miniGui:FindFirstChildWhichIsA("TextButton")
  if mini and St._miniPos then
  mini.Position = UDim2.new(St._miniPos[1], St._miniPos[2], St._miniPos[3], St._miniPos[4])
@@ -8308,16 +8308,16 @@ task.defer(function()
  b.TextColor3 = C.text
  b.Font = Enum.Font.GothamBold
  b.Parent = sr
- Instance.new("UICorner", b).CornerRadius = UDim.new(0, 8)
+ Instance.new("UICorner", b).CornerRadius = UDim.new(0, 6)
  b.MouseButton1Click:Connect(function()
  local cur = tonumber(St.btnSizes.sentry) or 50
  cur = math.clamp(cur + (sign == "+" and 5 or -5), 20, 200)
  St.btnSizes.sentry = cur
  val.Text = tostring(cur)
- if _G.darck.vsUpdateMobileVisuals then
- pcall(_G.darck.vsUpdateMobileVisuals)
- elseif _G.darck.vsApplyMobile then
- pcall(_G.darck.vsApplyMobile)
+ if _G.Elblue873UpdateMobileVisuals then
+ pcall(_G.Elblue873UpdateMobileVisuals)
+ elseif _G.Elblue873ApplyMobile then
+ pcall(_G.Elblue873ApplyMobile)
  end
  saveCfg()
  end)
@@ -8353,7 +8353,7 @@ task.spawn(function()
 
 	local function Marker(pos, col)
  local p = Instance.new("Part")
- p.Name = "darck.vsTP_Marker"
+ p.Name = "Elblue873TP_Marker"
  p.Shape = Enum.PartType.Cylinder
  p.Size = Vector3.new(0.35, 4, 4)
  p.CFrame = CFrame.new(pos + Vector3.new(0, 0.2, 0)) * CFrame.Angles(0, 0, math.rad(90))
@@ -8563,11 +8563,11 @@ task.spawn(function()
 	if SAVE_PET then MARK_PET = Marker(SAVE_PET, Color3.fromRGB(255, 140, 0)) end
 
 	pcall(function()
- local old = PlayerGui:FindFirstChild("darck.vsHubbTP")
+ local old = PlayerGui:FindFirstChild("Elblue873HubbTP")
  if old then old:Destroy() end
 	end)
 	local gui = Instance.new("ScreenGui")
-	gui.Name = "darck.vsHubbTP"
+	gui.Name = "Elblue873HubbTP"
 	gui.ResetOnSpawn = false
 	gui.IgnoreGuiInset = true
 	gui.DisplayOrder = 80
@@ -8586,7 +8586,7 @@ task.spawn(function()
 	Main.Active = true
 	Main.ClipsDescendants = true
 	Main.Parent = gui
-	Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 8)
+	Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 12)
 
 	-- rainbow 7-color stroke
 	local stroke = Instance.new("UIStroke", Main)
@@ -8623,13 +8623,13 @@ task.spawn(function()
 	LockBtn.TextColor3 = Color3.new(1,1,1)
 	LockBtn.Font = Enum.Font.GothamBold
 	LockBtn.TextSize = 10
-	Instance.new("UICorner", LockBtn).CornerRadius = UDim.new(0, 8)
+	Instance.new("UICorner", LockBtn).CornerRadius = UDim.new(0, 6)
 
 	local title = Instance.new("TextLabel", Main)
 	title.Size = UDim2.new(1, -100, 0, 24)
 	title.Position = UDim2.new(0, 64, 0, y(1))
 	title.BackgroundTransparency = 1
-	title.Text = "darck.vs TP"
+	title.Text = "Elblue873 TP"
 	title.TextColor3 = Color3.fromRGB(230, 210, 255)
 	title.Font = Enum.Font.GothamBold
 	title.TextSize = 13
@@ -8643,7 +8643,7 @@ task.spawn(function()
 	CloseBtn.TextColor3 = Color3.new(1,1,1)
 	CloseBtn.Font = Enum.Font.GothamBold
 	CloseBtn.TextSize = 16
-	Instance.new("UICorner", CloseBtn).CornerRadius = UDim.new(0, 8)
+	Instance.new("UICorner", CloseBtn).CornerRadius = UDim.new(0, 6)
 
 	local body = Instance.new("Frame", Main)
 	body.Name = "Body"
@@ -8686,7 +8686,7 @@ task.spawn(function()
  b.TextColor3 = Color3.new(1,1,1)
  b.Font = Enum.Font.GothamBold
  b.TextSize = 14
- Instance.new("UICorner", b).CornerRadius = UDim.new(0, 8)
+ Instance.new("UICorner", b).CornerRadius = UDim.new(0, 6)
  b.MouseButton1Click:Connect(s == "-" and onMinus or onPlus)
  end
 	end
@@ -8733,7 +8733,7 @@ task.spawn(function()
 	BtnTP.TextColor3 = Color3.new(1,1,1)
 	BtnTP.Font = Enum.Font.GothamBlack
 	BtnTP.TextSize = 14
-	Instance.new("UICorner", BtnTP).CornerRadius = UDim.new(0, 8)
+	Instance.new("UICorner", BtnTP).CornerRadius = UDim.new(0, 10)
 
 	if MINIMIZE then
  Main.Size = UDim2.new(0, 180, 0, 82)
@@ -8871,7 +8871,7 @@ task.spawn(function()
  if input.KeyCode == KEYBIND_TP then StartTP() end
 	end)
 
-	print("[darck.vs] Compact TP panel ready | rainbow | markers | key X")
+	print("[Elblue873] Compact TP panel ready | rainbow | markers | key X")
 end)
 
 
@@ -8898,7 +8898,7 @@ task.spawn(function()
  for _, parent in ipairs(parents) do
  for _, g in ipairs(parent:GetChildren()) do
  local n = (g.Name or ""):lower():gsub("%s+", "")
- -- giữ darck.vsStealBarOnly + bar script khác
+ -- giữ Elblue873StealBarOnly + bar script khác
  if n == "visstealbaronly" then
  -- keep
  elseif own[n] or n:find("visautosteal", 1, true) then
@@ -8913,12 +8913,12 @@ task.spawn(function()
 
 
 	pcall(function()
- local o = PlayerGui:FindFirstChild("darck.vsStealBarOnly")
+ local o = PlayerGui:FindFirstChild("Elblue873StealBarOnly")
  if o then o:Destroy() end
 	end)
 
 	local gui = Instance.new("ScreenGui")
-	gui.Name = "darck.vsStealBarOnly"
+	gui.Name = "Elblue873StealBarOnly"
 	gui.ResetOnSpawn = false
 	gui.IgnoreGuiInset = true
 	gui.DisplayOrder = 200000 -- đè lên bar script khác, không xoá chúng
@@ -8942,7 +8942,7 @@ task.spawn(function()
 	frame.Visible = true
 	frame.Active = true
 	frame.Parent = gui
-	Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 8)
+	Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 10)
 	local stroke = Instance.new("UIStroke", frame)
 	stroke.Color = Color3.fromRGB(70, 90, 140)
 	stroke.Thickness = 1.2
@@ -9179,8 +9179,8 @@ task.spawn(function()
 ----------------------------------------------------------------
 -- ACE SPEED BYPASS (full) — mini = ON/OFF EN + Lock | scale panels
 ----------------------------------------------------------------
--- ===== darck.vs FULL: Speed Bypass + Lagger V2 (replace All Gear old panels) =====
--- darck.vsBypass — Speed Bypass (Noxa-style UI + keybind PC + minimize + bg)
+-- ===== Elblue873 FULL: Speed Bypass + Lagger V2 (replace All Gear old panels) =====
+-- Elblue873Bypass — Speed Bypass (Noxa-style UI + keybind PC + minimize + bg)
 -- ============================================================
 task.spawn(function()
 	local Players = game:GetService("Players")
@@ -9192,7 +9192,7 @@ task.spawn(function()
 	local running = false
 	local bomb = nil
 	local spamThread = nil
-	local ConfigFile = "darck.vsBypass.json"
+	local ConfigFile = "Elblue873Bypass.json"
 	-- Dùng full list BackgroundIDs của (1–50+)
 	local BG_IDS = (BackgroundIDs and #BackgroundIDs > 0) and BackgroundIDs or {
  "89504528485163", "108697485255882", "71211662493854", "118953269416540", "106345334781345",
@@ -9319,12 +9319,12 @@ task.spawn(function()
 
 	local parent = (gethui and gethui()) or game:GetService("CoreGui")
 	pcall(function()
- local old = parent:FindFirstChild("darck.vsBypassGui")
+ local old = parent:FindFirstChild("Elblue873BypassGui")
  if old then old:Destroy() end
 	end)
 
 	local gui = Instance.new("ScreenGui")
-	gui.Name = "darck.vsBypassGui"
+	gui.Name = "Elblue873BypassGui"
 	gui.ResetOnSpawn = false
 	gui.IgnoreGuiInset = true
 	gui.Enabled = true
@@ -9582,7 +9582,7 @@ task.spawn(function()
 	discLbl.Size = UDim2.new(1, 0, 0, 22)
 	discLbl.Position = UDim2.fromOffset(0, 288)
 	discLbl.BackgroundTransparency = 1
-	discLbl.Text = "darck.vs · Speed Bypass"
+	discLbl.Text = "Elblue873 · Speed Bypass"
 	discLbl.TextColor3 = Color3.fromRGB(160, 160, 170)
 	discLbl.Font = Enum.Font.GothamBold
 	discLbl.TextSize = 11
@@ -10064,7 +10064,7 @@ task.spawn(function()
  end)
  end
 	end)
-	print("[Vis] darck.vsBypass panel loaded (Noxa-style + keybind + minimize + remember open)")
+	print("[Vis] Elblue873Bypass panel loaded (Noxa-style + keybind + minimize + remember open)")
 end)
 
 
@@ -10083,7 +10083,7 @@ task.spawn(function()
 
 	local LP = Players.LocalPlayer
 	local PlayerGui = LP:WaitForChild("PlayerGui")
-	local ConfigFile = "darck.vsPerishLaggerV2.json"
+	local ConfigFile = "Elblue873PerishLaggerV2.json"
 
 	local NIVELES = {
  Low = { poder = 23 },
@@ -10423,7 +10423,7 @@ task.spawn(function()
 	title.Position = UDim2.new(0, 50, 0, 8)
 	title.Size = UDim2.new(0, 150, 0, 19)
 	title.Font = Enum.Font.GothamBlack
-	title.Text = "darck.vsUser V2"
+	title.Text = "Elblue873User V2"
 	title.TextColor3 = C.White
 	title.TextSize = 18
 	title.TextXAlignment = Enum.TextXAlignment.Left
@@ -10435,7 +10435,7 @@ task.spawn(function()
 	subtitle.Position = UDim2.new(0, 50, 0, 26)
 	subtitle.Size = UDim2.new(0, 170, 0, 12)
 	subtitle.Font = Enum.Font.GothamBold
-	subtitle.Text = "darck.vsUser module"
+	subtitle.Text = "Elblue873User module"
 	subtitle.TextColor3 = C.TextDim
 	subtitle.TextSize = 10
 	subtitle.TextXAlignment = Enum.TextXAlignment.Left
@@ -10883,10 +10883,10 @@ print("[Vis] Perish Lagger V2 FULL GUI loaded (menu toggle, pos persist like V1)
 end)
 
 -- ============================================================
--- WRAPPERS: Settings → darck.vs Lagger V2 (Perish) + Speed Bypass
+-- WRAPPERS: Settings → Elblue873 Lagger V2 (Perish) + Speed Bypass
 -- ============================================================
 do
-	function _G.darck.vsSetLaggerPanel(on)
+	function _G.Elblue873SetLaggerPanel(on)
  on = on and true or false
  if type(St) == "table" then St.showLaggerPanel = on end
  pcall(function()
@@ -10899,14 +10899,14 @@ do
  pcall(function() if saveCfg then saveCfg() end end)
 	end
 
-	function _G.darck.vsSetLaggerLock(on)
+	function _G.Elblue873SetLaggerLock(on)
  on = on and true or false
  if type(St) == "table" then St.laggerPanelLock = on end
  pcall(function() if _G.AceSetPerishV2Lock then _G.AceSetPerishV2Lock(on) end end)
  pcall(function() if saveCfg then saveCfg() end end)
 	end
 
-	function _G.darck.vsSetSpeedBypassPanel(on)
+	function _G.Elblue873SetSpeedBypassPanel(on)
  on = on and true or false
  if type(St) == "table" then
  St.showSpeedBypassPanel = on
@@ -10921,7 +10921,7 @@ do
  local gui = nil
  for _, p in ipairs(parents) do
  if p then
- gui = p:FindFirstChild("darck.vsBypassGui")
+ gui = p:FindFirstChild("Elblue873BypassGui")
  if gui then break end
  end
  end
@@ -10957,7 +10957,7 @@ do
  local api = _G.AceSetVisBypassPanelVisible
  if type(api) == "function" then
  local ok, err = pcall(api, on)
- if not ok then warn("[darck.vs] SpeedBypass panel:", err) end
+ if not ok then warn("[Elblue873] SpeedBypass panel:", err) end
  else
  -- API chưa sẵn: đợi tối đa 1s (không 5s)
  task.spawn(function()
@@ -10975,7 +10975,7 @@ do
  pcall(function() if saveCfg then saveCfg() end end)
 	end
 
-function _G.darck.vsSetSpeedBypassLock(on)
+function _G.Elblue873SetSpeedBypassLock(on)
  on = on and true or false
  if type(St) == "table" then St.speedBypassLock = on end
  -- Lock riêng Speed Bypass — không dính Lock UI menu chính (St.guiLock)
@@ -10992,18 +10992,18 @@ function _G.darck.vsSetSpeedBypassLock(on)
 	task.defer(function()
  task.wait(0.2)
  pcall(function()
- if type(St) == "table" and St.showLaggerPanel then _G.darck.vsSetLaggerPanel(true) end
+ if type(St) == "table" and St.showLaggerPanel then _G.Elblue873SetLaggerPanel(true) end
  -- Speed Bypass: chỉ hiện nếu user đã ON show trong settings (không auto)
  if type(St) == "table" and St.showSpeedBypassPanel == true then
- _G.darck.vsSetSpeedBypassPanel(true)
- elseif type(_G.darck.vsSetSpeedBypassPanel) == "function" then
- _G.darck.vsSetSpeedBypassPanel(false)
+ _G.Elblue873SetSpeedBypassPanel(true)
+ elseif type(_G.Elblue873SetSpeedBypassPanel) == "function" then
+ _G.Elblue873SetSpeedBypassPanel(false)
  end
  end)
 	end)
 end
 
-print("[darck.vs] FULL Vis Lagger V2 (Perish) + Speed Bypass GUI (no old Vynx)")
+print("[Elblue873] FULL Vis Lagger V2 (Perish) + Speed Bypass GUI (no old Vynx)")
 end)
 
 
