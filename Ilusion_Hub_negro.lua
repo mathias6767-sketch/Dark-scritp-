@@ -5923,9 +5923,9 @@ function _G.Amateuz_topBuildV2ModeBar()
  btn.TextColor3 = active and col.onTxt or col.offTxt
  local st = btn:FindFirstChildOfClass("UIStroke")
  if st then
- st.Color = active and col.stroke or Color3.fromRGB(210, 210, 220)
- st.Transparency = active and 0.15 or 0.35
- st.Thickness = active and 1.5 or 1
+ st.Color = Color3.fromRGB(255, 255, 255)
+ st.Transparency = 0
+ st.Thickness = 2
  end
 	end
 	local function posFromSaved(modeName, order)
@@ -5959,7 +5959,7 @@ function _G.Amateuz_topBuildV2ModeBar()
  local btn = Instance.new("TextButton")
  btn.Name = "V2Bar_" .. modeName
  btn.Size = UDim2.new(1, 0, 1, 0)
- btn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+ btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
  btn.Text = label
  btn.TextColor3 = Color3.fromRGB(25, 25, 30)
  btn.Font = Enum.Font.GothamBlack
@@ -6072,7 +6072,7 @@ function makeModeBtn(name, order)
 	local btn = Instance.new("TextButton")
 	btn.Name = "ModeBtn"
 	btn.Size = UDim2.new(1, 0, 1, 0)
-	btn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 	btn.Text = name:upper()
 	if name == "Normal" then btn.Text = "NORMAL" end
 	btn.TextColor3 = Color3.fromRGB(25, 25, 30)
@@ -6090,17 +6090,11 @@ function makeModeBtn(name, order)
 	st.Color = Color3.fromRGB(210, 210, 220)
 	st.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 	local function styleMode(on)
- if on then
- btn.BackgroundColor3 = Color3.fromRGB(255, 200, 210)
- btn.TextColor3 = Color3.fromRGB(30, 20, 30)
- st.Color = Color3.fromRGB(255, 160, 180)
- st.Transparency = 0.1
- else
- btn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
- btn.TextColor3 = Color3.fromRGB(25, 25, 30)
- st.Color = Color3.fromRGB(210, 210, 220)
- st.Transparency = 0.35
- end
+ btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+ btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+ st.Color = Color3.fromRGB(255, 255, 255)
+ st.Transparency = 0
+ st.Thickness = 2
 	end
 	styleMode(St.activeMode == name)
 	local dragging, dragStart, startPos, moved = false, nil, nil, false
@@ -6431,7 +6425,7 @@ function applyActBtnState(btn, on, onText, offText)
 	on = on and true or false
 	if on then
  -- Xanh đậm khi BẬT
- btn.BackgroundColor3 = Color3.fromRGB(0, 130, 45)
+ btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
  btn.BackgroundTransparency = 0
  btn.TextColor3 = Color3.fromRGB(255, 255, 255)
  if onText then btn.Text = onText end
@@ -6450,8 +6444,8 @@ function applyActBtnState(btn, on, onText, offText)
  dc.CornerRadius = UDim.new(0, 8)
  dc.Parent = dim
  end
- dim.BackgroundColor3 = Color3.fromRGB(0, 120, 40)
- dim.BackgroundTransparency = 0.15
+ dim.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+ dim.BackgroundTransparency = 0
  dim.Visible = true
  local tl = btn:FindFirstChild("BtnTextOverlay")
  if tl then
@@ -6464,7 +6458,7 @@ function applyActBtnState(btn, on, onText, offText)
  if st then st.Color = Color3.fromRGB(255, 255, 255); st.Transparency = 0; st.Thickness = 2.5 end
 	else
  btn.BackgroundColor3 = C.btnOff or Color3.fromRGB(16, 16, 22)
- btn.BackgroundTransparency = 0.35
+ btn.BackgroundTransparency = 0
  btn.TextColor3 = Color3.fromRGB(255, 255, 255)
  if offText then btn.Text = offText end
  local bgImg = btn:FindFirstChild("BtnBgImage")
@@ -6481,7 +6475,7 @@ function applyActBtnState(btn, on, onText, offText)
  tl.TextStrokeTransparency = 0.35
  end
  local st = btn:FindFirstChildOfClass("UIStroke")
- if st then st.Color = Color3.fromRGB(255, 255, 255); st.Transparency = 0.2; st.Thickness = 1.6 end
+ if st then st.Color = Color3.fromRGB(255, 255, 255); st.Transparency = 0; st.Thickness = 2 end
 	end
 end
 
