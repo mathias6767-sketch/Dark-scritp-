@@ -5919,8 +5919,8 @@ function _G.Amateuz_topBuildV2ModeBar()
 	v2BarButtons = {}
 	local function styleV2Btn(btn, modeName, active)
  local col = MODE_COLORS[modeName] or MODE_COLORS.Normal
- btn.BackgroundColor3 = active and col.onBg or col.offBg
- btn.TextColor3 = active and col.onTxt or col.offTxt
+ btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+ btn.TextColor3 = Color3.fromRGB(255, 255, 255)
  local st = btn:FindFirstChildOfClass("UIStroke")
  if st then
  st.Color = Color3.fromRGB(255, 255, 255)
@@ -5961,7 +5961,7 @@ function _G.Amateuz_topBuildV2ModeBar()
  btn.Size = UDim2.new(1, 0, 1, 0)
  btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
  btn.Text = label
- btn.TextColor3 = Color3.fromRGB(25, 25, 30)
+ btn.TextColor3 = Color3.fromRGB(255, 255, 255)
  btn.Font = Enum.Font.GothamBlack
  btn.TextSize = 13
  btn.AutoButtonColor = false
@@ -6075,7 +6075,7 @@ function makeModeBtn(name, order)
 	btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 	btn.Text = name:upper()
 	if name == "Normal" then btn.Text = "NORMAL" end
-	btn.TextColor3 = Color3.fromRGB(25, 25, 30)
+	btn.TextColor3 = Color3.fromRGB(255, 255, 255)
 	btn.Font = Enum.Font.GothamBlack
 	btn.TextSize = math.clamp(math.floor(h * 0.36), 11, 14)
 	btn.AutoButtonColor = false
@@ -6175,7 +6175,7 @@ function makeActBtn(key, label, pos, cb)
 	holder.Parent = ActGui
 	local btn = Instance.new("TextButton")
 	btn.Size = UDim2.new(1, 0, 1, 0)
-	btn.BackgroundColor3 = Color3.fromRGB(12, 12, 16)
+	btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 	btn.Text = label
 	btn.TextColor3 = Color3.fromRGB(255, 255, 255)
 	btn.TextSize = math.clamp(math.floor(sz * 0.22), 10, 16)
@@ -6466,7 +6466,7 @@ function applyActBtnState(btn, on, onText, offText)
  local dim = btn:FindFirstChild("BtnDim")
  if dim then
  dim.BackgroundColor3 = Color3.new(0, 0, 0)
- dim.BackgroundTransparency = 0.45
+ dim.BackgroundTransparency = 0
  end
  local tl = btn:FindFirstChild("BtnTextOverlay")
  if tl then
@@ -8244,7 +8244,7 @@ task.defer(function()
  dim.Name = "WallDim"
  dim.Size = UDim2.new(1, 0, 1, 0)
  dim.BackgroundColor3 = Color3.new(0, 0, 0)
- dim.BackgroundTransparency = 0.45
+ dim.BackgroundTransparency = 0
  dim.BorderSizePixel = 0
  dim.ZIndex = 0
  dim.Active = false
@@ -10315,7 +10315,7 @@ task.spawn(function()
  task.wait(0.6)
  else
  t = t + 0.05
- s.Transparency = 0.2 + math.sin(t * 1.6) * 0.18
+ s.Transparency = 0 + math.sin(t * 1.6) * 0.18
  if math.sin(t * 0.8) > 0.7 then s.Color = C.White else s.Color = C.Red end
  task.wait(0.06)
  end
