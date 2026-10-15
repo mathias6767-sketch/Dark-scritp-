@@ -390,7 +390,7 @@ local C = {
 	off = Color3.fromRGB(12, 12, 14), box = Color3.fromRGB(24, 24, 26),
 	danger = Color3.fromRGB(220, 70, 90),
 	modeOnBg = Color3.fromRGB(0, 0, 0), modeOnTxt = Color3.fromRGB(255, 255, 255),
-	modeOffBg = Color3.fromRGB(35, 35, 38), modeOffTxt = Color3.fromRGB(255, 255, 255),
+	modeOffBg = Color3.fromRGB(0, 0, 0), modeOffTxt = Color3.fromRGB(255, 255, 255),
 	btnOn = Color3.fromRGB(0, 0, 0), -- black when ON, like the reference button
 	btnOff = Color3.fromRGB(0, 0, 0),
 }
@@ -4208,9 +4208,9 @@ function corner(p, r)
 end
 function stroke(p, col)
 	local s = Instance.new("UIStroke")
-	s.Color = col or C.stroke
-	s.Thickness = 1
-	s.Transparency = 0.35
+	s.Color = Color3.fromRGB(255, 255, 255)
+	s.Thickness = 2
+	s.Transparency = 0
 	s.Parent = p
 	return s
 end
@@ -6472,7 +6472,7 @@ function applyActBtnState(btn, on, onText, offText)
  tl.ZIndex = (btn.ZIndex or 100) + 6
  end
  local st = btn:FindFirstChild("BtnBorder") or btn:FindFirstChildOfClass("UIStroke")
- if st then st.Color = Color3.fromRGB(40, 255, 100); st.Transparency = 0; st.Thickness = 2.5 end
+ if st then st.Color = Color3.fromRGB(255, 255, 255); st.Transparency = 0; st.Thickness = 2.5 end
 	else
  btn.BackgroundColor3 = C.btnOff or Color3.fromRGB(16, 16, 22)
  btn.BackgroundTransparency = 0.35
@@ -6530,7 +6530,7 @@ function _G.Amateuz_topRefreshModeBar()
  tl.Text = n
  end
  local st = e.btn:FindFirstChildOfClass("UIStroke")
- if st then st.Color = Color3.fromRGB(255, 120, 200); st.Transparency = 0.05 end
+ if st then st.Color = Color3.fromRGB(255, 255, 255); st.Transparency = 0 end
  else
  e.btn.BackgroundColor3 = C.modeOffBg or Color3.fromRGB(255, 255, 255)
  e.btn.BackgroundTransparency = 0
