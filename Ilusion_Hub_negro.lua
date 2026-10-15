@@ -4268,11 +4268,11 @@ do
 	g.Name = "EmpireOutlineGrad"
 	g.Color = ColorSequence.new({
  ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
- ColorSequenceKeypoint.new(0.15, Color3.fromRGB(255, 140, 200)),
- ColorSequenceKeypoint.new(0.35, Color3.fromRGB(255, 45, 160)),
- ColorSequenceKeypoint.new(0.55, Color3.fromRGB(255, 20, 140)),
- ColorSequenceKeypoint.new(0.75, Color3.fromRGB(255, 80, 180)),
- ColorSequenceKeypoint.new(0.90, Color3.fromRGB(255, 150, 210)),
+ ColorSequenceKeypoint.new(0.15, Color3.fromRGB(255, 255, 255)),
+ ColorSequenceKeypoint.new(0.35, Color3.fromRGB(255, 255, 255)),
+ ColorSequenceKeypoint.new(0.55, Color3.fromRGB(255, 255, 255)),
+ ColorSequenceKeypoint.new(0.75, Color3.fromRGB(255, 255, 255)),
+ ColorSequenceKeypoint.new(0.90, Color3.fromRGB(255, 255, 255)),
  ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 255, 255)),
 	})
 	g.Parent = mainStroke
@@ -5873,8 +5873,8 @@ function applyEmpireBtnBg(btn, index)
  g.Name = "EmpireOutlineGrad"
  g.Color = ColorSequence.new({
  ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
- ColorSequenceKeypoint.new(0.35, Color3.fromRGB(255, 80, 180)),
- ColorSequenceKeypoint.new(0.7, Color3.fromRGB(180, 80, 255)),
+ ColorSequenceKeypoint.new(0.35, Color3.fromRGB(255, 255, 255)),
+ ColorSequenceKeypoint.new(0.7, Color3.fromRGB(255, 255, 255)),
  ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 255, 255)),
  })
  g.Parent = st
@@ -5904,22 +5904,11 @@ function _G.Amateuz_topBuildV2ModeBar()
 	local V2_BTN_H = math.max(28, math.floor(modeBase * sc))
 	local V2_BTN_W = math.max(72, math.floor(88 * sc)) -- rộng ổn định, không phình theo size
 	local V2_CORNER = 12	local MODE_COLORS = {
- Normal = {
- onBg = Color3.fromRGB(255, 200, 210), onTxt = Color3.fromRGB(30, 20, 30),
- offBg = Color3.fromRGB(255, 255, 255), offTxt = Color3.fromRGB(25, 25, 30),
- stroke = Color3.fromRGB(255, 160, 180),
- },
- Lagger = {
- onBg = Color3.fromRGB(255, 200, 210), onTxt = Color3.fromRGB(30, 20, 30),
- offBg = Color3.fromRGB(255, 255, 255), offTxt = Color3.fromRGB(25, 25, 30),
- stroke = Color3.fromRGB(255, 160, 180),
- },
- Custom = {
- onBg = Color3.fromRGB(255, 200, 210), onTxt = Color3.fromRGB(30, 20, 30),
- offBg = Color3.fromRGB(255, 255, 255), offTxt = Color3.fromRGB(25, 25, 30),
- stroke = Color3.fromRGB(255, 160, 180),
- },
-	}
+  Normal = { onBg = Color3.fromRGB(0, 0, 0), onTxt = Color3.fromRGB(255, 255, 255), offBg = Color3.fromRGB(0, 0, 0), offTxt = Color3.fromRGB(255, 255, 255), stroke = Color3.fromRGB(255, 255, 255) },
+  Lagger = { onBg = Color3.fromRGB(0, 0, 0), onTxt = Color3.fromRGB(255, 255, 255), offBg = Color3.fromRGB(0, 0, 0), offTxt = Color3.fromRGB(255, 255, 255), stroke = Color3.fromRGB(255, 255, 255) },
+  Custom = { onBg = Color3.fromRGB(0, 0, 0), onTxt = Color3.fromRGB(255, 255, 255), offBg = Color3.fromRGB(0, 0, 0), offTxt = Color3.fromRGB(255, 255, 255), stroke = Color3.fromRGB(255, 255, 255) },
+  }
+
 	local gui = Instance.new("ScreenGui")
 	gui.Name = "Amateuz_topV2ModeBar"
 	gui.ResetOnSpawn = false
@@ -6492,7 +6481,7 @@ function applyActBtnState(btn, on, onText, offText)
  tl.TextStrokeTransparency = 0.35
  end
  local st = btn:FindFirstChildOfClass("UIStroke")
- if st then st.Color = Color3.fromRGB(255, 80, 180); st.Transparency = 0.2; st.Thickness = 1.6 end
+ if st then st.Color = Color3.fromRGB(255, 255, 255); st.Transparency = 0.2; st.Thickness = 1.6 end
 	end
 end
 
@@ -8911,12 +8900,16 @@ task.spawn(function()
 	local BtnTP = Instance.new("TextButton", Main)
 	BtnTP.Size = UDim2.new(1, -16, 0, 36)
 	BtnTP.Position = UDim2.new(0, PAD, 1, -44)
-	BtnTP.BackgroundColor3 = Color3.fromRGB(140, 90, 255)
+	BtnTP.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 	BtnTP.Text = "TP [X]"
 	BtnTP.TextColor3 = Color3.new(1,1,1)
 	BtnTP.Font = Enum.Font.GothamBlack
 	BtnTP.TextSize = 14
 	Instance.new("UICorner", BtnTP).CornerRadius = UDim.new(0, 10)
+	local tpStroke = Instance.new("UIStroke", BtnTP)
+	tpStroke.Color = Color3.fromRGB(255, 255, 255)
+	tpStroke.Thickness = 2
+	tpStroke.Transparency = 0
 
 	if MINIMIZE then
  Main.Size = UDim2.new(0, 180, 0, 82)
