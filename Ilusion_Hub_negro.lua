@@ -8894,15 +8894,20 @@ task.spawn(function()
 	local BtnTP = Instance.new("TextButton", Main)
 	BtnTP.Size = UDim2.new(1, -16, 0, 36)
 	BtnTP.Position = UDim2.new(0, PAD, 1, -44)
-	BtnTP.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	-- TP button: visible, subtle gray palette
+	BtnTP.BackgroundColor3 = Color3.fromRGB(58, 58, 62)
+	BtnTP.BackgroundTransparency = 0
 	BtnTP.Text = "TP [X]"
-	BtnTP.TextColor3 = Color3.new(1,1,1)
+	BtnTP.TextColor3 = Color3.fromRGB(245, 245, 245)
 	BtnTP.Font = Enum.Font.GothamBlack
-	BtnTP.TextSize = 14
+	BtnTP.TextSize = 16
+	BtnTP.TextTransparency = 0
+	BtnTP.AutoButtonColor = false
+	BtnTP.ZIndex = 30
 	Instance.new("UICorner", BtnTP).CornerRadius = UDim.new(0, 10)
 	local tpStroke = Instance.new("UIStroke", BtnTP)
-	tpStroke.Color = Color3.fromRGB(255, 255, 255)
-	tpStroke.Thickness = 2
+	tpStroke.Color = Color3.fromRGB(175, 175, 180)
+	tpStroke.Thickness = 1.5
 	tpStroke.Transparency = 0
 
 	if MINIMIZE then
