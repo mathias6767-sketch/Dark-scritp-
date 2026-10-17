@@ -1,6 +1,6 @@
 --[[
- Amateuz_top — Full Menu
- Tab 1 Player: Anti Gummy/Ragdoll/Paintball/Boogie/Bee + Speed 3-mode (Vis S2 loop)
+ XD — Full Menu
+ Tab 1 Player: Anti Gummy/Ragdoll/Paintball/Boogie + Speed 3-mode (Vis S2 loop)
  + Tool Aimbot + Drop Jump/Stand + Insta V1/V2 + TP Down keybinds
  Tab 2 ESP: Player ESP + Tracker + Anti Lag (Vis logic)
  Tab 3 Settings: Mobile 3-mode buttons, Lock/Unlock, shape Box/Round/Square,
@@ -16,7 +16,6 @@ local RS = game:GetService("RunService")
 local Lighting = game:GetService("Lighting")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local HttpService = game:GetService("HttpService")
-local AntiBeeModule -- RARA Anti Bee module, used by the menu toggle
 
 local LP = Players.LocalPlayer
 if not LP then
@@ -27,7 +26,7 @@ local PlayerGui = LP:WaitForChild("PlayerGui", 30) or LP:FindFirstChild("PlayerG
 
 pcall(function()
 	for _, n in ipairs({
- "Amateuz_topHubFullMenu", "Amateuz_topHubFullMini", "Amateuz_topHubModeBar", "Amateuz_topHubActionButtons", "Amateuz_topIntro", "Amateuz_topHubIntro",
+ "XDHubFullMenu", "XDHubFullMini", "XDHubModeBar", "XDHubActionButtons", "XDIntro", "XDHubIntro",
 	}) do
  local g = PlayerGui:FindFirstChild(n)
  if g then g:Destroy() end
@@ -35,7 +34,7 @@ pcall(function()
 end)
 
 ----------------------------------------------------------------
--- Amateuz_top.CC INTRO (red/black/white, music + skip)
+-- XD.CC INTRO (red/black/white, music + skip)
 ----------------------------------------------------------------
 do
 	local TweenService = TS
@@ -66,13 +65,13 @@ do
 
 	local function createIntro()
 	    -- Clean old intro
-	    for _, name in ipairs({"Amateuz_topIntro"}) do
+	    for _, name in ipairs({"XDIntro"}) do
 	        local old = PlayerGui:FindFirstChild(name)
 	        if old then old:Destroy() end
 	    end
 
 	    introGui = Instance.new("ScreenGui")
-	    introGui.Name = "Amateuz_topIntro"
+	    introGui.Name = "XDIntro"
 	    introGui.IgnoreGuiInset = true
 	    introGui.ResetOnSpawn = false
 	    introGui.DisplayOrder = 999999
@@ -136,13 +135,13 @@ do
 	    flash.BorderSizePixel = 0
 	    flash.ZIndex = 400
 
-	    -- Main Title - "Amateuz_top" (RED)
+	    -- Main Title - "XD" (RED)
 	    local introTitle = Instance.new("TextLabel", background)
 	    introTitle.AnchorPoint = Vector2.new(0.5, 0.5)
 	    introTitle.Position = UDim2.fromScale(0.5, 0.47)
 	    introTitle.Size = UDim2.fromScale(1.1, 0.22)
 	    introTitle.BackgroundTransparency = 1
-	    introTitle.Text = "xd"
+	    introTitle.Text = "XD"
 	    introTitle.TextColor3 = Color3.fromRGB(255, 0, 0)
 	    introTitle.TextTransparency = 1
 	    introTitle.TextScaled = true
@@ -206,7 +205,7 @@ do
 	        local asset = loadMusic()
 	        if not asset or not introActive then return end
 	        introSound = Instance.new("Sound")
-	        introSound.Name = "Amateuz_topIntroMusic"
+	        introSound.Name = "XDIntroMusic"
 	        introSound.SoundId = asset
 	        introSound.Volume = MUSIC_VOLUME
 	        introSound.Looped = false
@@ -382,25 +381,25 @@ end
 -- COLORS / STATE
 ----------------------------------------------------------------
 local C = {
-	-- ILUSION HUB palette: lead-grey panel, lighter grey controls, red selected/action buttons
-	bg = Color3.fromRGB(48, 48, 52), bg2 = Color3.fromRGB(56, 56, 60),
-	card = Color3.fromRGB(68, 68, 73), stroke = Color3.fromRGB(235, 235, 240),
-	accent = Color3.fromRGB(210, 48, 68), text = Color3.fromRGB(255, 255, 255),
-	textDim = Color3.fromRGB(235, 235, 235), on = Color3.fromRGB(60, 220, 110),
-	off = Color3.fromRGB(58, 58, 62), box = Color3.fromRGB(76, 76, 82),
-	danger = Color3.fromRGB(210, 48, 68),
-	modeOnBg = Color3.fromRGB(210, 48, 68), modeOnTxt = Color3.fromRGB(255, 255, 255),
-	modeOffBg = Color3.fromRGB(76, 76, 82), modeOffTxt = Color3.fromRGB(255, 255, 255),
-	btnOn = Color3.fromRGB(210, 48, 68), -- selected buttons are red with white text
-	btnOff = Color3.fromRGB(76, 76, 82),
+	-- Empire-style palette
+	bg = Color3.fromRGB(12, 12, 16), bg2 = Color3.fromRGB(18, 18, 24),
+	card = Color3.fromRGB(24, 24, 32), stroke = Color3.fromRGB(60, 60, 80),
+	accent = Color3.fromRGB(255, 20, 147), text = Color3.fromRGB(255, 255, 255),
+	textDim = Color3.fromRGB(160, 160, 180), on = Color3.fromRGB(60, 220, 110),
+	off = Color3.fromRGB(40, 40, 52), box = Color3.fromRGB(32, 32, 44),
+	danger = Color3.fromRGB(220, 70, 90),
+	modeOnBg = Color3.fromRGB(255, 20, 147), modeOnTxt = Color3.fromRGB(255, 255, 255),
+	modeOffBg = Color3.fromRGB(255, 255, 255), modeOffTxt = Color3.fromRGB(25, 25, 30),
+	btnOn = Color3.fromRGB(50, 210, 100), -- xanh khi ON (Empire style)
+	btnOff = Color3.fromRGB(16, 16, 22),
 }
 
 
 -- Auto-write Vis Auto Steal for loadstring
 pcall(function()
 	if writefile then
- writefile("Amateuz_top_Auto_Steal_Embedded.lua", [==[--[[
- Auto Steal — full Amateuz_top logic V1 / Semi V1-V2 / V3
+ writefile("XD_Auto_Steal_Embedded.lua", [==[--[[
+ Auto Steal — full XD logic V1 / Semi V1-V2 / V3
 ]]
 if _G.__VisAutoStealRunning then
 	pcall(function()
@@ -418,7 +417,7 @@ local HttpService = game:GetService("HttpService")
 local LP = Players.LocalPlayer
 local PlayerGui = LP:WaitForChild("PlayerGui")
 
--- Shared state (must match Amateuz_top names used in steal logic)
+-- Shared state (must match XD names used in steal logic)
 autoStealEnabled = false
 selectedStealMode = "Normal"
 autoStealRadius = 60
@@ -520,8 +519,8 @@ _G.__AceSetupNormalAutoSteal = function()
  return math.clamp(r, 1, 500)
  end
  local function getAutoGrabPauseFraction()
- -- no pause by default: if _G.Amateuz_topStealPause ~= true → treat as close-enough always (100%)
- if _G.Amateuz_topStealPause ~= true then
+ -- no pause by default: if _G.XDStealPause ~= true → treat as close-enough always (100%)
+ if _G.XDStealPause ~= true then
  return 1.0 -- full 0-100 without waiting
  end
  local pct = tonumber(autoStealV1PausePercent) or 75
@@ -652,7 +651,7 @@ _G.__AceSetupNormalAutoSteal = function()
  local targetPart = prompt:FindFirstAncestorWhichIsA("BasePart")
  local restarting = false
  local pauseFraction = (function()
- if _G.Amateuz_topStealPause == true or (St and St.stealPause == true) then
+ if _G.XDStealPause == true or (St and St.stealPause == true) then
  return math.clamp(((St and St.stealPausePct) or 75) / 100, 0.3, 0.95)
  end
  return 1 -- không pause: full 0→100 liên tục
@@ -789,7 +788,7 @@ _G.__AceSetupNormalAutoSteal = function()
  local wasAbleToGrab = false
 
  -- Đã đứng sẵn ở cột (≤2 stud): steal NORMAL full 0 → 100%
- if isCloseEnoughToGrab() or (not (_G.Amateuz_topStealPause == true or (St and St.stealPause == true))) then
+ if isCloseEnoughToGrab() or (not (_G.XDStealPause == true or (St and St.stealPause == true))) then
  -- No pause / đang sát cột: full 0→100, chỉ hủy nếu prompt mất / quá xa
  while tick() - holdStart < dur do
  if not modeStillActive() or not canStillGrab() then
@@ -1755,7 +1754,7 @@ end
 -- AUTO STEAL GUI
 -- ============================================================
 task.spawn(function()
-	local CONFIG_FILE = "Amateuz_topHubAutoSteal"
+	local CONFIG_FILE = "XDHubAutoSteal"
 	local BackgroundIDs = {"89504528485163","108697485255882","71211662493854","118953269416540","106345334781345","103042929344358","126137370200580","129236724255771","109053968018578","76085007631338","99416158073201","126860692354524","73226092831324","90280869222992","90746158236678","107977050874654","124475159163140","117085976067902","76582249427748","131388128481309","106050493494582","71852104184395","84453255265251","98541566010518","118963313877514","82757811555212","130451097419605","129030262345273","76292842640935","92910922537368","105960347086002","116720305084998","90341354549871","72399600208480","81834484116440","135088241492683","90453834580322","90631990302263","109619268613730","88369503310562","80708025126373","102253425322931","135181794444219","111941119745474","138739435956313","92966351305582","127008542588565","81233250155347","77446891363466","93417009946836","102729289645203","113953274092851","116355482429334","133090961209841","84995781107338"}
 
 	local BASE_W, BASE_H, BASE_H_EXP = 300, 96, 240
@@ -1809,12 +1808,12 @@ task.spawn(function()
 
 	local parent = (typeof(gethui) == "function" and gethui()) or game:GetService("CoreGui")
 	pcall(function()
- local o = parent:FindFirstChild("Amateuz_topAutoStealGui"); if o then o:Destroy() end
- local b = PlayerGui:FindFirstChild("Amateuz_topAutoStealBarGui"); if b then b:Destroy() end
+ local o = parent:FindFirstChild("XDAutoStealGui"); if o then o:Destroy() end
+ local b = PlayerGui:FindFirstChild("XDAutoStealBarGui"); if b then b:Destroy() end
 	end)
 
 	local gui = Instance.new("ScreenGui")
-	gui.Name = "Amateuz_topAutoStealGui"
+	gui.Name = "XDAutoStealGui"
 	gui.Enabled = false -- disabled: menu-only steal
 	gui.ResetOnSpawn = false
 	gui.IgnoreGuiInset = true
@@ -2324,7 +2323,7 @@ end)
 end)
 
 local St = {
-	antiGummy = true, antiRagdoll = false, antiPaint = true, antiBoogie = true, antiBee = true, bearTrapESP = false,
+	antiGummy = true, antiRagdoll = false, antiPaint = true, antiBoogie = true,
 	toolAim = true, speedOn = true, infJump = true, bodyLock = false, bodyLockRange = 20,
 	activeMode = "Normal",
 	modes = {
@@ -2356,7 +2355,7 @@ local St = {
 }
 local ToggleRefs = {} -- để Reset All cập nhật UI
 
-local CFG = "Amateuz_topAllgear.json"
+local CFG = "XDAllgear.json"
 local _saveToken = 0
 function autoSaveDebounced()
 	_saveToken = _saveToken + 1
@@ -2428,7 +2427,7 @@ function saveCfg()
 	writefile(CFG, HttpService:JSONEncode(d))
 	end)
 	if not ok then
- warn("[Amateuz_top] saveCfg fail:", err)
+ warn("[XD] saveCfg fail:", err)
 	end
 	return ok
 end
@@ -2438,7 +2437,7 @@ function loadCfg()
  if isfile(CFG) then
  return HttpService:JSONDecode(readfile(CFG))
  end
- for _, old in ipairs({"RaraOnflop.json", "Amateuz_topHub_FullMenu_v1.json", "Amateuz_topHub_Config.json", "Amateuz_top.json"}) do
+ for _, old in ipairs({"RaraOnflop.json", "XDHub_FullMenu_v1.json", "XDHub_Config.json", "XD.json"}) do
  if isfile(old) then
  local d = HttpService:JSONDecode(readfile(old))
  pcall(function() writefile(CFG, HttpService:JSONEncode(d)) end)
@@ -2490,7 +2489,7 @@ task.spawn(function()
 	while true do
  task.wait(3)
  local ok, err = pcall(saveCfg)
- if not ok then warn("[Amateuz_top] autosave 3s fail:", err) end
+ if not ok then warn("[XD] autosave 3s fail:", err) end
 	end
 end)
 
@@ -2584,7 +2583,7 @@ function ensureSpeedAttachment(hrp, key, name)
 	if not att or att.Parent ~= hrp then
  if att then pcall(function() att:Destroy() end) end
  att = Instance.new("Attachment")
- att.Name = name or "Amateuz_topEmpireSpeedAtt"
+ att.Name = name or "XDEmpireSpeedAtt"
  att.Parent = hrp
  _spd[key] = att
 	end
@@ -2669,9 +2668,9 @@ function setActiveMode(mode)
 	if St.speedOn then
  startSpeedBoost() -- restart Empire loop
 	end
-	if _G.Amateuz_topRefreshModeBar then pcall(_G.Amateuz_topRefreshModeBar) end
-	if _G.Amateuz_topRefreshV2ModeBar then pcall(_G.Amateuz_topRefreshV2ModeBar) end
-	if _G.Amateuz_topRefreshModeCards then pcall(_G.Amateuz_topRefreshModeCards) end
+	if _G.XDRefreshModeBar then pcall(_G.XDRefreshModeBar) end
+	if _G.XDRefreshV2ModeBar then pcall(_G.XDRefreshV2ModeBar) end
+	if _G.XDRefreshModeCards then pcall(_G.XDRefreshModeCards) end
 	pcall(saveCfg)
 end
 
@@ -2750,8 +2749,8 @@ if not _G._VisEmpireJumpHook then
  local pg = LP:WaitForChild("PlayerGui", 15)
  if not pg then return end
  local function hookJumpButton(btn)
- if btn:IsA("GuiButton") and btn.Name == "JumpButton" and not btn:GetAttribute("Amateuz_topInfJumpHooked") then
- btn:SetAttribute("Amateuz_topInfJumpHooked", true)
+ if btn:IsA("GuiButton") and btn.Name == "JumpButton" and not btn:GetAttribute("XDInfJumpHooked") then
+ btn:SetAttribute("XDInfJumpHooked", true)
  btn.MouseButton1Down:Connect(function()
  if InfJumpState.enabled then InfJumpState.jumpHeld = true end
  end)
@@ -2967,15 +2966,15 @@ function setAntiRagdollMode(mode)
  stopAntiRagdoll()
  startAntiRagdoll()
 	end
-	pcall(function() if _G.Amateuz_topRefreshAntiRagMode then _G.Amateuz_topRefreshAntiRagMode() end end)
+	pcall(function() if _G.XDRefreshAntiRagMode then _G.XDRefreshAntiRagMode() end end)
 	pcall(saveCfg)
 end
-_G.Amateuz_topSetAntiRagdollMode = setAntiRagdollMode
+_G.XDSetAntiRagdollMode = setAntiRagdollMode
 
 
 
 ----------------------------------------------------------------
--- ANTI GUMMY / BOOGIE / PAINTBALL (Amateuz_top full) — LUÔN BẬT
+-- ANTI GUMMY / BOOGIE / PAINTBALL (XD full) — LUÔN BẬT
 --------------------------------------------------------------
 -- Anti Gummy / Boogie / Bee / Paintball (from Tp Heatseeker)
 -- Always ON, no GUI
@@ -2989,7 +2988,7 @@ if not _G._FAG_VisAntiGummyFullLoaded then
  local ReplicatedStorage = game:GetService("ReplicatedStorage")
  local LocalPlayer = Players.LocalPlayer
 
- local AntiGummy, AntiBoogie = true, true
+ local AntiGummy, AntiBoogie, AntiBee = true, true, false -- no Anti Bee
  local ANTI_PAINTBALL_ALWAYS_ON = true
 
  local function ResetTool(Char)
@@ -3003,6 +3002,21 @@ if not _G._FAG_VisAntiGummyFullLoaded then
  end
 
  local function ClearEffect()
+ if AntiBee then
+ for _, V in pairs(Lighting:GetChildren()) do
+ if V.Name == "BeeBlur" or V.Name == "Flashbang" then
+ pcall(function() V:Destroy() end)
+ end
+ end
+ local Ctrl = ReplicatedStorage:FindFirstChild("Controllers")
+ if Ctrl then
+ local BC = Ctrl:FindFirstChild("BeeLauncherController")
+ if BC then
+ local B = BC:FindFirstChild("Buzzing")
+ if B then pcall(function() B:Stop() end) end
+ end
+ end
+ end
  if AntiBoogie then
  for _, V in pairs(Lighting:GetChildren()) do
  if V.Name == "DiscoEffect" then
@@ -3068,7 +3082,7 @@ if not _G._FAG_VisAntiGummyFullLoaded then
  if AntiGummy then
  pcall(ResetTool)
  end
- if AntiBoogie then
+ if AntiBoogie or AntiBee then
  pcall(ClearEffect)
  end
  end)
@@ -3078,6 +3092,9 @@ if not _G._FAG_VisAntiGummyFullLoaded then
  Lighting.ChildAdded:Connect(function(child)
  if not child then return end
  local n = child.Name
+ if AntiBee and (n == "BeeBlur" or n == "Flashbang") then
+ task.defer(function() pcall(function() child:Destroy() end) end)
+ end
  if AntiBoogie and n == "DiscoEffect" then
  task.defer(function() pcall(function() child:Destroy() end) end)
  end
@@ -3119,200 +3136,7 @@ if not _G._FAG_VisAntiGummyFullLoaded then
 	end)
 end
 
--- RARA HUB Anti Bee — integrated into Amateuz_top with an ON/OFF toggle
--- Removes the same Lighting effects as RARA, suppresses Bee buzzing,
--- protects the movement callback while enabled, and locks camera FOV to 70.
-do
- local BeeData = {
-  running = false,
-  connections = {},
-  originalMoveFunction = nil,
-  controls = nil,
-  badLightingNames = { Blue = true, DiscoEffect = true, BeeBlur = true, ColorCorrection = true },
- }
-
- local function destroyBadEffect(obj)
-  if not obj or not obj.Parent or not BeeData.badLightingNames[obj.Name] then return end
-  pcall(function() obj:Destroy() end)
- end
-
- local function disconnectBeeConnections()
-  for _, conn in ipairs(BeeData.connections) do
-   pcall(function() conn:Disconnect() end)
-  end
-  BeeData.connections = {}
- end
-
- local function protectControls()
-  pcall(function()
-   local scripts = LP:FindFirstChild("PlayerScripts")
-   local playerModule = scripts and scripts:FindFirstChild("PlayerModule")
-   if not playerModule then return end
-   local controls = require(playerModule):GetControls()
-   if not controls then return end
-   BeeData.controls = controls
-   if not BeeData.originalMoveFunction then
-    BeeData.originalMoveFunction = controls.moveFunction
-   end
-   local original = BeeData.originalMoveFunction
-   local function protectedMove(self, moveVector, relativeToCamera)
-    if original then return original(self, moveVector, relativeToCamera) end
-   end
-   BeeData.protectedMoveFunction = protectedMove
-   controls.moveFunction = protectedMove
-  end)
- end
-
- local function blockBeeBuzzing()
-  pcall(function()
-   local scripts = LP:FindFirstChild("PlayerScripts")
-   local beeScript = scripts and scripts:FindFirstChild("Bee", true)
-   local buzzing = beeScript and beeScript:FindFirstChild("Buzzing", true)
-   if buzzing and buzzing:IsA("Sound") then
-    buzzing:Stop()
-    buzzing.Volume = 0
-   end
-  end)
- end
-
- local function lockBeeFOV()
-  pcall(function()
-   local camera = workspace.CurrentCamera
-   if camera then camera.FieldOfView = 70 end
-  end)
- end
-
- local function enableAntiBee()
-  if BeeData.running then return end
-  BeeData.running = true
-  for _, obj in ipairs(Lighting:GetDescendants()) do destroyBadEffect(obj) end
-  table.insert(BeeData.connections, Lighting.DescendantAdded:Connect(function(obj)
-   if BeeData.running then destroyBadEffect(obj) end
-  end))
-  protectControls()
-  local elapsed = 0
-  table.insert(BeeData.connections, RS.Heartbeat:Connect(function(dt)
-   if not BeeData.running then return end
-   elapsed += dt
-   if elapsed < 0.25 then return end
-   elapsed = 0
-   -- Reapply if the game replaces the movement callback while Anti Bee is on.
-   pcall(function()
-    if BeeData.controls and BeeData.protectedMoveFunction
-      and BeeData.controls.moveFunction ~= BeeData.protectedMoveFunction then
-     BeeData.controls.moveFunction = BeeData.protectedMoveFunction
-    elseif not BeeData.controls then
-     protectControls()
-    end
-   end)
-   blockBeeBuzzing()
-   lockBeeFOV()
-  end))
- end
-
- local function disableAntiBee()
-  if not BeeData.running then return end
-  BeeData.running = false
-  pcall(function()
-   if BeeData.controls and BeeData.originalMoveFunction then
-    BeeData.controls.moveFunction = BeeData.originalMoveFunction
-   end
-  end)
-  BeeData.controls = nil
-  disconnectBeeConnections()
- end
-
- AntiBeeModule = {
-  set = function(state)
-   if state then enableAntiBee() else disableAntiBee() end
-  end
- }
-end
-
-function setAntiBee(on)
- St.antiBee = on == true
- if AntiBeeModule then pcall(function() AntiBeeModule.set(St.antiBee) end) end
- pcall(saveCfg)
-end
-
-----------------------------------------------------------------
--- BEAR TRAP ESP: red outline, toggleable from Player tab
-----------------------------------------------------------------
-local BearTrapESP = { enabled = false, highlights = {}, connections = {} }
-local function isBearTrapCandidate(obj)
- if not obj then return false end
- local n = string.lower(tostring(obj.Name or ""))
- n = n:gsub("[^%w]", "")
- -- Steal a Brainrot's trap is shown as TRAP; also support common Spanish/internal names.
- return n:find("beartrap", 1, true) ~= nil
-  or n == "trap"
-  or n == "traps"
-  or n == "trapmodel"
-  or n == "trampa"
-  or n == "trampas"
-  or n == "trampamodel"
-end
-local function getTrapAdornee(obj)
- if obj:IsA("Model") then return obj end
- local model = obj:FindFirstAncestorOfClass("Model")
- if model and isBearTrapCandidate(model) then return model end
- if obj:IsA("BasePart") then return obj end
- return nil
-end
-local function addBearTrapHighlight(obj)
- if not BearTrapESP.enabled or not obj or not obj.Parent or not isBearTrapCandidate(obj) then return end
- local target = getTrapAdornee(obj)
- if not target or BearTrapESP.highlights[target] then return end
- local h = Instance.new("Highlight")
- h.Name = "Amateuz_BearTrapESP"
- h.Adornee = target
- h.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
- h.FillColor = Color3.fromRGB(255, 0, 0)
- h.OutlineColor = Color3.fromRGB(255, 0, 0)
- h.FillTransparency = 0.82
- h.OutlineTransparency = 0
- h.Parent = target
- BearTrapESP.highlights[target] = h
-end
-local function stopBearTrapESP()
- BearTrapESP.enabled = false
- for _, c in ipairs(BearTrapESP.connections) do pcall(function() c:Disconnect() end) end
- table.clear(BearTrapESP.connections)
- for target, h in pairs(BearTrapESP.highlights) do
-  pcall(function() h:Destroy() end)
-  BearTrapESP.highlights[target] = nil
- end
-end
-local function startBearTrapESP()
- if BearTrapESP.enabled then return end
- BearTrapESP.enabled = true
- for _, obj in ipairs(workspace:GetDescendants()) do addBearTrapHighlight(obj) end
- table.insert(BearTrapESP.connections, workspace.DescendantAdded:Connect(function(obj)
-  task.defer(function() addBearTrapHighlight(obj) end)
- end))
- table.insert(BearTrapESP.connections, RS.Heartbeat:Connect(function()
-  for target, h in pairs(BearTrapESP.highlights) do
-   if not target.Parent or not h.Parent then
-    pcall(function() h:Destroy() end)
-    BearTrapESP.highlights[target] = nil
-   end
-  end
- end))
-end
-function setBearTrapESP(on)
- St.bearTrapESP = on == true
- if St.bearTrapESP then startBearTrapESP() else stopBearTrapESP() end
- pcall(saveCfg)
-end
-
--- Apply saved/default states once the modules are ready.
-task.defer(function()
- task.wait(0.1)
- pcall(function() setAntiBee(St.antiBee ~= false) end)
- pcall(function() setBearTrapESP(St.bearTrapESP == true) end)
-end)
-
--- Setters: existing Anti Gummy / Boogie / Paintball behavior remains ON
+-- Setters: luôn ON, không OFF được
 function setAntiGummy(on)
 	St.antiGummy = true
 	AntiFX.gummy = true
@@ -3330,7 +3154,7 @@ function setAntiPaint(on)
 end
 
 ----------------------------------------------------------------
--- TOOL AIMBOT (Amateuz_top full) — LUÔN BẬT
+-- TOOL AIMBOT (XD full) — LUÔN BẬT
 ----------------------------------------------------------------
 local aimOn = true
 local TOOLS = { ["Web Slinger"] = true, ["Paintball Gun"] = true, ["Laser Cape"] = true }
@@ -3523,7 +3347,7 @@ function InstaResetV2()
 	local lockCF = cam and cam.CFrame
 	pcall(function()
  if cam then cam.CameraType = Enum.CameraType.Scriptable; cam.CFrame = lockCF end
- RS:BindToRenderStep("Amateuz_topInstaV2Cam", Enum.RenderPriority.Camera.Value + 1, function()
+ RS:BindToRenderStep("XDInstaV2Cam", Enum.RenderPriority.Camera.Value + 1, function()
  pcall(function()
  if cam then cam.CameraType = Enum.CameraType.Scriptable; if lockCF then cam.CFrame = lockCF end end
  local ac = LP.Character
@@ -3538,7 +3362,7 @@ function InstaResetV2()
 	local conn
 	conn = LP.CharacterAdded:Connect(function(newChar)
  if conn then conn:Disconnect() end
- pcall(function() RS:UnbindFromRenderStep("Amateuz_topInstaV2Cam") end)
+ pcall(function() RS:UnbindFromRenderStep("XDInstaV2Cam") end)
  local nh = newChar:WaitForChild("Humanoid", 5)
  task.wait(0.05)
  pcall(function()
@@ -3548,7 +3372,7 @@ function InstaResetV2()
 	end)
 	task.delay(8, function()
  if _resetBusy then
- pcall(function() RS:UnbindFromRenderStep("Amateuz_topInstaV2Cam") end)
+ pcall(function() RS:UnbindFromRenderStep("XDInstaV2Cam") end)
  _resetBusy = false
  end
 	end)
@@ -3572,8 +3396,8 @@ function InstaResetV1()
  cam.CameraType = Enum.CameraType.Custom
  if humanoid then cam.CameraSubject = humanoid end
  end
- pcall(function() RS:UnbindFromRenderStep("Amateuz_topInstaV1Cam") end)
- pcall(function() RS:UnbindFromRenderStep("Amateuz_topInstaV2Cam") end)
+ pcall(function() RS:UnbindFromRenderStep("XDInstaV1Cam") end)
+ pcall(function() RS:UnbindFromRenderStep("XDInstaV2Cam") end)
 	end)
 
 	local charConn
@@ -3974,7 +3798,7 @@ end)
 function setDestroySentry(on)
 	St.destroySentry = on and true or false
 	GTurret.AutoDestroyTurret = St.destroySentry
-	if _G.Amateuz_topRefreshSentryBtn then _G.Amateuz_topRefreshSentryBtn() end
+	if _G.XDRefreshSentryBtn then _G.XDRefreshSentryBtn() end
 	saveCfg()
 end
 
@@ -4135,7 +3959,7 @@ function setEquipOnDrop(on)
 end
 
 -- Equip + activate khi Drop xong
-_G.Amateuz_topCounterOnDrop = function()
+_G.XDCounterOnDrop = function()
 	-- Counter đã chọn: equip 1 + activate 2 khi Drop (Fling & Jump)
 	local anyCounter = St.counterLaser or St.counterBoogie or St.counterSwapBody
 	if not anyCounter and not St.equipOnDrop then return end
@@ -4182,7 +4006,7 @@ _G.Amateuz_topCounterOnDrop = function()
 end
 
 -- Bật toggle Counter: equip 1 + activate 2 (một lần)
-_G.Amateuz_topCounterOneShot = function(kind)
+_G.XDCounterOneShot = function(kind)
 	if _G._VisCounterDropBusy then return end
 	_G._VisCounterDropBusy = true
 	task.spawn(function()
@@ -4208,15 +4032,15 @@ function corner(p, r)
 end
 function stroke(p, col)
 	local s = Instance.new("UIStroke")
-	s.Color = Color3.fromRGB(255, 255, 255)
-	s.Thickness = 2
-	s.Transparency = 0
+	s.Color = col or C.stroke
+	s.Thickness = 1
+	s.Transparency = 0.35
 	s.Parent = p
 	return s
 end
 
 local Gui = Instance.new("ScreenGui")
-Gui.Name = "Amateuz_topHubFullMenu"
+Gui.Name = "XDHubFullMenu"
 Gui.ResetOnSpawn = false
 Gui.IgnoreGuiInset = true
 Gui.DisplayOrder = 200
@@ -4235,7 +4059,7 @@ Main.Parent = Gui
 
 -- Menu scale (to/nhỏ menu chính)
 local menuScaleObj = Instance.new("UIScale")
-menuScaleObj.Name = "Amateuz_topMenuScale"
+menuScaleObj.Name = "XDMenuScale"
 menuScaleObj.Scale = tonumber(St.menuScale) or 1
 menuScaleObj.Parent = Main
 function applyMenuScale()
@@ -4268,11 +4092,11 @@ do
 	g.Name = "EmpireOutlineGrad"
 	g.Color = ColorSequence.new({
  ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
- ColorSequenceKeypoint.new(0.15, Color3.fromRGB(255, 255, 255)),
- ColorSequenceKeypoint.new(0.35, Color3.fromRGB(255, 255, 255)),
- ColorSequenceKeypoint.new(0.55, Color3.fromRGB(255, 255, 255)),
- ColorSequenceKeypoint.new(0.75, Color3.fromRGB(255, 255, 255)),
- ColorSequenceKeypoint.new(0.90, Color3.fromRGB(255, 255, 255)),
+ ColorSequenceKeypoint.new(0.15, Color3.fromRGB(255, 140, 200)),
+ ColorSequenceKeypoint.new(0.35, Color3.fromRGB(255, 45, 160)),
+ ColorSequenceKeypoint.new(0.55, Color3.fromRGB(255, 20, 140)),
+ ColorSequenceKeypoint.new(0.75, Color3.fromRGB(255, 80, 180)),
+ ColorSequenceKeypoint.new(0.90, Color3.fromRGB(255, 150, 210)),
  ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 255, 255)),
 	})
 	g.Parent = mainStroke
@@ -4438,7 +4262,7 @@ function setTab(name)
 	for n, b in pairs(tabBtns) do
  local on = n == name
  b.BackgroundColor3 = on and C.accent or C.card
- b.TextColor3 = on and C.text or C.text
+ b.TextColor3 = on and Color3.fromRGB(30, 20, 30) or C.text
 	end
 end
 function addTab(name, order)
@@ -4661,7 +4485,7 @@ function actionBtn(parent, text, color, cb, order)
 	b.Size = UDim2.new(1, 0, 1, 0)
 	b.BackgroundTransparency = 1
 	b.Text = text
-	b.TextColor3 = Color3.fromRGB(255, 255, 255)
+	b.TextColor3 = Color3.fromRGB(30, 20, 30)
 	b.TextSize = 13
 	b.Font = Enum.Font.GothamBold
 	b.Parent = r
@@ -4740,7 +4564,7 @@ do
  t1.TextTransparency = isV2 and 0.35 or 0
  t2.TextTransparency = isV2 and 0 or 0.35
 	end
-	_G.Amateuz_topRefreshAntiRagMode = refresh
+	_G.XDRefreshAntiRagMode = refresh
 	local b1 = Instance.new("TextButton")
 	b1.BackgroundTransparency = 1
 	b1.Size = UDim2.new(0.5, 0, 1, 0)
@@ -4760,8 +4584,6 @@ do
 end
 toggleNamed(pagePlayer, "Anti Paintball Gun", St.antiPaint, setAntiPaint, 4, "antiPaint")
 toggleNamed(pagePlayer, "Anti Boogie Bomb", St.antiBoogie, setAntiBoogie, 5, "antiBoogie")
-toggleNamed(pagePlayer, "Anti Bee (RARA)", St.antiBee, setAntiBee, 6, "antiBee")
-toggleNamed(pagePlayer, "ESP Tramp", St.bearTrapESP, setBearTrapESP, 7, "bearTrapESP")
 
 section(pagePlayer, "* — SPEED (Vis S2)", 10)
 toggleNamed(pagePlayer, "Speed On", St.speedOn, setSpeedOn, 11, "speedOn")
@@ -4842,7 +4664,7 @@ end
 modeCard("Normal", "default mode", 12)
 modeCard("Lagger", "use against lagger", 13)
 modeCard("Custom", "custom spd", 14)
-function _G.Amateuz_topRefreshModeCards()
+function _G.XDRefreshModeCards()
 	for n, card in pairs(modeCards) do
  local st = card:FindFirstChildOfClass("UIStroke")
  if st then
@@ -4852,7 +4674,7 @@ function _G.Amateuz_topRefreshModeCards()
  end
 	end
 end
-_G.Amateuz_topRefreshModeCards()
+_G.XDRefreshModeCards()
 
 
 -- ============================================================
@@ -4898,7 +4720,7 @@ for i, name in ipairs({ "Stand", "Jump" }) do
 	b.Position = UDim2.new(1, -140 + (i - 1) * 66, 0.5, -13)
 	b.BackgroundColor3 = ((St.dropMode == 1 and name == "Stand") or (St.dropMode == 2 and name == "Jump")) and C.accent or C.box
 	b.Text = name
-	b.TextColor3 = ((St.dropMode == 1 and name == "Stand") or (St.dropMode == 2 and name == "Jump")) and C.text or C.text
+	b.TextColor3 = ((St.dropMode == 1 and name == "Stand") or (St.dropMode == 2 and name == "Jump")) and Color3.fromRGB(30, 20, 30) or C.text
 	b.TextSize = 11
 	b.Font = Enum.Font.GothamBold
 	b.AutoButtonColor = false
@@ -4912,7 +4734,7 @@ for i, name in ipairs({ "Stand", "Jump" }) do
  if ch:IsA("TextButton") then
  local on = (St.dropMode == 2 and ch.Text == "Jump") or (St.dropMode == 1 and ch.Text == "Stand")
  ch.BackgroundColor3 = on and C.accent or C.box
- ch.TextColor3 = on and C.text or C.text
+ ch.TextColor3 = on and Color3.fromRGB(30, 20, 30) or C.text
  end
  end
  pcall(saveCfg)
@@ -4939,7 +4761,7 @@ for i, name in ipairs({ "V1", "V2" }) do
 	b.Position = UDim2.new(1, -120 + (i - 1) * 54, 0.5, -13)
 	b.BackgroundColor3 = (St.instaMode == name) and C.accent or C.box
 	b.Text = name
-	b.TextColor3 = (St.instaMode == name) and C.text or C.text
+	b.TextColor3 = (St.instaMode == name) and Color3.fromRGB(30, 20, 30) or C.text
 	b.TextSize = 11
 	b.Font = Enum.Font.GothamBold
 	b.AutoButtonColor = false
@@ -4953,7 +4775,7 @@ for i, name in ipairs({ "V1", "V2" }) do
  if ch:IsA("TextButton") then
  local on = ch.Text == St.instaMode
  ch.BackgroundColor3 = on and C.accent or C.box
- ch.TextColor3 = on and C.text or C.text
+ ch.TextColor3 = on and Color3.fromRGB(30, 20, 30) or C.text
  end
  end
  pcall(saveCfg)
@@ -5125,29 +4947,29 @@ spamTxt.Parent = spamInfo
 section(pageSet, "* — MOBILE / LOCK", 1)
 toggleNamed(pageSet, "Mobile Buttons", St.mobileBtns, function(on)
 	St.mobileBtns = on
-	if _G.Amateuz_topApplyMobile then _G.Amateuz_topApplyMobile() end
+	if _G.XDApplyMobile then _G.XDApplyMobile() end
 	saveCfg()
 end, 2, "mobileBtns")
 toggleNamed(pageSet, "Show Auto Steal Button", St.showStealBtn ~= false, function(on)
 	St.showStealBtn = on and true or false
-	if _G.Amateuz_topRefreshStealBtn then pcall(_G.Amateuz_topRefreshStealBtn) end
+	if _G.XDRefreshStealBtn then pcall(_G.XDRefreshStealBtn) end
 	-- nếu ON show mà chưa có nút → rebuild
-	if St.showStealBtn and (not actRefs or not actRefs.steal) and _G.Amateuz_topApplyMobile then
- pcall(_G.Amateuz_topApplyMobile)
+	if St.showStealBtn and (not actRefs or not actRefs.steal) and _G.XDApplyMobile then
+ pcall(_G.XDApplyMobile)
 	end
 	saveCfg()
 end, 2.5, "showStealBtn")
 toggleNamed(pageSet, "Show Panel TP", St.showTPPanel ~= false, function(on)
 	St.showTPPanel = on and true or false
-	local g = PlayerGui:FindFirstChild("Amateuz_topHubbTP")
+	local g = PlayerGui:FindFirstChild("XDHubbTP")
 	if g then g.Enabled = St.showTPPanel end
 	saveCfg()
 end, 25, "showTPPanel")
 toggleNamed(pageSet, "Show Panel Lagger", St.showLaggerPanel == true, function(on)
-	if _G.Amateuz_topSetLaggerPanel then _G.Amateuz_topSetLaggerPanel(on) else St.showLaggerPanel = on; saveCfg() end
+	if _G.XDSetLaggerPanel then _G.XDSetLaggerPanel(on) else St.showLaggerPanel = on; saveCfg() end
 end, 25.1, "showLaggerPanel")
 toggleNamed(pageSet, "Show Panel Speed Bypass", St.showSpeedBypassPanel == true, function(on)
-	if _G.Amateuz_topSetSpeedBypassPanel then _G.Amateuz_topSetSpeedBypassPanel(on) else St.showSpeedBypassPanel = on; saveCfg() end
+	if _G.XDSetSpeedBypassPanel then _G.XDSetSpeedBypassPanel(on) else St.showSpeedBypassPanel = on; saveCfg() end
 end, 25.3, "showSpeedBypassPanel")
 -- Panel GUI size (to/nhỏ + rộng) dưới các panel
 do
@@ -5186,7 +5008,7 @@ do
  local function fire()
  St.panelGuiScale = math.clamp((tonumber(St.panelGuiScale) or 1) + (info[1] == "+" and 0.05 or -0.05), 0.6, 1.6)
  val.Text = tostring(math.floor(St.panelGuiScale * 100)) .. "%"
- if _G.Amateuz_topApplyPanelGuiScale then pcall(_G.Amateuz_topApplyPanelGuiScale) end
+ if _G.XDApplyPanelGuiScale then pcall(_G.XDApplyPanelGuiScale) end
  saveCfg()
  end
  b.MouseButton1Click:Connect(fire)
@@ -5229,7 +5051,7 @@ do
  local function fire()
  St.panelGuiWidth = math.clamp((tonumber(St.panelGuiWidth) or 1) + (info[1] == "+" and 0.05 or -0.05), 0.7, 1.5)
  val.Text = tostring(math.floor(St.panelGuiWidth * 100)) .. "%"
- if _G.Amateuz_topApplyPanelGuiScale then pcall(_G.Amateuz_topApplyPanelGuiScale) end
+ if _G.XDApplyPanelGuiScale then pcall(_G.XDApplyPanelGuiScale) end
  saveCfg()
  end
  b.MouseButton1Click:Connect(fire)
@@ -5244,12 +5066,12 @@ toggleNamed(pageSet, "Lock UI", St.guiLock, function(on)
  St._mainPos = {Main.Position.X.Scale, Main.Position.X.Offset, Main.Position.Y.Scale, Main.Position.Y.Offset}
  St.menuOpen = Main.Visible == true
  end
- local miniGui = PlayerGui:FindFirstChild("Amateuz_topHubFullMini")
+ local miniGui = PlayerGui:FindFirstChild("XDHubFullMini")
  local mini = miniGui and miniGui:FindFirstChildWhichIsA("TextButton")
  if mini then
  St._miniPos = {mini.Position.X.Scale, mini.Position.X.Offset, mini.Position.Y.Scale, mini.Position.Y.Offset}
  end
- local mb = PlayerGui:FindFirstChild("Amateuz_topHubModeBar")
+ local mb = PlayerGui:FindFirstChild("XDHubModeBar")
  local mf = mb and mb:FindFirstChildWhichIsA("Frame")
  if mf then
  St._modeBarPos = {mf.Position.X.Scale, mf.Position.X.Offset, mf.Position.Y.Scale, mf.Position.Y.Offset}
@@ -5270,8 +5092,8 @@ toggleNamed(pageSet, "Lock UI", St.guiLock, function(on)
  end
  end
  end
- snapHoldersLock(PlayerGui:FindFirstChild("Amateuz_topHubActionButtons"))
- snapHoldersLock(PlayerGui:FindFirstChild("Amateuz_topHubModeBar"))
+ snapHoldersLock(PlayerGui:FindFirstChild("XDHubActionButtons"))
+ snapHoldersLock(PlayerGui:FindFirstChild("XDHubModeBar"))
 	end)
 	pcall(saveCfg)
 end, 3, "guiLock")
@@ -5298,7 +5120,7 @@ for i, name in ipairs({ "Round", "Box", "Square" }) do
 	b.Position = UDim2.new(0, 12 + (i - 1) * 100, 0.5, -14)
 	b.BackgroundColor3 = (St.btnShape == name) and C.accent or C.box
 	b.Text = name
-	b.TextColor3 = (St.btnShape == name) and C.text or C.text
+	b.TextColor3 = (St.btnShape == name) and Color3.fromRGB(30, 20, 30) or C.text
 	b.TextSize = 12
 	b.Font = Enum.Font.GothamBold
 	b.AutoButtonColor = false
@@ -5317,13 +5139,13 @@ for i, name in ipairs({ "Round", "Box", "Square" }) do
  end
  end
  end)
- if _G.Amateuz_topUpdateMobileVisuals then pcall(_G.Amateuz_topUpdateMobileVisuals) end
- if _G.Amateuz_topForceApplyShape then pcall(_G.Amateuz_topForceApplyShape, name) end
+ if _G.XDUpdateMobileVisuals then pcall(_G.XDUpdateMobileVisuals) end
+ if _G.XDForceApplyShape then pcall(_G.XDForceApplyShape, name) end
  for _, ch in ipairs(shapeRow:GetChildren()) do
  if ch:IsA("TextButton") then
  local on = ch.Text == name
  ch.BackgroundColor3 = on and C.accent or C.box
- ch.TextColor3 = on and C.text or C.text
+ ch.TextColor3 = on and Color3.fromRGB(30, 20, 30) or C.text
  end
  end
  pcall(saveCfg)
@@ -5374,10 +5196,10 @@ function sizeRow(label, key, order)
  cur = math.clamp(cur + (sign == "+" and 5 or -5), 20, 200)
  St.btnSizes[key] = cur
  val.Text = tostring(cur)
- if _G.Amateuz_topUpdateMobileVisuals then pcall(_G.Amateuz_topUpdateMobileVisuals) end
- if _G.Amateuz_topApplyMobile then pcall(_G.Amateuz_topApplyMobile) end
+ if _G.XDUpdateMobileVisuals then pcall(_G.XDUpdateMobileVisuals) end
+ if _G.XDApplyMobile then pcall(_G.XDApplyMobile) end
  -- Speed 3Mode: rebuild để áp chiều cao mới
- if key == "mode" and _G.Amateuz_topBuildV2ModeBar then pcall(_G.Amateuz_topBuildV2ModeBar) end
+ if key == "mode" and _G.XDBuildV2ModeBar then pcall(_G.XDBuildV2ModeBar) end
  saveCfg()
  end
  b.MouseButton1Click:Connect(fire)
@@ -5425,10 +5247,10 @@ for _, info in ipairs({ { "-", -80 }, { "+", -44 } }) do
 	function fire()
  St.btnScale = math.clamp((tonumber(St.btnScale) or 1) + (info[1] == "+" and 0.05 or -0.05), 0.3, 2.0)
  scaleVal.Text = tostring(math.floor(St.btnScale * 100)) .. "%"
- if _G.Amateuz_topUpdateMobileVisuals then pcall(_G.Amateuz_topUpdateMobileVisuals) end
- if _G.Amateuz_topApplyMobile then pcall(_G.Amateuz_topApplyMobile) end
+ if _G.XDUpdateMobileVisuals then pcall(_G.XDUpdateMobileVisuals) end
+ if _G.XDApplyMobile then pcall(_G.XDApplyMobile) end
  -- rebuild V2 bar to pick new scale defaults
- if _G.Amateuz_topBuildV2ModeBar then pcall(_G.Amateuz_topBuildV2ModeBar) end
+ if _G.XDBuildV2ModeBar then pcall(_G.XDBuildV2ModeBar) end
  saveCfg()
 	end
 	b.MouseButton1Click:Connect(fire)
@@ -5488,8 +5310,8 @@ for _, info in ipairs({{"-", -72}, {"+", -40}}) do
 end
 
 section(pageSet, "* — RESET", 30)
-actionBtn(pageSet, "Reset Mobile Positions", C.danger, function()
-	if _G.Amateuz_topResetMobilePos then _G.Amateuz_topResetMobilePos() end
+actionBtn(pageSet, "Reset Mobile Positions", C.accent, function()
+	if _G.XDResetMobilePos then _G.XDResetMobilePos() end
 	saveCfg()
 end, 31)
 actionBtn(pageSet, "Reset All Settings", C.danger, function()
@@ -5498,8 +5320,6 @@ actionBtn(pageSet, "Reset All Settings", C.danger, function()
 	pcall(function() setAntiRagdoll(false) end)
 	pcall(function() setAntiPaint(true) end)
 	pcall(function() setAntiBoogie(true) end)
-	pcall(function() setAntiBee(true) end)
-	pcall(function() setBearTrapESP(false) end)
 	pcall(function() setToolAim(true) end)
 	pcall(function() setInfJump(true) end)
 	pcall(function() setDestroySentry(false) end)
@@ -5547,7 +5367,7 @@ actionBtn(pageSet, "Reset All Settings", C.danger, function()
 	end
 	-- sync toggle UI
 	local defs = {
- antiGummy = true, antiRagdoll = false, antiPaint = true, antiBoogie = true, antiBee = true,
+ antiGummy = true, antiRagdoll = false, antiPaint = true, antiBoogie = true,
  toolAim = true, infJump = true, destroySentry = false, speedOn = true,
  mobileBtns = true, guiLock = false,
  esp = false, tracer = false, antiLag = false,
@@ -5559,21 +5379,21 @@ actionBtn(pageSet, "Reset All Settings", C.danger, function()
  pcall(function() ToggleRefs[k].set(v) end)
  end
 	end
-	if _G.Amateuz_topResetMobilePos then pcall(_G.Amateuz_topResetMobilePos) end
-	if _G.Amateuz_topApplyMobile then pcall(_G.Amateuz_topApplyMobile) end
-	if _G.Amateuz_topRefreshModeCards then pcall(_G.Amateuz_topRefreshModeCards) end
+	if _G.XDResetMobilePos then pcall(_G.XDResetMobilePos) end
+	if _G.XDApplyMobile then pcall(_G.XDApplyMobile) end
+	if _G.XDRefreshModeCards then pcall(_G.XDRefreshModeCards) end
 	pcall(applyMenuScale)
-	if _G.Amateuz_topSyncAutoSteal then pcall(_G.Amateuz_topSyncAutoSteal) end
+	if _G.XDSyncAutoSteal then pcall(_G.XDSyncAutoSteal) end
 	pcall(saveCfg)
 	showToast("RESET ALL ✓ Free Sell La Tuat Ngu Lon")
 end, 32)
-actionBtn(pageSet, "Save Now", C.danger, function()
+actionBtn(pageSet, "Save Now", C.accent, function()
 	-- snapshot vị trí menu / mini / bar trước khi ghi
 	pcall(function()
  if Main then
  St._mainPos = {Main.Position.X.Scale, Main.Position.X.Offset, Main.Position.Y.Scale, Main.Position.Y.Offset}
  end
- local mini = PlayerGui:FindFirstChild("Amateuz_topHubFullMini")
+ local mini = PlayerGui:FindFirstChild("XDHubFullMini")
  local mb = mini and mini:FindFirstChildWhichIsA("GuiObject")
  if mb then
  St._miniPos = {mb.Position.X.Scale, mb.Position.X.Offset, mb.Position.Y.Scale, mb.Position.Y.Offset}
@@ -5592,7 +5412,7 @@ end, 33)
 -- MINI + CLOSE (no keybind)
 ----------------------------------------------------------------
 local MiniGui = Instance.new("ScreenGui")
-MiniGui.Name = "Amateuz_topHubFullMini"
+MiniGui.Name = "XDHubFullMini"
 MiniGui.ResetOnSpawn = false
 MiniGui.IgnoreGuiInset = true
 MiniGui.DisplayOrder = 121
@@ -5602,7 +5422,7 @@ local Mini = Instance.new("TextButton")
 Mini.Size = UDim2.new(0, 110, 0, 36)
 Mini.Position = UDim2.new(0, 14, 0, 90)
 Mini.BackgroundColor3 = Color3.fromRGB(18, 18, 26)
-Mini.Text = "Amateuz_top"
+Mini.Text = "XD"
 Mini.TextColor3 = C.accent
 Mini.TextSize = 12
 Mini.Font = Enum.Font.GothamBold
@@ -5708,7 +5528,7 @@ function closeMenu()
  end
  end)
  Mini.Visible = true
- Mini.Text = "Amateuz_top"
+ Mini.Text = "XD"
  -- Giữ vị trí mini đã lưu; nếu chưa có thì đặt gần chỗ menu
  pcall(function()
  local p = St._miniPos
@@ -5735,7 +5555,7 @@ end
 -- MOBILE: 3 mode + Drop + Insta + TP
 ----------------------------------------------------------------
 local ModeGui = Instance.new("ScreenGui")
-ModeGui.Name = "Amateuz_topHubModeBar"
+ModeGui.Name = "XDHubModeBar"
 ModeGui.ResetOnSpawn = false
 ModeGui.IgnoreGuiInset = true
 ModeGui.DisplayOrder = 2501
@@ -5743,7 +5563,7 @@ ModeGui.Enabled = false
 ModeGui.Parent = PlayerGui
 
 local ActGui = Instance.new("ScreenGui")
-ActGui.Name = "Amateuz_topHubActionButtons"
+ActGui.Name = "XDHubActionButtons"
 ActGui.ResetOnSpawn = false
 ActGui.IgnoreGuiInset = true
 ActGui.DisplayOrder = 2500
@@ -5824,14 +5644,14 @@ function applyEmpireBtnBg(btn, index)
 	local list = MOB_BTN_IMAGE_IDS
 	local id = list[((tonumber(index) or 1) - 1) % #list + 1]
 	if not id or id <= 0 then return end
-	-- nền đậm hơn (Amateuz_top style) nhưng chữ vẫn đọc được
-	btn.BackgroundTransparency = 0
-	btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	-- nền đậm hơn (XD style) nhưng chữ vẫn đọc được
+	btn.BackgroundTransparency = 0.35
+	btn.BackgroundColor3 = Color3.fromRGB(8, 8, 12)
 	local bgImg = Instance.new("ImageLabel")
 	bgImg.Name = "BtnBgImage"
 	bgImg.BackgroundTransparency = 1
 	bgImg.Image = "rbxassetid://" .. tostring(id)
-	bgImg.ImageTransparency = 1 -- solid black button: hide image completely
+	bgImg.ImageTransparency = 0.08 -- đậm hơn (thấp = rõ ảnh hơn)
 	bgImg.ScaleType = Enum.ScaleType.Crop
 	bgImg.Size = UDim2.new(1, 0, 1, 0)
 	bgImg.ZIndex = (btn.ZIndex or 1)
@@ -5843,7 +5663,7 @@ function applyEmpireBtnBg(btn, index)
 	dim.Name = "BtnDim"
 	dim.Size = UDim2.new(1, 0, 1, 0)
 	dim.BackgroundColor3 = Color3.new(0, 0, 0)
-	dim.BackgroundTransparency = 0 -- fully black overlay
+	dim.BackgroundTransparency = 0.45
 	dim.BorderSizePixel = 0
 	dim.ZIndex = (btn.ZIndex or 1) + 1
 	dim.Active = false
@@ -5873,8 +5693,8 @@ function applyEmpireBtnBg(btn, index)
  g.Name = "EmpireOutlineGrad"
  g.Color = ColorSequence.new({
  ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
- ColorSequenceKeypoint.new(0.35, Color3.fromRGB(255, 255, 255)),
- ColorSequenceKeypoint.new(0.7, Color3.fromRGB(255, 255, 255)),
+ ColorSequenceKeypoint.new(0.35, Color3.fromRGB(255, 80, 180)),
+ ColorSequenceKeypoint.new(0.7, Color3.fromRGB(180, 80, 255)),
  ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 255, 255)),
  })
  g.Parent = st
@@ -5889,12 +5709,12 @@ function applyEmpireBtnBg(btn, index)
 end
 
 ----------------------------------------------------------------
--- SPEED V2 MODE BAR (full GUI from Amateuz_top Clean) — 3 mode
+-- SPEED V2 MODE BAR (full GUI from XD Clean) — 3 mode
 ----------------------------------------------------------------
 local v2BarButtons = {}
-function _G.Amateuz_topBuildV2ModeBar()
+function _G.XDBuildV2ModeBar()
 	pcall(function()
- local old = PlayerGui:FindFirstChild("Amateuz_topV2ModeBar")
+ local old = PlayerGui:FindFirstChild("XDV2ModeBar")
  if old then old:Destroy() end
 	end)
 	if not St.mobileBtns then return end
@@ -5904,13 +5724,24 @@ function _G.Amateuz_topBuildV2ModeBar()
 	local V2_BTN_H = math.max(28, math.floor(modeBase * sc))
 	local V2_BTN_W = math.max(72, math.floor(88 * sc)) -- rộng ổn định, không phình theo size
 	local V2_CORNER = 12	local MODE_COLORS = {
-  Normal = { onBg = Color3.fromRGB(0, 0, 0), onTxt = Color3.fromRGB(255, 255, 255), offBg = Color3.fromRGB(0, 0, 0), offTxt = Color3.fromRGB(255, 255, 255), stroke = Color3.fromRGB(255, 255, 255) },
-  Lagger = { onBg = Color3.fromRGB(0, 0, 0), onTxt = Color3.fromRGB(255, 255, 255), offBg = Color3.fromRGB(0, 0, 0), offTxt = Color3.fromRGB(255, 255, 255), stroke = Color3.fromRGB(255, 255, 255) },
-  Custom = { onBg = Color3.fromRGB(0, 0, 0), onTxt = Color3.fromRGB(255, 255, 255), offBg = Color3.fromRGB(0, 0, 0), offTxt = Color3.fromRGB(255, 255, 255), stroke = Color3.fromRGB(255, 255, 255) },
-  }
-
+ Normal = {
+ onBg = Color3.fromRGB(255, 200, 210), onTxt = Color3.fromRGB(30, 20, 30),
+ offBg = Color3.fromRGB(255, 255, 255), offTxt = Color3.fromRGB(25, 25, 30),
+ stroke = Color3.fromRGB(255, 160, 180),
+ },
+ Lagger = {
+ onBg = Color3.fromRGB(255, 200, 210), onTxt = Color3.fromRGB(30, 20, 30),
+ offBg = Color3.fromRGB(255, 255, 255), offTxt = Color3.fromRGB(25, 25, 30),
+ stroke = Color3.fromRGB(255, 160, 180),
+ },
+ Custom = {
+ onBg = Color3.fromRGB(255, 200, 210), onTxt = Color3.fromRGB(30, 20, 30),
+ offBg = Color3.fromRGB(255, 255, 255), offTxt = Color3.fromRGB(25, 25, 30),
+ stroke = Color3.fromRGB(255, 160, 180),
+ },
+	}
 	local gui = Instance.new("ScreenGui")
-	gui.Name = "Amateuz_topV2ModeBar"
+	gui.Name = "XDV2ModeBar"
 	gui.ResetOnSpawn = false
 	gui.IgnoreGuiInset = true
 	gui.DisplayOrder = 95
@@ -5919,13 +5750,13 @@ function _G.Amateuz_topBuildV2ModeBar()
 	v2BarButtons = {}
 	local function styleV2Btn(btn, modeName, active)
  local col = MODE_COLORS[modeName] or MODE_COLORS.Normal
- btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
- btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+ btn.BackgroundColor3 = active and col.onBg or col.offBg
+ btn.TextColor3 = active and col.onTxt or col.offTxt
  local st = btn:FindFirstChildOfClass("UIStroke")
  if st then
- st.Color = Color3.fromRGB(255, 255, 255)
- st.Transparency = 0
- st.Thickness = 2
+ st.Color = active and col.stroke or Color3.fromRGB(210, 210, 220)
+ st.Transparency = active and 0.15 or 0.35
+ st.Thickness = active and 1.5 or 1
  end
 	end
 	local function posFromSaved(modeName, order)
@@ -5959,9 +5790,9 @@ function _G.Amateuz_topBuildV2ModeBar()
  local btn = Instance.new("TextButton")
  btn.Name = "V2Bar_" .. modeName
  btn.Size = UDim2.new(1, 0, 1, 0)
- btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+ btn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
  btn.Text = label
- btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+ btn.TextColor3 = Color3.fromRGB(25, 25, 30)
  btn.Font = Enum.Font.GothamBlack
  btn.TextSize = 13
  btn.AutoButtonColor = false
@@ -6036,7 +5867,7 @@ function _G.Amateuz_topBuildV2ModeBar()
 	makeV2ModeBtn("Normal", "NORMAL", 1)
 	makeV2ModeBtn("Lagger", "LAGGER", 2)
 	makeV2ModeBtn("Custom", "CUSTOM", 3)
-	_G.Amateuz_topRefreshV2ModeBar = function()
+	_G.XDRefreshV2ModeBar = function()
  for n, e in pairs(v2BarButtons) do
  if e and e.btn then styleV2Btn(e.btn, n, St.activeMode == n) end
  end
@@ -6072,10 +5903,10 @@ function makeModeBtn(name, order)
 	local btn = Instance.new("TextButton")
 	btn.Name = "ModeBtn"
 	btn.Size = UDim2.new(1, 0, 1, 0)
-	btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	btn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 	btn.Text = name:upper()
 	if name == "Normal" then btn.Text = "NORMAL" end
-	btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+	btn.TextColor3 = Color3.fromRGB(25, 25, 30)
 	btn.Font = Enum.Font.GothamBlack
 	btn.TextSize = math.clamp(math.floor(h * 0.36), 11, 14)
 	btn.AutoButtonColor = false
@@ -6090,11 +5921,17 @@ function makeModeBtn(name, order)
 	st.Color = Color3.fromRGB(210, 210, 220)
 	st.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 	local function styleMode(on)
- btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
- btn.TextColor3 = Color3.fromRGB(255, 255, 255)
- st.Color = Color3.fromRGB(255, 255, 255)
- st.Transparency = 0
- st.Thickness = 2
+ if on then
+ btn.BackgroundColor3 = Color3.fromRGB(255, 200, 210)
+ btn.TextColor3 = Color3.fromRGB(30, 20, 30)
+ st.Color = Color3.fromRGB(255, 160, 180)
+ st.Transparency = 0.1
+ else
+ btn.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+ btn.TextColor3 = Color3.fromRGB(25, 25, 30)
+ st.Color = Color3.fromRGB(210, 210, 220)
+ st.Transparency = 0.35
+ end
 	end
 	styleMode(St.activeMode == name)
 	local dragging, dragStart, startPos, moved = false, nil, nil, false
@@ -6129,7 +5966,7 @@ function makeModeBtn(name, order)
  elseif e and e.btn then
  local on = St.activeMode == n
  e.btn.BackgroundColor3 = on and Color3.fromRGB(255, 200, 210) or Color3.fromRGB(255, 255, 255)
- e.btn.TextColor3 = on and C.text or Color3.fromRGB(25, 25, 30)
+ e.btn.TextColor3 = on and Color3.fromRGB(30, 20, 30) or Color3.fromRGB(25, 25, 30)
  end
  end
  styleMode(true)
@@ -6175,7 +6012,7 @@ function makeActBtn(key, label, pos, cb)
 	holder.Parent = ActGui
 	local btn = Instance.new("TextButton")
 	btn.Size = UDim2.new(1, 0, 1, 0)
-	btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	btn.BackgroundColor3 = Color3.fromRGB(12, 12, 16)
 	btn.Text = label
 	btn.TextColor3 = Color3.fromRGB(255, 255, 255)
 	btn.TextSize = math.clamp(math.floor(sz * 0.22), 10, 16)
@@ -6267,9 +6104,9 @@ function makeActBtn(key, label, pos, cb)
  btn:SetAttribute("_lastTap", tick())
  pcall(cb)
  if key == "sentry" then
- if _G.Amateuz_topRefreshSentryBtn then pcall(_G.Amateuz_topRefreshSentryBtn) end
+ if _G.XDRefreshSentryBtn then pcall(_G.XDRefreshSentryBtn) end
  elseif key == "steal" then
- if _G.Amateuz_topRefreshStealBtn then pcall(_G.Amateuz_topRefreshStealBtn) end
+ if _G.XDRefreshStealBtn then pcall(_G.XDRefreshStealBtn) end
  end
  end
  else
@@ -6285,8 +6122,8 @@ function makeActBtn(key, label, pos, cb)
  if tick() - last < 0.15 then return end
  btn:SetAttribute("_lastTap", tick())
  if cb then pcall(cb) end
- if key == "sentry" and _G.Amateuz_topRefreshSentryBtn then pcall(_G.Amateuz_topRefreshSentryBtn) end
- if key == "steal" and _G.Amateuz_topRefreshStealBtn then pcall(_G.Amateuz_topRefreshStealBtn) end
+ if key == "sentry" and _G.XDRefreshSentryBtn then pcall(_G.XDRefreshSentryBtn) end
+ if key == "steal" and _G.XDRefreshStealBtn then pcall(_G.XDRefreshStealBtn) end
 	end
 	btn.MouseButton1Click:Connect(backupClick)
 	btn.Activated:Connect(backupClick)
@@ -6311,13 +6148,13 @@ function makeActBtn(key, label, pos, cb)
  elseif (not on) and type(stopAutoSteal)=="function" then pcall(stopAutoSteal) end
  end
  applyActBtnState(btn, St.autoSteal == true, "STEAL\nON", "AUTO\nSTEAL")
- if _G.Amateuz_topRefreshStealBtn then pcall(_G.Amateuz_topRefreshStealBtn) end
+ if _G.XDRefreshStealBtn then pcall(_G.XDRefreshStealBtn) end
  else
  local on = not (St.destroySentry == true)
  if type(setDestroySentry) == "function" then pcall(setDestroySentry, on)
  else St.destroySentry = on end
  applyActBtnState(btn, St.destroySentry == true, "SENTRY\nON", "SENTRY")
- if _G.Amateuz_topRefreshSentryBtn then pcall(_G.Amateuz_topRefreshSentryBtn) end
+ if _G.XDRefreshSentryBtn then pcall(_G.XDRefreshSentryBtn) end
  end
  end
  btn.MouseButton1Down:Connect(instantToggle)
@@ -6371,13 +6208,13 @@ function rebuildMobile()
  end
  end
  end
- if _G.Amateuz_topBuildV2ModeBar then _G.Amateuz_topBuildV2ModeBar() end
+ if _G.XDBuildV2ModeBar then _G.XDBuildV2ModeBar() end
  if St.speedOn then
  currentSpeedValue = getActiveMoveSpeed()
  pcall(startSpeedBoost)
  end
 	end)
-	makeActBtn("drop", "DROP", UDim2.new(1, -150, 0.5, -40), function() runDrop() if _G.Amateuz_topCounterOnDrop then pcall(_G.Amateuz_topCounterOnDrop) end end)
+	makeActBtn("drop", "DROP", UDim2.new(1, -150, 0.5, -40), function() runDrop() if _G.XDCounterOnDrop then pcall(_G.XDCounterOnDrop) end end)
 	makeActBtn("insta", "INSTA\nRESET", UDim2.new(1, -80, 0.5, -40), doInstaReset)
 	makeActBtn("tp", "TP\nDOWN", UDim2.new(1, -80, 0.5, 30), function() doTPDown(true) end)
 	makeActBtn("sentry", "SENTRY", UDim2.new(1, -150, 0.5, 30), function()
@@ -6387,7 +6224,7 @@ function rebuildMobile()
  else
  St.destroySentry = on
  end
- if _G.Amateuz_topRefreshSentryBtn then pcall(_G.Amateuz_topRefreshSentryBtn) end
+ if _G.XDRefreshSentryBtn then pcall(_G.XDRefreshSentryBtn) end
 	end)
 	makeActBtn("steal", "AUTO\nSTEAL", UDim2.new(1, -150, 0.5, 100), function()
  local on = not (St.autoSteal == true)
@@ -6400,7 +6237,7 @@ function rebuildMobile()
  autoStealEnabled = on
  if on and startAutoSteal then startAutoSteal() elseif stopAutoSteal then stopAutoSteal() end
  end
- if _G.Amateuz_topRefreshStealBtn then pcall(_G.Amateuz_topRefreshStealBtn) end
+ if _G.XDRefreshStealBtn then pcall(_G.XDRefreshStealBtn) end
  if ToggleRefs and ToggleRefs.autoSteal and ToggleRefs.autoSteal.setVisual then
  pcall(ToggleRefs.autoSteal.setVisual, St.autoSteal == true)
  end
@@ -6412,9 +6249,9 @@ function rebuildMobile()
 	for key, e in pairs(modeRefs) do
  if e.holder then restorePos(e.holder, "M_" .. key) end
 	end
-	_G.Amateuz_topRefreshModeBar()
-	_G.Amateuz_topRefreshSentryBtn()
-	if _G.Amateuz_topRefreshStealBtn then pcall(_G.Amateuz_topRefreshStealBtn) end
+	_G.XDRefreshModeBar()
+	_G.XDRefreshSentryBtn()
+	if _G.XDRefreshStealBtn then pcall(_G.XDRefreshStealBtn) end
 end
 
 
@@ -6425,12 +6262,12 @@ function applyActBtnState(btn, on, onText, offText)
 	on = on and true or false
 	if on then
  -- Xanh đậm khi BẬT
- btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+ btn.BackgroundColor3 = Color3.fromRGB(0, 130, 45)
  btn.BackgroundTransparency = 0
  btn.TextColor3 = Color3.fromRGB(255, 255, 255)
  if onText then btn.Text = onText end
  local bgImg = btn:FindFirstChild("BtnBgImage")
- if bgImg then bgImg.ImageTransparency = 1 end
+ if bgImg then bgImg.ImageTransparency = 0.75 end
  local dim = btn:FindFirstChild("BtnDim")
  if not dim then
  dim = Instance.new("Frame")
@@ -6444,9 +6281,8 @@ function applyActBtnState(btn, on, onText, offText)
  dc.CornerRadius = UDim.new(0, 8)
  dc.Parent = dim
  end
- dim.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
- dim.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
- dim.BackgroundTransparency = 0
+ dim.BackgroundColor3 = Color3.fromRGB(0, 120, 40)
+ dim.BackgroundTransparency = 0.15
  dim.Visible = true
  local tl = btn:FindFirstChild("BtnTextOverlay")
  if tl then
@@ -6456,18 +6292,18 @@ function applyActBtnState(btn, on, onText, offText)
  tl.ZIndex = (btn.ZIndex or 100) + 6
  end
  local st = btn:FindFirstChild("BtnBorder") or btn:FindFirstChildOfClass("UIStroke")
- if st then st.Color = Color3.fromRGB(255, 255, 255); st.Transparency = 0; st.Thickness = 2.5 end
+ if st then st.Color = Color3.fromRGB(40, 255, 100); st.Transparency = 0; st.Thickness = 2.5 end
 	else
- btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
- btn.BackgroundTransparency = 0
+ btn.BackgroundColor3 = C.btnOff or Color3.fromRGB(16, 16, 22)
+ btn.BackgroundTransparency = 0.35
  btn.TextColor3 = Color3.fromRGB(255, 255, 255)
  if offText then btn.Text = offText end
  local bgImg = btn:FindFirstChild("BtnBgImage")
- if bgImg then bgImg.ImageTransparency = 1 end
+ if bgImg then bgImg.ImageTransparency = 0.08 end
  local dim = btn:FindFirstChild("BtnDim")
  if dim then
  dim.BackgroundColor3 = Color3.new(0, 0, 0)
- dim.BackgroundTransparency = 0
+ dim.BackgroundTransparency = 0.45
  end
  local tl = btn:FindFirstChild("BtnTextOverlay")
  if tl then
@@ -6476,11 +6312,11 @@ function applyActBtnState(btn, on, onText, offText)
  tl.TextStrokeTransparency = 0.35
  end
  local st = btn:FindFirstChildOfClass("UIStroke")
- if st then st.Color = Color3.fromRGB(255, 255, 255); st.Transparency = 0; st.Thickness = 2 end
+ if st then st.Color = Color3.fromRGB(255, 80, 180); st.Transparency = 0.2; st.Thickness = 1.6 end
 	end
 end
 
-function _G.Amateuz_topRefreshStealBtn()
+function _G.XDRefreshStealBtn()
 	local e = actRefs and actRefs.steal
 	if not e or not e.holder then return end
 	local show = (St.showStealBtn ~= false)
@@ -6491,7 +6327,7 @@ function _G.Amateuz_topRefreshStealBtn()
 	end
 end
 
-function _G.Amateuz_topRefreshSentryBtn()
+function _G.XDRefreshSentryBtn()
 	local e = actRefs and actRefs.sentry
 	if e and e.btn then
  applyActBtnState(e.btn, St.destroySentry == true, "SENTRY\nON", "SENTRY")
@@ -6499,7 +6335,7 @@ function _G.Amateuz_topRefreshSentryBtn()
 end
 
 
-function _G.Amateuz_topRefreshModeBar()
+function _G.XDRefreshModeBar()
 	for n, e in pairs(modeRefs) do
  if e and e.btn then
  local on = St.activeMode == n
@@ -6514,7 +6350,7 @@ function _G.Amateuz_topRefreshModeBar()
  tl.Text = n
  end
  local st = e.btn:FindFirstChildOfClass("UIStroke")
- if st then st.Color = Color3.fromRGB(255, 255, 255); st.Transparency = 0 end
+ if st then st.Color = Color3.fromRGB(255, 120, 200); st.Transparency = 0.05 end
  else
  e.btn.BackgroundColor3 = C.modeOffBg or Color3.fromRGB(255, 255, 255)
  e.btn.BackgroundTransparency = 0
@@ -6532,7 +6368,7 @@ function _G.Amateuz_topRefreshModeBar()
 end
 
 -- Cập nhật size + shape TRỰC TIẾP (không destroy → giữ vị trí kéo)
-_G.Amateuz_topForceApplyShape = function(shape)
+_G.XDForceApplyShape = function(shape)
 	shape = shape or (St and St.btnShape) or "Square"
 	if St then St.btnShape = shape end
 	local refs = actRefs
@@ -6547,7 +6383,7 @@ _G.Amateuz_topForceApplyShape = function(shape)
 	end
 end
 
-function _G.Amateuz_topUpdateMobileVisuals()
+function _G.XDUpdateMobileVisuals()
 	for n, e in pairs(modeRefs) do
  if e and e.holder and e.btn then
  local sc = tonumber(St.btnScale) or 1
@@ -6581,12 +6417,12 @@ function _G.Amateuz_topUpdateMobileVisuals()
  s.Transparency = 0.15
  end
 	end
-	if _G.Amateuz_topRefreshModeBar then pcall(_G.Amateuz_topRefreshModeBar) end
-	if _G.Amateuz_topRefreshSentryBtn then pcall(_G.Amateuz_topRefreshSentryBtn) end
-	if _G.Amateuz_topRefreshStealBtn then pcall(_G.Amateuz_topRefreshStealBtn) end
+	if _G.XDRefreshModeBar then pcall(_G.XDRefreshModeBar) end
+	if _G.XDRefreshSentryBtn then pcall(_G.XDRefreshSentryBtn) end
+	if _G.XDRefreshStealBtn then pcall(_G.XDRefreshStealBtn) end
 	-- Scale Speed V2 mode bar
 	pcall(function()
- local gui = PlayerGui:FindFirstChild("Amateuz_topV2ModeBar")
+ local gui = PlayerGui:FindFirstChild("XDV2ModeBar")
  if not gui then return end
  local sc = tonumber(St.btnScale) or 1
  local modeSz = tonumber(St.btnSizes and St.btnSizes.mode) or 50
@@ -6605,7 +6441,7 @@ function _G.Amateuz_topUpdateMobileVisuals()
 	end)
 end
 
-function _G.Amateuz_topApplyMobile()
+function _G.XDApplyMobile()
 	ModeGui.Enabled = St.mobileBtns == true
 	ActGui.Enabled = St.mobileBtns == true
 	local hasMode = next(modeRefs) ~= nil
@@ -6614,14 +6450,14 @@ function _G.Amateuz_topApplyMobile()
  rebuildMobile()
 	end
 	-- luôn áp shape/size (Box/Round/Square) kể cả khi đã có nút
-	if _G.Amateuz_topUpdateMobileVisuals then pcall(_G.Amateuz_topUpdateMobileVisuals) end
+	if _G.XDUpdateMobileVisuals then pcall(_G.XDUpdateMobileVisuals) end
 end
-function _G.Amateuz_topResetMobilePos()
+function _G.XDResetMobilePos()
 	St._btnPos = {}
 	rebuildMobile()
 	pcall(saveCfg)
 end
-_G.Amateuz_topApplyMobile()
+_G.XDApplyMobile()
 
 ----------------------------------------------------------------
 -- KEYBINDS (Drop / TP / Insta / Mode) — no menu toggle key
@@ -6702,8 +6538,6 @@ function reapplyAllLogic(reason)
  St.antiPaint = true
  end
 	end)
-	-- RARA Anti Bee
-	pcall(function() setAntiBee(St.antiBee ~= false) end)
 	-- Tool aim + rehook
 	pcall(function()
  if St.toolAim then
@@ -6731,7 +6565,7 @@ function reapplyAllLogic(reason)
 	pcall(function()
  if St.autoSteal then
  if type(setAutoSteal) == "function" then setAutoSteal(true) end
- if _G.Amateuz_topSyncAutoSteal then pcall(_G.Amateuz_topSyncAutoSteal) end
+ if _G.XDSyncAutoSteal then pcall(_G.XDSyncAutoSteal) end
  end
 	end)
 	-- Ragdoll TP
@@ -6741,7 +6575,7 @@ function reapplyAllLogic(reason)
 	pcall(function()
  if ModeGui then ModeGui.Enabled = St.mobileBtns == true end
  if ActGui then ActGui.Enabled = St.mobileBtns == true end
- if _G.Amateuz_topApplyMobile then pcall(_G.Amateuz_topApplyMobile) end
+ if _G.XDApplyMobile then pcall(_G.XDApplyMobile) end
 	end)
 	-- Sync toggle UI + ép logic chạy nếu đang ON
 	pcall(function()
@@ -6755,13 +6589,12 @@ function reapplyAllLogic(reason)
  end
 	end)
 end
-_G.Amateuz_topReapplyAllLogic = reapplyAllLogic
+_G.XDReapplyAllLogic = reapplyAllLogic
 
 
 -- Re-apply ALL saved states so toggles that show ON actually work
 pcall(function() setAntiGummy(St.antiGummy ~= false) end)
 pcall(function() setAntiBoogie(St.antiBoogie ~= false) end)
-pcall(function() setAntiBee(St.antiBee ~= false) end)
 pcall(function() setAntiPaint(St.antiPaint ~= false) end)
 pcall(function() setAntiRagdoll(St.antiRagdoll == true) end)
 pcall(function() setToolAim(St.toolAim ~= false) end)
@@ -6780,8 +6613,8 @@ task.defer(function()
  if type(setAutoSteal) == "function" then
  setAutoSteal(St.autoSteal == true)
  end
- if St.autoSteal and _G.Amateuz_topSyncAutoSteal then
- pcall(_G.Amateuz_topSyncAutoSteal)
+ if St.autoSteal and _G.XDSyncAutoSteal then
+ pcall(_G.XDSyncAutoSteal)
  end
 	end)
 end)
@@ -6818,7 +6651,7 @@ task.defer(function()
  if ModeGui then ModeGui.Enabled = St.mobileBtns == true end
  if ActGui then ActGui.Enabled = St.mobileBtns == true end
  if next(modeRefs) == nil or next(actRefs) == nil then
- if _G.Amateuz_topApplyMobile then _G.Amateuz_topApplyMobile() end
+ if _G.XDApplyMobile then _G.XDApplyMobile() end
  end
 	end)
 	pcall(function() if St.activeMode and setActiveMode then setActiveMode(St.activeMode) end end)
@@ -6845,12 +6678,12 @@ _G._VisHubCharReapplyConn = LP.CharacterAdded:Connect(function(char)
  if St.infJump and setInfJump then setInfJump(true) end
  if St.antiRagdoll and startAntiRagdoll then startAntiRagdoll() end
  if St.toolAim and setToolAim then setToolAim(true) end
- if St.autoSteal and _G.Amateuz_topSyncAutoSteal then pcall(_G.Amateuz_topSyncAutoSteal) end
+ if St.autoSteal and _G.XDSyncAutoSteal then pcall(_G.XDSyncAutoSteal) end
  end
 	end)
 end)
 
-print("[Amateuz_top Full] Player(Anti+Speed S2+Aim+Drop+Insta) | ESP | Settings mobile/lock/shape/size")
+print("[XD Full] Player(Anti+Speed S2+Aim+Drop+Insta) | ESP | Settings mobile/lock/shape/size")
 
 
 
@@ -6968,22 +6801,22 @@ function executeStealV1(prompt, part)
  local t0 = tick()
  while tick() - t0 < dur * pausePct do
  if not StealA.enabled or not stillInRange() then
- _G.Amateuz_topStealBar.Reset()
+ _G.XDStealBar.Reset()
  StealA.busy = false
  return
  end
  local p = (tick() - t0) / dur
- _G.Amateuz_topStealBar.Set(math.clamp(p, 0, pausePct), "STEALING")
+ _G.XDStealBar.Set(math.clamp(p, 0, pausePct), "STEALING")
  task.wait()
  end
- _G.Amateuz_topStealBar.Set(pausePct, "WAIT")
+ _G.XDStealBar.Set(pausePct, "WAIT")
  -- wait until close
  while StealA.enabled and stillInRange() and not closeEnough() do
- _G.Amateuz_topStealBar.Set(pausePct, "WAIT")
+ _G.XDStealBar.Set(pausePct, "WAIT")
  task.wait(0.05)
  end
  if not StealA.enabled or not stillInRange() then
- _G.Amateuz_topStealBar.Reset()
+ _G.XDStealBar.Reset()
  StealA.busy = false
  return
  end
@@ -6991,12 +6824,12 @@ function executeStealV1(prompt, part)
  local remain = dur * (1 - pausePct)
  while tick() - t1 < remain do
  if not StealA.enabled or not stillInRange() then
- _G.Amateuz_topStealBar.Reset()
+ _G.XDStealBar.Reset()
  StealA.busy = false
  return
  end
  local p = pausePct + (tick() - t1) / remain * (1 - pausePct)
- _G.Amateuz_topStealBar.Set(p, "STEALING")
+ _G.XDStealBar.Set(p, "STEALING")
  task.wait()
  end
  else
@@ -7005,23 +6838,23 @@ function executeStealV1(prompt, part)
  local t0 = tick()
  while tick() - t0 < dur do
  if not StealA.enabled or not stillInRange() then
- _G.Amateuz_topStealBar.Reset()
+ _G.XDStealBar.Reset()
  StealA.busy = false
  return
  end
- _G.Amateuz_topStealBar.Set((tick() - t0) / dur, "STEALING")
+ _G.XDStealBar.Set((tick() - t0) / dur, "STEALING")
  task.wait()
  end
- _G.Amateuz_topStealBar.Set(1, "SUCCESS")
+ _G.XDStealBar.Set(1, "SUCCESS")
  fireSteal(prompt)
- _G.Amateuz_topStealBar.Reset() -- 100% → 0 ngay, loop tiếp trong radius
+ _G.XDStealBar.Reset() -- 100% → 0 ngay, loop tiếp trong radius
  end
  StealA.busy = false
  return
  end
- _G.Amateuz_topStealBar.Set(1, "SUCCESS")
+ _G.XDStealBar.Set(1, "SUCCESS")
  fireSteal(prompt)
- _G.Amateuz_topStealBar.Reset() -- 100% → 0 ngay
+ _G.XDStealBar.Reset() -- 100% → 0 ngay
  StealA.busy = false
  -- tiếp tục nếu còn trong radius (heartbeat startAutoSteal sẽ pick lại)
 	end)
@@ -7036,27 +6869,27 @@ function executeStealV2(prompt, part)
  local t0 = tick()
  while tick() - t0 < dur do
  if not StealA.enabled then
- _G.Amateuz_topStealBar.Reset()
+ _G.XDStealBar.Reset()
  StealA.busy = false
  return
  end
  local r = LP.Character and LP.Character:FindFirstChild("HumanoidRootPart")
  if not r or not part or not part.Parent then
- _G.Amateuz_topStealBar.Reset()
+ _G.XDStealBar.Reset()
  StealA.busy = false
  return
  end
  if (r.Position - part.Position).Magnitude > (St.stealRadius or 60) then
- _G.Amateuz_topStealBar.Reset()
+ _G.XDStealBar.Reset()
  StealA.busy = false
  return
  end
- _G.Amateuz_topStealBar.Set((tick() - t0) / dur, "STEALING")
+ _G.XDStealBar.Set((tick() - t0) / dur, "STEALING")
  task.wait()
  end
- _G.Amateuz_topStealBar.Set(1, "SUCCESS")
+ _G.XDStealBar.Set(1, "SUCCESS")
  fireSteal(prompt)
- _G.Amateuz_topStealBar.Reset() -- 100% → 0 ngay
+ _G.XDStealBar.Reset() -- 100% → 0 ngay
  StealA.busy = false
 	end)
 end
@@ -7083,7 +6916,7 @@ function stopAutoSteal()
 	-- Chỉ về 0%, KHÔNG ẩn / destroy steal bar
 	_G.AceStealBarProgress = 0
 	pcall(function() if _G.StealBar and _G.StealBar.Reset then _G.StealBar.Reset() end end)
-	pcall(function() if _G.Amateuz_topStealBar and _G.Amateuz_topStealBar.Reset then _G.Amateuz_topStealBar.Reset() end end)
+	pcall(function() if _G.XDStealBar and _G.XDStealBar.Reset then _G.XDStealBar.Reset() end end)
 end
 function setAutoSteal(on)
 	-- exported below
@@ -7092,17 +6925,17 @@ function setAutoSteal(on)
 	autoStealRadius = tonumber(St.stealRadius) or 60
 	selectedStealMode = St.stealVer or "V1"
 	if St.autoSteal then startAutoSteal() else stopAutoSteal() end
-	if _G.Amateuz_topSyncAutoSteal then pcall(_G.Amateuz_topSyncAutoSteal) end
-	if _G.Amateuz_topRefreshStealBtn then pcall(_G.Amateuz_topRefreshStealBtn) end
+	if _G.XDSyncAutoSteal then pcall(_G.XDSyncAutoSteal) end
+	if _G.XDRefreshStealBtn then pcall(_G.XDRefreshStealBtn) end
 	-- đảm bảo nút mobile tồn tại
-	if St.autoSteal and (not actRefs or not actRefs.steal) and _G.Amateuz_topApplyMobile then
- pcall(_G.Amateuz_topApplyMobile)
+	if St.autoSteal and (not actRefs or not actRefs.steal) and _G.XDApplyMobile then
+ pcall(_G.XDApplyMobile)
 	end
 	saveCfg()
 end
 
 ----------------------------------------------------------------
--- PANEL TP (from Amateuz_top, no music / no image / no sentry)
+-- PANEL TP (from XD, no music / no image / no sentry)
 ----------------------------------------------------------------
 local TP = {
 	base = nil, pet = nil,
@@ -7122,7 +6955,7 @@ function tpMarker(pos, col)
 	P.CanCollide = false
 	P.Position = pos + Vector3.new(0, 2, 0)
 	P.Color = col
-	P.Name = "Amateuz_topTP_SavePoint"
+	P.Name = "XDTP_SavePoint"
 	P.Parent = workspace
 	return P
 end
@@ -7209,16 +7042,16 @@ function runPanelTP()
  end
  end)
  TP.busy = false
- if _G.Amateuz_topRefreshTPBtn then _G.Amateuz_topRefreshTPBtn() end
+ if _G.XDRefreshTPBtn then _G.XDRefreshTPBtn() end
 	end)
 end
 
 -- Panel TP GUI (popup)
 function openPanelTP()
-	local old = PlayerGui:FindFirstChild("Amateuz_topPanelTP")
+	local old = PlayerGui:FindFirstChild("XDPanelTP")
 	if old then old:Destroy() end
 	local gui = Instance.new("ScreenGui")
-	gui.Name = "Amateuz_topPanelTP"
+	gui.Name = "XDPanelTP"
 	gui.ResetOnSpawn = false
 	gui.IgnoreGuiInset = true
 	gui.DisplayOrder = 130
@@ -7322,7 +7155,7 @@ function openPanelTP()
  if TP.markers.base then TP.markers.base:Destroy() end
  TP.markers.base = tpMarker(TP.base, Color3.fromRGB(255, 105, 180))
  showToast("BASE SAVED")
- if _G.Amateuz_topRefreshTPBtn then _G.Amateuz_topRefreshTPBtn() end
+ if _G.XDRefreshTPBtn then _G.XDRefreshTPBtn() end
 	end)
 	mkBtn("Luu Pet (diem 2)", 84, Color3.fromRGB(200, 120, 40), function()
  local hrp = LP.Character and LP.Character:FindFirstChild("HumanoidRootPart")
@@ -7331,7 +7164,7 @@ function openPanelTP()
  if TP.markers.pet then TP.markers.pet:Destroy() end
  TP.markers.pet = tpMarker(TP.pet, Color3.fromRGB(255, 140, 0))
  showToast("PET SAVED")
- if _G.Amateuz_topRefreshTPBtn then _G.Amateuz_topRefreshTPBtn() end
+ if _G.XDRefreshTPBtn then _G.XDRefreshTPBtn() end
 	end)
 	mkBtn("Xoa diem", 124, Color3.fromRGB(80, 40, 40), function()
  TP.base, TP.pet = nil, nil
@@ -7339,7 +7172,7 @@ function openPanelTP()
  if TP.markers.pet then TP.markers.pet:Destroy() end
  TP.markers = {}
  showToast("CLEARED")
- if _G.Amateuz_topRefreshTPBtn then _G.Amateuz_topRefreshTPBtn() end
+ if _G.XDRefreshTPBtn then _G.XDRefreshTPBtn() end
 	end)
 	mkBtn("TP NOW", 164, Color3.fromRGB(90, 70, 180), function()
  runPanelTP()
@@ -7400,7 +7233,7 @@ end
 -- Center TP button when 2 points saved
 do
 	local tpg = Instance.new("ScreenGui")
-	tpg.Name = "Amateuz_topCenterTP"
+	tpg.Name = "XDCenterTP"
 	tpg.ResetOnSpawn = false
 	tpg.IgnoreGuiInset = true
 	tpg.DisplayOrder = 1002
@@ -7420,7 +7253,7 @@ do
 	local bst = Instance.new("UIStroke", btn)
 	bst.Color = Color3.fromRGB(140, 100, 255)
 	btn.MouseButton1Click:Connect(runPanelTP)
-	function _G.Amateuz_topRefreshTPBtn()
+	function _G.XDRefreshTPBtn()
  local has = TP.base ~= nil or TP.pet ~= nil
  btn.Visible = has
  local kn = tostring(TP.key):gsub("Enum.KeyCode.", "")
@@ -7443,7 +7276,7 @@ end)
 
 
 ----------------------------------------------------------------
--- BODY LOCK (full Amateuz_top Clean / BloodHounds)
+-- BODY LOCK (full XD Clean / BloodHounds)
 ----------------------------------------------------------------
 local bodyLockEnabled = false
 local bodyLockRange = 20
@@ -7612,7 +7445,7 @@ end
 ----------------------------------------------------------------
 task.defer(function()
 	-- Auto steal on Player page
-	if not pagePlayer then warn("[Amateuz_top] pagePlayer nil") return end
+	if not pagePlayer then warn("[XD] pagePlayer nil") return end
 	section(pagePlayer, "* — AUTO STEAL", 20)
 	local function safeSetAS(on)
  if type(setAutoSteal) == "function" then
@@ -7640,7 +7473,7 @@ task.defer(function()
  b.Position = UDim2.new(1, -140 + (i - 1) * 44, 0.5, -13)
  b.BackgroundColor3 = (St.stealVer == name) and C.accent or C.box
  b.Text = name
- b.TextColor3 = (St.stealVer == name) and C.text or C.text
+ b.TextColor3 = (St.stealVer == name) and Color3.fromRGB(30, 20, 30) or C.text
  b.TextSize = 11
  b.Font = Enum.Font.GothamBold
  b.AutoButtonColor = false
@@ -7654,7 +7487,7 @@ task.defer(function()
  if ch:IsA("TextButton") then
  local on = ch.Text == St.stealVer
  ch.BackgroundColor3 = on and C.accent or C.box
- ch.TextColor3 = on and C.text or C.text
+ ch.TextColor3 = on and Color3.fromRGB(30, 20, 30) or C.text
  end
  end
  -- apply mode immediately (fix non-responsive V1/V2/V3)
@@ -7665,8 +7498,8 @@ task.defer(function()
  autoStealRadius = tonumber(St.stealRadius) or 60
  if type(setAutoSteal) == "function" and St.autoSteal then
  pcall(function() setAutoSteal(true) end)
- elseif _G.Amateuz_topSyncAutoSteal then
- pcall(_G.Amateuz_topSyncAutoSteal)
+ elseif _G.XDSyncAutoSteal then
+ pcall(_G.XDSyncAutoSteal)
  end
  pcall(saveCfg)
  end
@@ -7675,8 +7508,8 @@ task.defer(function()
 	end
 	toggleNamed(pagePlayer, "Pause (chi khi ON)", St.stealPause == true, function(on)
  St.stealPause = on and true or false
- _G.Amateuz_topStealPause = St.stealPause
- if _G.Amateuz_topSyncAutoSteal then pcall(_G.Amateuz_topSyncAutoSteal) end
+ _G.XDStealPause = St.stealPause
+ if _G.XDSyncAutoSteal then pcall(_G.XDSyncAutoSteal) end
  saveCfg()
 	end, 23, "stealPause")
 	-- radius box
@@ -7712,7 +7545,7 @@ task.defer(function()
  b.Position = UDim2.new(0, 12 + (i - 1) * 80, 0.5, -13)
  b.BackgroundColor3 = (St.infJumpMode == name) and C.accent or C.box
  b.Text = name
- b.TextColor3 = (St.infJumpMode == name) and C.text or C.text
+ b.TextColor3 = (St.infJumpMode == name) and Color3.fromRGB(30, 20, 30) or C.text
  b.TextSize = 11
  b.Font = Enum.Font.GothamBold
  b.Parent = ij
@@ -7723,7 +7556,7 @@ task.defer(function()
  if ch:IsA("TextButton") then
  local on = ch.Text == St.infJumpMode
  ch.BackgroundColor3 = on and C.accent or C.box
- ch.TextColor3 = on and C.text or C.text
+ ch.TextColor3 = on and Color3.fromRGB(30, 20, 30) or C.text
  end
  end
  end)
@@ -7732,7 +7565,7 @@ task.defer(function()
 	setTab("Panel")
 end)
 
-print("[Amateuz_top Ext] Panel TP | AutoSteal V1/V2 + bar | InfJump hold/manual | ToolAim ON")
+print("[XD Ext] Panel TP | AutoSteal V1/V2 + bar | InfJump hold/manual | ToolAim ON")
 
 
 
@@ -7939,7 +7772,7 @@ local tpBestBusy = false
 function tpToBestChilli()
 	-- removed per request
 end
-_G.Amateuz_topTpToBest = tpToBestChilli
+_G.XDTpToBest = tpToBestChilli
 
 -- UI: button on Panel + mobile + keybind
 St.keys.TpBest = St.keys.TpBest or Enum.KeyCode.B
@@ -7972,7 +7805,7 @@ end)
 -- Mobile external button
 task.defer(function()
 	local g = Instance.new("ScreenGui")
-	g.Name = "Amateuz_topTpBestBtn"
+	g.Name = "XDTpBestBtn"
 	g.Enabled = false -- removed TP BEST
 	g.ResetOnSpawn = false
 	g.IgnoreGuiInset = true
@@ -8025,7 +7858,7 @@ end)
 
 
 ----------------------------------------------------------------
--- OVERHEAD: real speed + discord (from Amateuz_top)
+-- OVERHEAD: real speed + discord (from XD)
 ----------------------------------------------------------------
 local overheadGui, overheadSpeedLabel
 function setupOverheadInfo(char)
@@ -8038,12 +7871,12 @@ function setupOverheadInfo(char)
  if not head then return end
 	end
 	pcall(function()
- local old = head:FindFirstChild("Amateuz_topOverheadInfo")
+ local old = head:FindFirstChild("XDOverheadInfo")
  if old then old:Destroy() end
 	end)
 	if overheadGui then pcall(function() overheadGui:Destroy() end) end
 	overheadGui = Instance.new("BillboardGui")
-	overheadGui.Name = "Amateuz_topOverheadInfo"
+	overheadGui.Name = "XDOverheadInfo"
 	overheadGui.Size = UDim2.new(0, 300, 0, 96)
 	overheadGui.StudsOffset = Vector3.new(0, 2.8, 0)
 	overheadGui.AlwaysOnTop = true
@@ -8110,19 +7943,19 @@ if not _G._VisOverheadLoop then
 end
 
 
-print("[Amateuz_top] TP TO BEST (Chilli) ready | key B | nut TP BEST")
+print("[XD] TP TO BEST (Chilli) ready | key B | nut TP BEST")
 
 
 
 -- ============================================================
 -- LOAD FULL VIS AUTO STEAL (V1 / Semi V1-V2 / V3)
 -- ============================================================
-_G.Amateuz_topStealPause = (St.stealPause == true)
+_G.XDStealPause = (St.stealPause == true)
 task.spawn(function()
 	local src
 	pcall(function()
- if readfile and isfile and isfile("Amateuz_top_Auto_Steal_Embedded.lua") then
- src = readfile("Amateuz_top_Auto_Steal_Embedded.lua")
+ if readfile and isfile and isfile("XD_Auto_Steal_Embedded.lua") then
+ src = readfile("XD_Auto_Steal_Embedded.lua")
  end
 	end)
 	-- fallback: try workspace artifact path won't work in-game; embed minimal wire
@@ -8140,7 +7973,7 @@ task.spawn(function()
 	end
 	-- Wire toggles to Ace sync
 	local function syncSteal()
- _G.Amateuz_topStealPause = (St.stealPause == true)
+ _G.XDStealPause = (St.stealPause == true)
  autoStealEnabled = St.autoSteal == true
  _G.autoStealEnabled = autoStealEnabled
  if St.stealVer == "V1" then
@@ -8168,7 +8001,7 @@ task.spawn(function()
  end
  if _G.AceAutoStealSync then pcall(_G.AceAutoStealSync) end
 	end
-	_G.Amateuz_topSyncAutoSteal = syncSteal
+	_G.XDSyncAutoSteal = syncSteal
 	-- override setAutoSteal (giữ bar + refresh nút mobile)
 	local _oldSet = setAutoSteal
 	setAutoSteal = function(on)
@@ -8180,7 +8013,7 @@ task.spawn(function()
  if type(stopAutoSteal) == "function" then pcall(stopAutoSteal) end
  end
  syncSteal()
- if _G.Amateuz_topRefreshStealBtn then pcall(_G.Amateuz_topRefreshStealBtn) end
+ if _G.XDRefreshStealBtn then pcall(_G.XDRefreshStealBtn) end
  if ToggleRefs and ToggleRefs.autoSteal and ToggleRefs.autoSteal.setVisual then
  pcall(ToggleRefs.autoSteal.setVisual, St.autoSteal == true)
  end
@@ -8188,7 +8021,7 @@ task.spawn(function()
 	end
 end)
 
--- Wallpaper list (Amateuz_top style)
+-- Wallpaper list (XD style)
 local VIS_WALLS = {
 	-- Empire BG only
 	"rbxassetid://126832513729779","rbxassetid://81347949983999","rbxassetid://76940707345653",
@@ -8245,7 +8078,7 @@ task.defer(function()
  dim.Name = "WallDim"
  dim.Size = UDim2.new(1, 0, 1, 0)
  dim.BackgroundColor3 = Color3.new(0, 0, 0)
- dim.BackgroundTransparency = 0
+ dim.BackgroundTransparency = 0.45
  dim.BorderSizePixel = 0
  dim.ZIndex = 0
  dim.Active = false
@@ -8301,17 +8134,17 @@ end)
 
 -- Mini = circle combat when closed
 task.defer(function()
-	local miniGui = PlayerGui:FindFirstChild("Amateuz_topHubFullMini")
+	local miniGui = PlayerGui:FindFirstChild("XDHubFullMini")
 	local mini = miniGui and miniGui:FindFirstChildWhichIsA("TextButton")
 	if mini then
  mini.Size = UDim2.new(0, 110, 0, 36)
- mini.Text = "Amateuz_top"
+ mini.Text = "XD"
  mini.TextSize = 22
  local c0 = mini:FindFirstChildOfClass("UICorner")
  if c0 then c0.CornerRadius = UDim.new(0, 8) end
 	end
 	-- Title bar rectangle text
-	local mainGui = PlayerGui:FindFirstChild("Amateuz_topHubFullMenu")
+	local mainGui = PlayerGui:FindFirstChild("XDHubFullMenu")
 	local main = mainGui and mainGui:FindFirstChild("Main")
 	if main then
  local top = main:FindFirstChild("TopBar") or main:FindFirstChildWhichIsA("Frame")
@@ -8346,8 +8179,8 @@ if not _G._VisLogicWatchdog then
  if St.antiRagdoll and AntiRagdollV2 and not AntiRagdollV2.Enabled then
  if startAntiRagdoll then startAntiRagdoll() end
  end
- if St.autoSteal and _G.Amateuz_topSyncAutoSteal then
- pcall(_G.Amateuz_topSyncAutoSteal)
+ if St.autoSteal and _G.XDSyncAutoSteal then
+ pcall(_G.XDSyncAutoSteal)
  end
  end)
  end
@@ -8367,13 +8200,13 @@ task.spawn(function()
  St.menuOpen = Main.Visible == true
  end
  -- Mini open button
- local miniGui = PlayerGui:FindFirstChild("Amateuz_topHubFullMini")
+ local miniGui = PlayerGui:FindFirstChild("XDHubFullMini")
  local mini = miniGui and miniGui:FindFirstChildWhichIsA("TextButton")
  if mini then
  St._miniPos = {mini.Position.X.Scale, mini.Position.X.Offset, mini.Position.Y.Scale, mini.Position.Y.Offset}
  end
  -- Mode bar
- local mb = PlayerGui:FindFirstChild("Amateuz_topHubModeBar")
+ local mb = PlayerGui:FindFirstChild("XDHubModeBar")
  if mb then
  local f = mb:FindFirstChildWhichIsA("Frame")
  if f then
@@ -8397,10 +8230,10 @@ task.spawn(function()
  end
  end
  end
- snapHolders(PlayerGui:FindFirstChild("Amateuz_topHubActionButtons"))
- snapHolders(PlayerGui:FindFirstChild("Amateuz_topHubModeBar"))
+ snapHolders(PlayerGui:FindFirstChild("XDHubActionButtons"))
+ snapHolders(PlayerGui:FindFirstChild("XDHubModeBar"))
  -- Panel TP
- local tp = PlayerGui:FindFirstChild("Amateuz_topHubbTP")
+ local tp = PlayerGui:FindFirstChild("XDHubbTP")
  if tp then
  local m = tp:FindFirstChild("TPMain")
  if m then
@@ -8409,7 +8242,7 @@ task.spawn(function()
  end
  end
  -- Auto Steal floating GUI pos if any
- local asg = PlayerGui:FindFirstChild("Amateuz_topAutoStealGui")
+ local asg = PlayerGui:FindFirstChild("XDAutoStealGui")
  if asg then
  local mf = asg:FindFirstChildWhichIsA("Frame")
  if mf then
@@ -8427,7 +8260,7 @@ task.defer(function()
  if St._mainPos and Main then
  Main.Position = UDim2.new(St._mainPos[1], St._mainPos[2], St._mainPos[3], St._mainPos[4])
  end
- local miniGui = PlayerGui:FindFirstChild("Amateuz_topHubFullMini")
+ local miniGui = PlayerGui:FindFirstChild("XDHubFullMini")
  local mini = miniGui and miniGui:FindFirstChildWhichIsA("TextButton")
  if mini and St._miniPos then
  mini.Position = UDim2.new(St._miniPos[1], St._miniPos[2], St._miniPos[3], St._miniPos[4])
@@ -8481,10 +8314,10 @@ task.defer(function()
  cur = math.clamp(cur + (sign == "+" and 5 or -5), 20, 200)
  St.btnSizes.sentry = cur
  val.Text = tostring(cur)
- if _G.Amateuz_topUpdateMobileVisuals then
- pcall(_G.Amateuz_topUpdateMobileVisuals)
- elseif _G.Amateuz_topApplyMobile then
- pcall(_G.Amateuz_topApplyMobile)
+ if _G.XDUpdateMobileVisuals then
+ pcall(_G.XDUpdateMobileVisuals)
+ elseif _G.XDApplyMobile then
+ pcall(_G.XDApplyMobile)
  end
  saveCfg()
  end)
@@ -8520,7 +8353,7 @@ task.spawn(function()
 
 	local function Marker(pos, col)
  local p = Instance.new("Part")
- p.Name = "Amateuz_topTP_Marker"
+ p.Name = "XDTP_Marker"
  p.Shape = Enum.PartType.Cylinder
  p.Size = Vector3.new(0.35, 4, 4)
  p.CFrame = CFrame.new(pos + Vector3.new(0, 0.2, 0)) * CFrame.Angles(0, 0, math.rad(90))
@@ -8730,11 +8563,11 @@ task.spawn(function()
 	if SAVE_PET then MARK_PET = Marker(SAVE_PET, Color3.fromRGB(255, 140, 0)) end
 
 	pcall(function()
- local old = PlayerGui:FindFirstChild("Amateuz_topHubbTP")
+ local old = PlayerGui:FindFirstChild("XDHubbTP")
  if old then old:Destroy() end
 	end)
 	local gui = Instance.new("ScreenGui")
-	gui.Name = "Amateuz_topHubbTP"
+	gui.Name = "XDHubbTP"
 	gui.ResetOnSpawn = false
 	gui.IgnoreGuiInset = true
 	gui.DisplayOrder = 80
@@ -8796,7 +8629,7 @@ task.spawn(function()
 	title.Size = UDim2.new(1, -100, 0, 24)
 	title.Position = UDim2.new(0, 64, 0, y(1))
 	title.BackgroundTransparency = 1
-	title.Text = "Amateuz_top TP"
+	title.Text = "XD TP"
 	title.TextColor3 = Color3.fromRGB(230, 210, 255)
 	title.Font = Enum.Font.GothamBold
 	title.TextSize = 13
@@ -8895,21 +8728,12 @@ task.spawn(function()
 	local BtnTP = Instance.new("TextButton", Main)
 	BtnTP.Size = UDim2.new(1, -16, 0, 36)
 	BtnTP.Position = UDim2.new(0, PAD, 1, -44)
-	-- TP button: visible, subtle gray palette
-	BtnTP.BackgroundColor3 = Color3.fromRGB(58, 58, 62)
-	BtnTP.BackgroundTransparency = 0
+	BtnTP.BackgroundColor3 = Color3.fromRGB(140, 90, 255)
 	BtnTP.Text = "TP [X]"
-	BtnTP.TextColor3 = Color3.fromRGB(245, 245, 245)
+	BtnTP.TextColor3 = Color3.new(1,1,1)
 	BtnTP.Font = Enum.Font.GothamBlack
-	BtnTP.TextSize = 16
-	BtnTP.TextTransparency = 0
-	BtnTP.AutoButtonColor = false
-	BtnTP.ZIndex = 30
+	BtnTP.TextSize = 14
 	Instance.new("UICorner", BtnTP).CornerRadius = UDim.new(0, 10)
-	local tpStroke = Instance.new("UIStroke", BtnTP)
-	tpStroke.Color = Color3.fromRGB(175, 175, 180)
-	tpStroke.Thickness = 1.5
-	tpStroke.Transparency = 0
 
 	if MINIMIZE then
  Main.Size = UDim2.new(0, 180, 0, 82)
@@ -9047,7 +8871,7 @@ task.spawn(function()
  if input.KeyCode == KEYBIND_TP then StartTP() end
 	end)
 
-	print("[Amateuz_top] Compact TP panel ready | rainbow | markers | key X")
+	print("[XD] Compact TP panel ready | rainbow | markers | key X")
 end)
 
 
@@ -9074,7 +8898,7 @@ task.spawn(function()
  for _, parent in ipairs(parents) do
  for _, g in ipairs(parent:GetChildren()) do
  local n = (g.Name or ""):lower():gsub("%s+", "")
- -- giữ Amateuz_topStealBarOnly + bar script khác
+ -- giữ XDStealBarOnly + bar script khác
  if n == "visstealbaronly" then
  -- keep
  elseif own[n] or n:find("visautosteal", 1, true) then
@@ -9089,12 +8913,12 @@ task.spawn(function()
 
 
 	pcall(function()
- local o = PlayerGui:FindFirstChild("Amateuz_topStealBarOnly")
+ local o = PlayerGui:FindFirstChild("XDStealBarOnly")
  if o then o:Destroy() end
 	end)
 
 	local gui = Instance.new("ScreenGui")
-	gui.Name = "Amateuz_topStealBarOnly"
+	gui.Name = "XDStealBarOnly"
 	gui.ResetOnSpawn = false
 	gui.IgnoreGuiInset = true
 	gui.DisplayOrder = 200000 -- đè lên bar script khác, không xoá chúng
@@ -9355,8 +9179,8 @@ task.spawn(function()
 ----------------------------------------------------------------
 -- ACE SPEED BYPASS (full) — mini = ON/OFF EN + Lock | scale panels
 ----------------------------------------------------------------
--- ===== Amateuz_top FULL: Speed Bypass + Lagger V2 (replace All Gear old panels) =====
--- Amateuz_topBypass — Speed Bypass (Noxa-style UI + keybind PC + minimize + bg)
+-- ===== XD FULL: Speed Bypass + Lagger V2 (replace All Gear old panels) =====
+-- XDBypass — Speed Bypass (Noxa-style UI + keybind PC + minimize + bg)
 -- ============================================================
 task.spawn(function()
 	local Players = game:GetService("Players")
@@ -9368,7 +9192,7 @@ task.spawn(function()
 	local running = false
 	local bomb = nil
 	local spamThread = nil
-	local ConfigFile = "Amateuz_topBypass.json"
+	local ConfigFile = "XDBypass.json"
 	-- Dùng full list BackgroundIDs của (1–50+)
 	local BG_IDS = (BackgroundIDs and #BackgroundIDs > 0) and BackgroundIDs or {
  "89504528485163", "108697485255882", "71211662493854", "118953269416540", "106345334781345",
@@ -9495,12 +9319,12 @@ task.spawn(function()
 
 	local parent = (gethui and gethui()) or game:GetService("CoreGui")
 	pcall(function()
- local old = parent:FindFirstChild("Amateuz_topBypassGui")
+ local old = parent:FindFirstChild("XDBypassGui")
  if old then old:Destroy() end
 	end)
 
 	local gui = Instance.new("ScreenGui")
-	gui.Name = "Amateuz_topBypassGui"
+	gui.Name = "XDBypassGui"
 	gui.ResetOnSpawn = false
 	gui.IgnoreGuiInset = true
 	gui.Enabled = true
@@ -9758,7 +9582,7 @@ task.spawn(function()
 	discLbl.Size = UDim2.new(1, 0, 0, 22)
 	discLbl.Position = UDim2.fromOffset(0, 288)
 	discLbl.BackgroundTransparency = 1
-	discLbl.Text = "Amateuz_top · Speed Bypass"
+	discLbl.Text = "XD · Speed Bypass"
 	discLbl.TextColor3 = Color3.fromRGB(160, 160, 170)
 	discLbl.Font = Enum.Font.GothamBold
 	discLbl.TextSize = 11
@@ -10240,7 +10064,7 @@ task.spawn(function()
  end)
  end
 	end)
-	print("[Vis] Amateuz_topBypass panel loaded (Noxa-style + keybind + minimize + remember open)")
+	print("[Vis] XDBypass panel loaded (Noxa-style + keybind + minimize + remember open)")
 end)
 
 
@@ -10259,7 +10083,7 @@ task.spawn(function()
 
 	local LP = Players.LocalPlayer
 	local PlayerGui = LP:WaitForChild("PlayerGui")
-	local ConfigFile = "Amateuz_topPerishLaggerV2.json"
+	local ConfigFile = "XDPerishLaggerV2.json"
 
 	local NIVELES = {
  Low = { poder = 23 },
@@ -10321,7 +10145,7 @@ task.spawn(function()
  task.wait(0.6)
  else
  t = t + 0.05
- s.Transparency = 0 + math.sin(t * 1.6) * 0.18
+ s.Transparency = 0.2 + math.sin(t * 1.6) * 0.18
  if math.sin(t * 0.8) > 0.7 then s.Color = C.White else s.Color = C.Red end
  task.wait(0.06)
  end
@@ -10599,7 +10423,7 @@ task.spawn(function()
 	title.Position = UDim2.new(0, 50, 0, 8)
 	title.Size = UDim2.new(0, 150, 0, 19)
 	title.Font = Enum.Font.GothamBlack
-	title.Text = "Amateuz_topUser V2"
+	title.Text = "XDUser V2"
 	title.TextColor3 = C.White
 	title.TextSize = 18
 	title.TextXAlignment = Enum.TextXAlignment.Left
@@ -10611,7 +10435,7 @@ task.spawn(function()
 	subtitle.Position = UDim2.new(0, 50, 0, 26)
 	subtitle.Size = UDim2.new(0, 170, 0, 12)
 	subtitle.Font = Enum.Font.GothamBold
-	subtitle.Text = "Amateuz_topUser module"
+	subtitle.Text = "XDUser module"
 	subtitle.TextColor3 = C.TextDim
 	subtitle.TextSize = 10
 	subtitle.TextXAlignment = Enum.TextXAlignment.Left
@@ -11059,10 +10883,10 @@ print("[Vis] Perish Lagger V2 FULL GUI loaded (menu toggle, pos persist like V1)
 end)
 
 -- ============================================================
--- WRAPPERS: Settings → Amateuz_top Lagger V2 (Perish) + Speed Bypass
+-- WRAPPERS: Settings → XD Lagger V2 (Perish) + Speed Bypass
 -- ============================================================
 do
-	function _G.Amateuz_topSetLaggerPanel(on)
+	function _G.XDSetLaggerPanel(on)
  on = on and true or false
  if type(St) == "table" then St.showLaggerPanel = on end
  pcall(function()
@@ -11075,14 +10899,14 @@ do
  pcall(function() if saveCfg then saveCfg() end end)
 	end
 
-	function _G.Amateuz_topSetLaggerLock(on)
+	function _G.XDSetLaggerLock(on)
  on = on and true or false
  if type(St) == "table" then St.laggerPanelLock = on end
  pcall(function() if _G.AceSetPerishV2Lock then _G.AceSetPerishV2Lock(on) end end)
  pcall(function() if saveCfg then saveCfg() end end)
 	end
 
-	function _G.Amateuz_topSetSpeedBypassPanel(on)
+	function _G.XDSetSpeedBypassPanel(on)
  on = on and true or false
  if type(St) == "table" then
  St.showSpeedBypassPanel = on
@@ -11097,7 +10921,7 @@ do
  local gui = nil
  for _, p in ipairs(parents) do
  if p then
- gui = p:FindFirstChild("Amateuz_topBypassGui")
+ gui = p:FindFirstChild("XDBypassGui")
  if gui then break end
  end
  end
@@ -11133,7 +10957,7 @@ do
  local api = _G.AceSetVisBypassPanelVisible
  if type(api) == "function" then
  local ok, err = pcall(api, on)
- if not ok then warn("[Amateuz_top] SpeedBypass panel:", err) end
+ if not ok then warn("[XD] SpeedBypass panel:", err) end
  else
  -- API chưa sẵn: đợi tối đa 1s (không 5s)
  task.spawn(function()
@@ -11151,7 +10975,7 @@ do
  pcall(function() if saveCfg then saveCfg() end end)
 	end
 
-function _G.Amateuz_topSetSpeedBypassLock(on)
+function _G.XDSetSpeedBypassLock(on)
  on = on and true or false
  if type(St) == "table" then St.speedBypassLock = on end
  -- Lock riêng Speed Bypass — không dính Lock UI menu chính (St.guiLock)
@@ -11168,18 +10992,18 @@ function _G.Amateuz_topSetSpeedBypassLock(on)
 	task.defer(function()
  task.wait(0.2)
  pcall(function()
- if type(St) == "table" and St.showLaggerPanel then _G.Amateuz_topSetLaggerPanel(true) end
+ if type(St) == "table" and St.showLaggerPanel then _G.XDSetLaggerPanel(true) end
  -- Speed Bypass: chỉ hiện nếu user đã ON show trong settings (không auto)
  if type(St) == "table" and St.showSpeedBypassPanel == true then
- _G.Amateuz_topSetSpeedBypassPanel(true)
- elseif type(_G.Amateuz_topSetSpeedBypassPanel) == "function" then
- _G.Amateuz_topSetSpeedBypassPanel(false)
+ _G.XDSetSpeedBypassPanel(true)
+ elseif type(_G.XDSetSpeedBypassPanel) == "function" then
+ _G.XDSetSpeedBypassPanel(false)
  end
  end)
 	end)
 end
 
-print("[Amateuz_top] FULL Vis Lagger V2 (Perish) + Speed Bypass GUI (no old Vynx)")
+print("[XD] FULL Vis Lagger V2 (Perish) + Speed Bypass GUI (no old Vynx)")
 end)
 
 
