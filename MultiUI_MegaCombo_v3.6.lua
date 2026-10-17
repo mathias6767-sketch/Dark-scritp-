@@ -1,6 +1,6 @@
 -- ══════════════════════════════════════════════════════════════
 -- MultiUI | MEGA COMBO ♟️ | v3.6 | Auto-Execute
--- Orden: Oso → Buscador → Medusa → BlackBomb
+-- Orden: Oso → Medusa → BlackBomb → Buscador
 -- + Música Canción 7 (se apaga al quitar la intro)
 -- ══════════════════════════════════════════════════════════════
 
@@ -466,10 +466,11 @@ local function RunCombo()
 
     ComboStroke.Color = Color3.fromRGB(255, 200, 0)
 
+    -- Orden: Oso → Medusa → BlackBomb → Buscador
     if UseTool(Keywords.Oso) then task.wait(0.25) end
-    if UseTool(Keywords.Buscador) then task.wait(0.25) end
     if UseTool(Keywords.Medusa) then task.wait(0.25) end
-    UseTool(Keywords.BlackBomb)
+    if UseTool(Keywords.BlackBomb) then task.wait(0.25) end
+    UseTool(Keywords.Buscador)
     task.wait(0.2)
 
     ComboStroke.Color = Color3.fromRGB(255, 60, 0)
@@ -600,5 +601,6 @@ Players.PlayerRemoving:Connect(function(p)
     if p == player then
         SavePositions()
         stopComboMusic()
-        if getgenv then getgenv()[MY_FLAG] = false end
-        pcall(function()
+        if getgenv then getgenv()[MY_FLAG] = nil end
+    end
+end)
