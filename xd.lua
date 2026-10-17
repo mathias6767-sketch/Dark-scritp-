@@ -1,5 +1,5 @@
 --[[
- XD — Full Menu
+ ZENONETOP — Full Menu
  Tab 1 Player: Anti Gummy/Ragdoll/Paintball/Boogie + Speed 3-mode (Vis S2 loop)
  + Tool Aimbot + Drop Jump/Stand + Insta V1/V2 + TP Down keybinds
  Tab 2 ESP: Player ESP + Tracker + Anti Lag (Vis logic)
@@ -26,7 +26,7 @@ local PlayerGui = LP:WaitForChild("PlayerGui", 30) or LP:FindFirstChild("PlayerG
 
 pcall(function()
 	for _, n in ipairs({
- "XDHubFullMenu", "XDHubFullMini", "XDHubModeBar", "XDHubActionButtons", "XDIntro", "XDHubIntro",
+ "ZenonetopHubFullMenu", "ZenonetopHubFullMini", "ZenonetopHubModeBar", "ZenonetopHubActionButtons", "ZenonetopIntro", "ZenonetopHubIntro",
 	}) do
  local g = PlayerGui:FindFirstChild(n)
  if g then g:Destroy() end
@@ -34,7 +34,7 @@ pcall(function()
 end)
 
 ----------------------------------------------------------------
--- XD.CC INTRO (red/black/white, music + skip)
+-- ZENONETOP.CC INTRO (red/black/white, music + skip)
 ----------------------------------------------------------------
 do
 	local TweenService = TS
@@ -65,13 +65,13 @@ do
 
 	local function createIntro()
 	    -- Clean old intro
-	    for _, name in ipairs({"XDIntro"}) do
+	    for _, name in ipairs({"ZenonetopIntro"}) do
 	        local old = PlayerGui:FindFirstChild(name)
 	        if old then old:Destroy() end
 	    end
 
 	    introGui = Instance.new("ScreenGui")
-	    introGui.Name = "XDIntro"
+	    introGui.Name = "ZenonetopIntro"
 	    introGui.IgnoreGuiInset = true
 	    introGui.ResetOnSpawn = false
 	    introGui.DisplayOrder = 999999
@@ -135,13 +135,13 @@ do
 	    flash.BorderSizePixel = 0
 	    flash.ZIndex = 400
 
-	    -- Main Title - "XD" (RED)
+	    -- Main Title - "Zenonetop" (RED)
 	    local introTitle = Instance.new("TextLabel", background)
 	    introTitle.AnchorPoint = Vector2.new(0.5, 0.5)
 	    introTitle.Position = UDim2.fromScale(0.5, 0.47)
 	    introTitle.Size = UDim2.fromScale(1.1, 0.22)
 	    introTitle.BackgroundTransparency = 1
-	    introTitle.Text = "XD"
+	    introTitle.Text = "xd"
 	    introTitle.TextColor3 = Color3.fromRGB(255, 0, 0)
 	    introTitle.TextTransparency = 1
 	    introTitle.TextScaled = true
@@ -205,7 +205,7 @@ do
 	        local asset = loadMusic()
 	        if not asset or not introActive then return end
 	        introSound = Instance.new("Sound")
-	        introSound.Name = "XDIntroMusic"
+	        introSound.Name = "ZenonetopIntroMusic"
 	        introSound.SoundId = asset
 	        introSound.Volume = MUSIC_VOLUME
 	        introSound.Looped = false
@@ -398,8 +398,8 @@ local C = {
 -- Auto-write Vis Auto Steal for loadstring
 pcall(function()
 	if writefile then
- writefile("XD_Auto_Steal_Embedded.lua", [==[--[[
- Auto Steal — full XD logic V1 / Semi V1-V2 / V3
+ writefile("Zenonetop_Auto_Steal_Embedded.lua", [==[--[[
+ Auto Steal — full ZENONETOP logic V1 / Semi V1-V2 / V3
 ]]
 if _G.__VisAutoStealRunning then
 	pcall(function()
@@ -417,7 +417,7 @@ local HttpService = game:GetService("HttpService")
 local LP = Players.LocalPlayer
 local PlayerGui = LP:WaitForChild("PlayerGui")
 
--- Shared state (must match XD names used in steal logic)
+-- Shared state (must match ZENONETOP names used in steal logic)
 autoStealEnabled = false
 selectedStealMode = "Normal"
 autoStealRadius = 60
@@ -519,8 +519,8 @@ _G.__AceSetupNormalAutoSteal = function()
  return math.clamp(r, 1, 500)
  end
  local function getAutoGrabPauseFraction()
- -- no pause by default: if _G.XDStealPause ~= true → treat as close-enough always (100%)
- if _G.XDStealPause ~= true then
+ -- no pause by default: if _G.ZenonetopStealPause ~= true → treat as close-enough always (100%)
+ if _G.ZenonetopStealPause ~= true then
  return 1.0 -- full 0-100 without waiting
  end
  local pct = tonumber(autoStealV1PausePercent) or 75
@@ -651,7 +651,7 @@ _G.__AceSetupNormalAutoSteal = function()
  local targetPart = prompt:FindFirstAncestorWhichIsA("BasePart")
  local restarting = false
  local pauseFraction = (function()
- if _G.XDStealPause == true or (St and St.stealPause == true) then
+ if _G.ZenonetopStealPause == true or (St and St.stealPause == true) then
  return math.clamp(((St and St.stealPausePct) or 75) / 100, 0.3, 0.95)
  end
  return 1 -- không pause: full 0→100 liên tục
@@ -788,7 +788,7 @@ _G.__AceSetupNormalAutoSteal = function()
  local wasAbleToGrab = false
 
  -- Đã đứng sẵn ở cột (≤2 stud): steal NORMAL full 0 → 100%
- if isCloseEnoughToGrab() or (not (_G.XDStealPause == true or (St and St.stealPause == true))) then
+ if isCloseEnoughToGrab() or (not (_G.ZenonetopStealPause == true or (St and St.stealPause == true))) then
  -- No pause / đang sát cột: full 0→100, chỉ hủy nếu prompt mất / quá xa
  while tick() - holdStart < dur do
  if not modeStillActive() or not canStillGrab() then
@@ -1754,7 +1754,7 @@ end
 -- AUTO STEAL GUI
 -- ============================================================
 task.spawn(function()
-	local CONFIG_FILE = "XDHubAutoSteal"
+	local CONFIG_FILE = "ZenonetopHubAutoSteal"
 	local BackgroundIDs = {"89504528485163","108697485255882","71211662493854","118953269416540","106345334781345","103042929344358","126137370200580","129236724255771","109053968018578","76085007631338","99416158073201","126860692354524","73226092831324","90280869222992","90746158236678","107977050874654","124475159163140","117085976067902","76582249427748","131388128481309","106050493494582","71852104184395","84453255265251","98541566010518","118963313877514","82757811555212","130451097419605","129030262345273","76292842640935","92910922537368","105960347086002","116720305084998","90341354549871","72399600208480","81834484116440","135088241492683","90453834580322","90631990302263","109619268613730","88369503310562","80708025126373","102253425322931","135181794444219","111941119745474","138739435956313","92966351305582","127008542588565","81233250155347","77446891363466","93417009946836","102729289645203","113953274092851","116355482429334","133090961209841","84995781107338"}
 
 	local BASE_W, BASE_H, BASE_H_EXP = 300, 96, 240
@@ -1808,12 +1808,12 @@ task.spawn(function()
 
 	local parent = (typeof(gethui) == "function" and gethui()) or game:GetService("CoreGui")
 	pcall(function()
- local o = parent:FindFirstChild("XDAutoStealGui"); if o then o:Destroy() end
- local b = PlayerGui:FindFirstChild("XDAutoStealBarGui"); if b then b:Destroy() end
+ local o = parent:FindFirstChild("ZenonetopAutoStealGui"); if o then o:Destroy() end
+ local b = PlayerGui:FindFirstChild("ZenonetopAutoStealBarGui"); if b then b:Destroy() end
 	end)
 
 	local gui = Instance.new("ScreenGui")
-	gui.Name = "XDAutoStealGui"
+	gui.Name = "ZenonetopAutoStealGui"
 	gui.Enabled = false -- disabled: menu-only steal
 	gui.ResetOnSpawn = false
 	gui.IgnoreGuiInset = true
@@ -2355,7 +2355,7 @@ local St = {
 }
 local ToggleRefs = {} -- để Reset All cập nhật UI
 
-local CFG = "XDAllgear.json"
+local CFG = "ZenonetopAllgear.json"
 local _saveToken = 0
 function autoSaveDebounced()
 	_saveToken = _saveToken + 1
@@ -2427,7 +2427,7 @@ function saveCfg()
 	writefile(CFG, HttpService:JSONEncode(d))
 	end)
 	if not ok then
- warn("[XD] saveCfg fail:", err)
+ warn("[ZENONETOP] saveCfg fail:", err)
 	end
 	return ok
 end
@@ -2437,7 +2437,7 @@ function loadCfg()
  if isfile(CFG) then
  return HttpService:JSONDecode(readfile(CFG))
  end
- for _, old in ipairs({"RaraOnflop.json", "XDHub_FullMenu_v1.json", "XDHub_Config.json", "XD.json"}) do
+ for _, old in ipairs({"RaraOnflop.json", "ZenonetopHub_FullMenu_v1.json", "ZenonetopHub_Config.json", "ZENONETOP.json"}) do
  if isfile(old) then
  local d = HttpService:JSONDecode(readfile(old))
  pcall(function() writefile(CFG, HttpService:JSONEncode(d)) end)
@@ -2489,7 +2489,7 @@ task.spawn(function()
 	while true do
  task.wait(3)
  local ok, err = pcall(saveCfg)
- if not ok then warn("[XD] autosave 3s fail:", err) end
+ if not ok then warn("[ZENONETOP] autosave 3s fail:", err) end
 	end
 end)
 
@@ -2583,7 +2583,7 @@ function ensureSpeedAttachment(hrp, key, name)
 	if not att or att.Parent ~= hrp then
  if att then pcall(function() att:Destroy() end) end
  att = Instance.new("Attachment")
- att.Name = name or "XDEmpireSpeedAtt"
+ att.Name = name or "ZenonetopEmpireSpeedAtt"
  att.Parent = hrp
  _spd[key] = att
 	end
@@ -2668,9 +2668,9 @@ function setActiveMode(mode)
 	if St.speedOn then
  startSpeedBoost() -- restart Empire loop
 	end
-	if _G.XDRefreshModeBar then pcall(_G.XDRefreshModeBar) end
-	if _G.XDRefreshV2ModeBar then pcall(_G.XDRefreshV2ModeBar) end
-	if _G.XDRefreshModeCards then pcall(_G.XDRefreshModeCards) end
+	if _G.ZenonetopRefreshModeBar then pcall(_G.ZenonetopRefreshModeBar) end
+	if _G.ZenonetopRefreshV2ModeBar then pcall(_G.ZenonetopRefreshV2ModeBar) end
+	if _G.ZenonetopRefreshModeCards then pcall(_G.ZenonetopRefreshModeCards) end
 	pcall(saveCfg)
 end
 
@@ -2749,8 +2749,8 @@ if not _G._VisEmpireJumpHook then
  local pg = LP:WaitForChild("PlayerGui", 15)
  if not pg then return end
  local function hookJumpButton(btn)
- if btn:IsA("GuiButton") and btn.Name == "JumpButton" and not btn:GetAttribute("XDInfJumpHooked") then
- btn:SetAttribute("XDInfJumpHooked", true)
+ if btn:IsA("GuiButton") and btn.Name == "JumpButton" and not btn:GetAttribute("ZenonetopInfJumpHooked") then
+ btn:SetAttribute("ZenonetopInfJumpHooked", true)
  btn.MouseButton1Down:Connect(function()
  if InfJumpState.enabled then InfJumpState.jumpHeld = true end
  end)
@@ -2966,15 +2966,15 @@ function setAntiRagdollMode(mode)
  stopAntiRagdoll()
  startAntiRagdoll()
 	end
-	pcall(function() if _G.XDRefreshAntiRagMode then _G.XDRefreshAntiRagMode() end end)
+	pcall(function() if _G.ZenonetopRefreshAntiRagMode then _G.ZenonetopRefreshAntiRagMode() end end)
 	pcall(saveCfg)
 end
-_G.XDSetAntiRagdollMode = setAntiRagdollMode
+_G.ZenonetopSetAntiRagdollMode = setAntiRagdollMode
 
 
 
 ----------------------------------------------------------------
--- ANTI GUMMY / BOOGIE / PAINTBALL (XD full) — LUÔN BẬT
+-- ANTI GUMMY / BOOGIE / PAINTBALL (ZENONETOP full) — LUÔN BẬT
 --------------------------------------------------------------
 -- Anti Gummy / Boogie / Bee / Paintball (from Tp Heatseeker)
 -- Always ON, no GUI
@@ -3154,7 +3154,7 @@ function setAntiPaint(on)
 end
 
 ----------------------------------------------------------------
--- TOOL AIMBOT (XD full) — LUÔN BẬT
+-- TOOL AIMBOT (ZENONETOP full) — LUÔN BẬT
 ----------------------------------------------------------------
 local aimOn = true
 local TOOLS = { ["Web Slinger"] = true, ["Paintball Gun"] = true, ["Laser Cape"] = true }
@@ -3347,7 +3347,7 @@ function InstaResetV2()
 	local lockCF = cam and cam.CFrame
 	pcall(function()
  if cam then cam.CameraType = Enum.CameraType.Scriptable; cam.CFrame = lockCF end
- RS:BindToRenderStep("XDInstaV2Cam", Enum.RenderPriority.Camera.Value + 1, function()
+ RS:BindToRenderStep("ZenonetopInstaV2Cam", Enum.RenderPriority.Camera.Value + 1, function()
  pcall(function()
  if cam then cam.CameraType = Enum.CameraType.Scriptable; if lockCF then cam.CFrame = lockCF end end
  local ac = LP.Character
@@ -3362,7 +3362,7 @@ function InstaResetV2()
 	local conn
 	conn = LP.CharacterAdded:Connect(function(newChar)
  if conn then conn:Disconnect() end
- pcall(function() RS:UnbindFromRenderStep("XDInstaV2Cam") end)
+ pcall(function() RS:UnbindFromRenderStep("ZenonetopInstaV2Cam") end)
  local nh = newChar:WaitForChild("Humanoid", 5)
  task.wait(0.05)
  pcall(function()
@@ -3372,7 +3372,7 @@ function InstaResetV2()
 	end)
 	task.delay(8, function()
  if _resetBusy then
- pcall(function() RS:UnbindFromRenderStep("XDInstaV2Cam") end)
+ pcall(function() RS:UnbindFromRenderStep("ZenonetopInstaV2Cam") end)
  _resetBusy = false
  end
 	end)
@@ -3396,8 +3396,8 @@ function InstaResetV1()
  cam.CameraType = Enum.CameraType.Custom
  if humanoid then cam.CameraSubject = humanoid end
  end
- pcall(function() RS:UnbindFromRenderStep("XDInstaV1Cam") end)
- pcall(function() RS:UnbindFromRenderStep("XDInstaV2Cam") end)
+ pcall(function() RS:UnbindFromRenderStep("ZenonetopInstaV1Cam") end)
+ pcall(function() RS:UnbindFromRenderStep("ZenonetopInstaV2Cam") end)
 	end)
 
 	local charConn
@@ -3798,7 +3798,7 @@ end)
 function setDestroySentry(on)
 	St.destroySentry = on and true or false
 	GTurret.AutoDestroyTurret = St.destroySentry
-	if _G.XDRefreshSentryBtn then _G.XDRefreshSentryBtn() end
+	if _G.ZenonetopRefreshSentryBtn then _G.ZenonetopRefreshSentryBtn() end
 	saveCfg()
 end
 
@@ -3959,7 +3959,7 @@ function setEquipOnDrop(on)
 end
 
 -- Equip + activate khi Drop xong
-_G.XDCounterOnDrop = function()
+_G.ZenonetopCounterOnDrop = function()
 	-- Counter đã chọn: equip 1 + activate 2 khi Drop (Fling & Jump)
 	local anyCounter = St.counterLaser or St.counterBoogie or St.counterSwapBody
 	if not anyCounter and not St.equipOnDrop then return end
@@ -4006,7 +4006,7 @@ _G.XDCounterOnDrop = function()
 end
 
 -- Bật toggle Counter: equip 1 + activate 2 (một lần)
-_G.XDCounterOneShot = function(kind)
+_G.ZenonetopCounterOneShot = function(kind)
 	if _G._VisCounterDropBusy then return end
 	_G._VisCounterDropBusy = true
 	task.spawn(function()
@@ -4040,7 +4040,7 @@ function stroke(p, col)
 end
 
 local Gui = Instance.new("ScreenGui")
-Gui.Name = "XDHubFullMenu"
+Gui.Name = "ZenonetopHubFullMenu"
 Gui.ResetOnSpawn = false
 Gui.IgnoreGuiInset = true
 Gui.DisplayOrder = 200
@@ -4059,7 +4059,7 @@ Main.Parent = Gui
 
 -- Menu scale (to/nhỏ menu chính)
 local menuScaleObj = Instance.new("UIScale")
-menuScaleObj.Name = "XDMenuScale"
+menuScaleObj.Name = "ZenonetopMenuScale"
 menuScaleObj.Scale = tonumber(St.menuScale) or 1
 menuScaleObj.Parent = Main
 function applyMenuScale()
@@ -4564,7 +4564,7 @@ do
  t1.TextTransparency = isV2 and 0.35 or 0
  t2.TextTransparency = isV2 and 0 or 0.35
 	end
-	_G.XDRefreshAntiRagMode = refresh
+	_G.ZenonetopRefreshAntiRagMode = refresh
 	local b1 = Instance.new("TextButton")
 	b1.BackgroundTransparency = 1
 	b1.Size = UDim2.new(0.5, 0, 1, 0)
@@ -4664,7 +4664,7 @@ end
 modeCard("Normal", "default mode", 12)
 modeCard("Lagger", "use against lagger", 13)
 modeCard("Custom", "custom spd", 14)
-function _G.XDRefreshModeCards()
+function _G.ZenonetopRefreshModeCards()
 	for n, card in pairs(modeCards) do
  local st = card:FindFirstChildOfClass("UIStroke")
  if st then
@@ -4674,7 +4674,7 @@ function _G.XDRefreshModeCards()
  end
 	end
 end
-_G.XDRefreshModeCards()
+_G.ZenonetopRefreshModeCards()
 
 
 -- ============================================================
@@ -4947,29 +4947,29 @@ spamTxt.Parent = spamInfo
 section(pageSet, "* — MOBILE / LOCK", 1)
 toggleNamed(pageSet, "Mobile Buttons", St.mobileBtns, function(on)
 	St.mobileBtns = on
-	if _G.XDApplyMobile then _G.XDApplyMobile() end
+	if _G.ZenonetopApplyMobile then _G.ZenonetopApplyMobile() end
 	saveCfg()
 end, 2, "mobileBtns")
 toggleNamed(pageSet, "Show Auto Steal Button", St.showStealBtn ~= false, function(on)
 	St.showStealBtn = on and true or false
-	if _G.XDRefreshStealBtn then pcall(_G.XDRefreshStealBtn) end
+	if _G.ZenonetopRefreshStealBtn then pcall(_G.ZenonetopRefreshStealBtn) end
 	-- nếu ON show mà chưa có nút → rebuild
-	if St.showStealBtn and (not actRefs or not actRefs.steal) and _G.XDApplyMobile then
- pcall(_G.XDApplyMobile)
+	if St.showStealBtn and (not actRefs or not actRefs.steal) and _G.ZenonetopApplyMobile then
+ pcall(_G.ZenonetopApplyMobile)
 	end
 	saveCfg()
 end, 2.5, "showStealBtn")
 toggleNamed(pageSet, "Show Panel TP", St.showTPPanel ~= false, function(on)
 	St.showTPPanel = on and true or false
-	local g = PlayerGui:FindFirstChild("XDHubbTP")
+	local g = PlayerGui:FindFirstChild("ZenonetopHubbTP")
 	if g then g.Enabled = St.showTPPanel end
 	saveCfg()
 end, 25, "showTPPanel")
 toggleNamed(pageSet, "Show Panel Lagger", St.showLaggerPanel == true, function(on)
-	if _G.XDSetLaggerPanel then _G.XDSetLaggerPanel(on) else St.showLaggerPanel = on; saveCfg() end
+	if _G.ZenonetopSetLaggerPanel then _G.ZenonetopSetLaggerPanel(on) else St.showLaggerPanel = on; saveCfg() end
 end, 25.1, "showLaggerPanel")
 toggleNamed(pageSet, "Show Panel Speed Bypass", St.showSpeedBypassPanel == true, function(on)
-	if _G.XDSetSpeedBypassPanel then _G.XDSetSpeedBypassPanel(on) else St.showSpeedBypassPanel = on; saveCfg() end
+	if _G.ZenonetopSetSpeedBypassPanel then _G.ZenonetopSetSpeedBypassPanel(on) else St.showSpeedBypassPanel = on; saveCfg() end
 end, 25.3, "showSpeedBypassPanel")
 -- Panel GUI size (to/nhỏ + rộng) dưới các panel
 do
@@ -5008,7 +5008,7 @@ do
  local function fire()
  St.panelGuiScale = math.clamp((tonumber(St.panelGuiScale) or 1) + (info[1] == "+" and 0.05 or -0.05), 0.6, 1.6)
  val.Text = tostring(math.floor(St.panelGuiScale * 100)) .. "%"
- if _G.XDApplyPanelGuiScale then pcall(_G.XDApplyPanelGuiScale) end
+ if _G.ZenonetopApplyPanelGuiScale then pcall(_G.ZenonetopApplyPanelGuiScale) end
  saveCfg()
  end
  b.MouseButton1Click:Connect(fire)
@@ -5051,7 +5051,7 @@ do
  local function fire()
  St.panelGuiWidth = math.clamp((tonumber(St.panelGuiWidth) or 1) + (info[1] == "+" and 0.05 or -0.05), 0.7, 1.5)
  val.Text = tostring(math.floor(St.panelGuiWidth * 100)) .. "%"
- if _G.XDApplyPanelGuiScale then pcall(_G.XDApplyPanelGuiScale) end
+ if _G.ZenonetopApplyPanelGuiScale then pcall(_G.ZenonetopApplyPanelGuiScale) end
  saveCfg()
  end
  b.MouseButton1Click:Connect(fire)
@@ -5066,12 +5066,12 @@ toggleNamed(pageSet, "Lock UI", St.guiLock, function(on)
  St._mainPos = {Main.Position.X.Scale, Main.Position.X.Offset, Main.Position.Y.Scale, Main.Position.Y.Offset}
  St.menuOpen = Main.Visible == true
  end
- local miniGui = PlayerGui:FindFirstChild("XDHubFullMini")
+ local miniGui = PlayerGui:FindFirstChild("ZenonetopHubFullMini")
  local mini = miniGui and miniGui:FindFirstChildWhichIsA("TextButton")
  if mini then
  St._miniPos = {mini.Position.X.Scale, mini.Position.X.Offset, mini.Position.Y.Scale, mini.Position.Y.Offset}
  end
- local mb = PlayerGui:FindFirstChild("XDHubModeBar")
+ local mb = PlayerGui:FindFirstChild("ZenonetopHubModeBar")
  local mf = mb and mb:FindFirstChildWhichIsA("Frame")
  if mf then
  St._modeBarPos = {mf.Position.X.Scale, mf.Position.X.Offset, mf.Position.Y.Scale, mf.Position.Y.Offset}
@@ -5092,8 +5092,8 @@ toggleNamed(pageSet, "Lock UI", St.guiLock, function(on)
  end
  end
  end
- snapHoldersLock(PlayerGui:FindFirstChild("XDHubActionButtons"))
- snapHoldersLock(PlayerGui:FindFirstChild("XDHubModeBar"))
+ snapHoldersLock(PlayerGui:FindFirstChild("ZenonetopHubActionButtons"))
+ snapHoldersLock(PlayerGui:FindFirstChild("ZenonetopHubModeBar"))
 	end)
 	pcall(saveCfg)
 end, 3, "guiLock")
@@ -5139,8 +5139,8 @@ for i, name in ipairs({ "Round", "Box", "Square" }) do
  end
  end
  end)
- if _G.XDUpdateMobileVisuals then pcall(_G.XDUpdateMobileVisuals) end
- if _G.XDForceApplyShape then pcall(_G.XDForceApplyShape, name) end
+ if _G.ZenonetopUpdateMobileVisuals then pcall(_G.ZenonetopUpdateMobileVisuals) end
+ if _G.ZenonetopForceApplyShape then pcall(_G.ZenonetopForceApplyShape, name) end
  for _, ch in ipairs(shapeRow:GetChildren()) do
  if ch:IsA("TextButton") then
  local on = ch.Text == name
@@ -5196,10 +5196,10 @@ function sizeRow(label, key, order)
  cur = math.clamp(cur + (sign == "+" and 5 or -5), 20, 200)
  St.btnSizes[key] = cur
  val.Text = tostring(cur)
- if _G.XDUpdateMobileVisuals then pcall(_G.XDUpdateMobileVisuals) end
- if _G.XDApplyMobile then pcall(_G.XDApplyMobile) end
+ if _G.ZenonetopUpdateMobileVisuals then pcall(_G.ZenonetopUpdateMobileVisuals) end
+ if _G.ZenonetopApplyMobile then pcall(_G.ZenonetopApplyMobile) end
  -- Speed 3Mode: rebuild để áp chiều cao mới
- if key == "mode" and _G.XDBuildV2ModeBar then pcall(_G.XDBuildV2ModeBar) end
+ if key == "mode" and _G.ZenonetopBuildV2ModeBar then pcall(_G.ZenonetopBuildV2ModeBar) end
  saveCfg()
  end
  b.MouseButton1Click:Connect(fire)
@@ -5247,10 +5247,10 @@ for _, info in ipairs({ { "-", -80 }, { "+", -44 } }) do
 	function fire()
  St.btnScale = math.clamp((tonumber(St.btnScale) or 1) + (info[1] == "+" and 0.05 or -0.05), 0.3, 2.0)
  scaleVal.Text = tostring(math.floor(St.btnScale * 100)) .. "%"
- if _G.XDUpdateMobileVisuals then pcall(_G.XDUpdateMobileVisuals) end
- if _G.XDApplyMobile then pcall(_G.XDApplyMobile) end
+ if _G.ZenonetopUpdateMobileVisuals then pcall(_G.ZenonetopUpdateMobileVisuals) end
+ if _G.ZenonetopApplyMobile then pcall(_G.ZenonetopApplyMobile) end
  -- rebuild V2 bar to pick new scale defaults
- if _G.XDBuildV2ModeBar then pcall(_G.XDBuildV2ModeBar) end
+ if _G.ZenonetopBuildV2ModeBar then pcall(_G.ZenonetopBuildV2ModeBar) end
  saveCfg()
 	end
 	b.MouseButton1Click:Connect(fire)
@@ -5311,7 +5311,7 @@ end
 
 section(pageSet, "* — RESET", 30)
 actionBtn(pageSet, "Reset Mobile Positions", C.accent, function()
-	if _G.XDResetMobilePos then _G.XDResetMobilePos() end
+	if _G.ZenonetopResetMobilePos then _G.ZenonetopResetMobilePos() end
 	saveCfg()
 end, 31)
 actionBtn(pageSet, "Reset All Settings", C.danger, function()
@@ -5379,11 +5379,11 @@ actionBtn(pageSet, "Reset All Settings", C.danger, function()
  pcall(function() ToggleRefs[k].set(v) end)
  end
 	end
-	if _G.XDResetMobilePos then pcall(_G.XDResetMobilePos) end
-	if _G.XDApplyMobile then pcall(_G.XDApplyMobile) end
-	if _G.XDRefreshModeCards then pcall(_G.XDRefreshModeCards) end
+	if _G.ZenonetopResetMobilePos then pcall(_G.ZenonetopResetMobilePos) end
+	if _G.ZenonetopApplyMobile then pcall(_G.ZenonetopApplyMobile) end
+	if _G.ZenonetopRefreshModeCards then pcall(_G.ZenonetopRefreshModeCards) end
 	pcall(applyMenuScale)
-	if _G.XDSyncAutoSteal then pcall(_G.XDSyncAutoSteal) end
+	if _G.ZenonetopSyncAutoSteal then pcall(_G.ZenonetopSyncAutoSteal) end
 	pcall(saveCfg)
 	showToast("RESET ALL ✓ Free Sell La Tuat Ngu Lon")
 end, 32)
@@ -5393,7 +5393,7 @@ actionBtn(pageSet, "Save Now", C.accent, function()
  if Main then
  St._mainPos = {Main.Position.X.Scale, Main.Position.X.Offset, Main.Position.Y.Scale, Main.Position.Y.Offset}
  end
- local mini = PlayerGui:FindFirstChild("XDHubFullMini")
+ local mini = PlayerGui:FindFirstChild("ZenonetopHubFullMini")
  local mb = mini and mini:FindFirstChildWhichIsA("GuiObject")
  if mb then
  St._miniPos = {mb.Position.X.Scale, mb.Position.X.Offset, mb.Position.Y.Scale, mb.Position.Y.Offset}
@@ -5412,7 +5412,7 @@ end, 33)
 -- MINI + CLOSE (no keybind)
 ----------------------------------------------------------------
 local MiniGui = Instance.new("ScreenGui")
-MiniGui.Name = "XDHubFullMini"
+MiniGui.Name = "ZenonetopHubFullMini"
 MiniGui.ResetOnSpawn = false
 MiniGui.IgnoreGuiInset = true
 MiniGui.DisplayOrder = 121
@@ -5422,7 +5422,7 @@ local Mini = Instance.new("TextButton")
 Mini.Size = UDim2.new(0, 110, 0, 36)
 Mini.Position = UDim2.new(0, 14, 0, 90)
 Mini.BackgroundColor3 = Color3.fromRGB(18, 18, 26)
-Mini.Text = "XD"
+Mini.Text = "xd"
 Mini.TextColor3 = C.accent
 Mini.TextSize = 12
 Mini.Font = Enum.Font.GothamBold
@@ -5528,7 +5528,7 @@ function closeMenu()
  end
  end)
  Mini.Visible = true
- Mini.Text = "XD"
+ Mini.Text = "xd"
  -- Giữ vị trí mini đã lưu; nếu chưa có thì đặt gần chỗ menu
  pcall(function()
  local p = St._miniPos
@@ -5555,7 +5555,7 @@ end
 -- MOBILE: 3 mode + Drop + Insta + TP
 ----------------------------------------------------------------
 local ModeGui = Instance.new("ScreenGui")
-ModeGui.Name = "XDHubModeBar"
+ModeGui.Name = "ZenonetopHubModeBar"
 ModeGui.ResetOnSpawn = false
 ModeGui.IgnoreGuiInset = true
 ModeGui.DisplayOrder = 2501
@@ -5563,7 +5563,7 @@ ModeGui.Enabled = false
 ModeGui.Parent = PlayerGui
 
 local ActGui = Instance.new("ScreenGui")
-ActGui.Name = "XDHubActionButtons"
+ActGui.Name = "ZenonetopHubActionButtons"
 ActGui.ResetOnSpawn = false
 ActGui.IgnoreGuiInset = true
 ActGui.DisplayOrder = 2500
@@ -5644,7 +5644,7 @@ function applyEmpireBtnBg(btn, index)
 	local list = MOB_BTN_IMAGE_IDS
 	local id = list[((tonumber(index) or 1) - 1) % #list + 1]
 	if not id or id <= 0 then return end
-	-- nền đậm hơn (XD style) nhưng chữ vẫn đọc được
+	-- nền đậm hơn (ZENONETOP style) nhưng chữ vẫn đọc được
 	btn.BackgroundTransparency = 0.35
 	btn.BackgroundColor3 = Color3.fromRGB(8, 8, 12)
 	local bgImg = Instance.new("ImageLabel")
@@ -5709,12 +5709,12 @@ function applyEmpireBtnBg(btn, index)
 end
 
 ----------------------------------------------------------------
--- SPEED V2 MODE BAR (full GUI from XD Clean) — 3 mode
+-- SPEED V2 MODE BAR (full GUI from ZENONETOP Clean) — 3 mode
 ----------------------------------------------------------------
 local v2BarButtons = {}
-function _G.XDBuildV2ModeBar()
+function _G.ZenonetopBuildV2ModeBar()
 	pcall(function()
- local old = PlayerGui:FindFirstChild("XDV2ModeBar")
+ local old = PlayerGui:FindFirstChild("ZenonetopV2ModeBar")
  if old then old:Destroy() end
 	end)
 	if not St.mobileBtns then return end
@@ -5741,7 +5741,7 @@ function _G.XDBuildV2ModeBar()
  },
 	}
 	local gui = Instance.new("ScreenGui")
-	gui.Name = "XDV2ModeBar"
+	gui.Name = "ZenonetopV2ModeBar"
 	gui.ResetOnSpawn = false
 	gui.IgnoreGuiInset = true
 	gui.DisplayOrder = 95
@@ -5867,7 +5867,7 @@ function _G.XDBuildV2ModeBar()
 	makeV2ModeBtn("Normal", "NORMAL", 1)
 	makeV2ModeBtn("Lagger", "LAGGER", 2)
 	makeV2ModeBtn("Custom", "CUSTOM", 3)
-	_G.XDRefreshV2ModeBar = function()
+	_G.ZenonetopRefreshV2ModeBar = function()
  for n, e in pairs(v2BarButtons) do
  if e and e.btn then styleV2Btn(e.btn, n, St.activeMode == n) end
  end
@@ -6104,9 +6104,9 @@ function makeActBtn(key, label, pos, cb)
  btn:SetAttribute("_lastTap", tick())
  pcall(cb)
  if key == "sentry" then
- if _G.XDRefreshSentryBtn then pcall(_G.XDRefreshSentryBtn) end
+ if _G.ZenonetopRefreshSentryBtn then pcall(_G.ZenonetopRefreshSentryBtn) end
  elseif key == "steal" then
- if _G.XDRefreshStealBtn then pcall(_G.XDRefreshStealBtn) end
+ if _G.ZenonetopRefreshStealBtn then pcall(_G.ZenonetopRefreshStealBtn) end
  end
  end
  else
@@ -6122,8 +6122,8 @@ function makeActBtn(key, label, pos, cb)
  if tick() - last < 0.15 then return end
  btn:SetAttribute("_lastTap", tick())
  if cb then pcall(cb) end
- if key == "sentry" and _G.XDRefreshSentryBtn then pcall(_G.XDRefreshSentryBtn) end
- if key == "steal" and _G.XDRefreshStealBtn then pcall(_G.XDRefreshStealBtn) end
+ if key == "sentry" and _G.ZenonetopRefreshSentryBtn then pcall(_G.ZenonetopRefreshSentryBtn) end
+ if key == "steal" and _G.ZenonetopRefreshStealBtn then pcall(_G.ZenonetopRefreshStealBtn) end
 	end
 	btn.MouseButton1Click:Connect(backupClick)
 	btn.Activated:Connect(backupClick)
@@ -6148,13 +6148,13 @@ function makeActBtn(key, label, pos, cb)
  elseif (not on) and type(stopAutoSteal)=="function" then pcall(stopAutoSteal) end
  end
  applyActBtnState(btn, St.autoSteal == true, "STEAL\nON", "AUTO\nSTEAL")
- if _G.XDRefreshStealBtn then pcall(_G.XDRefreshStealBtn) end
+ if _G.ZenonetopRefreshStealBtn then pcall(_G.ZenonetopRefreshStealBtn) end
  else
  local on = not (St.destroySentry == true)
  if type(setDestroySentry) == "function" then pcall(setDestroySentry, on)
  else St.destroySentry = on end
  applyActBtnState(btn, St.destroySentry == true, "SENTRY\nON", "SENTRY")
- if _G.XDRefreshSentryBtn then pcall(_G.XDRefreshSentryBtn) end
+ if _G.ZenonetopRefreshSentryBtn then pcall(_G.ZenonetopRefreshSentryBtn) end
  end
  end
  btn.MouseButton1Down:Connect(instantToggle)
@@ -6208,13 +6208,13 @@ function rebuildMobile()
  end
  end
  end
- if _G.XDBuildV2ModeBar then _G.XDBuildV2ModeBar() end
+ if _G.ZenonetopBuildV2ModeBar then _G.ZenonetopBuildV2ModeBar() end
  if St.speedOn then
  currentSpeedValue = getActiveMoveSpeed()
  pcall(startSpeedBoost)
  end
 	end)
-	makeActBtn("drop", "DROP", UDim2.new(1, -150, 0.5, -40), function() runDrop() if _G.XDCounterOnDrop then pcall(_G.XDCounterOnDrop) end end)
+	makeActBtn("drop", "DROP", UDim2.new(1, -150, 0.5, -40), function() runDrop() if _G.ZenonetopCounterOnDrop then pcall(_G.ZenonetopCounterOnDrop) end end)
 	makeActBtn("insta", "INSTA\nRESET", UDim2.new(1, -80, 0.5, -40), doInstaReset)
 	makeActBtn("tp", "TP\nDOWN", UDim2.new(1, -80, 0.5, 30), function() doTPDown(true) end)
 	makeActBtn("sentry", "SENTRY", UDim2.new(1, -150, 0.5, 30), function()
@@ -6224,7 +6224,7 @@ function rebuildMobile()
  else
  St.destroySentry = on
  end
- if _G.XDRefreshSentryBtn then pcall(_G.XDRefreshSentryBtn) end
+ if _G.ZenonetopRefreshSentryBtn then pcall(_G.ZenonetopRefreshSentryBtn) end
 	end)
 	makeActBtn("steal", "AUTO\nSTEAL", UDim2.new(1, -150, 0.5, 100), function()
  local on = not (St.autoSteal == true)
@@ -6237,7 +6237,7 @@ function rebuildMobile()
  autoStealEnabled = on
  if on and startAutoSteal then startAutoSteal() elseif stopAutoSteal then stopAutoSteal() end
  end
- if _G.XDRefreshStealBtn then pcall(_G.XDRefreshStealBtn) end
+ if _G.ZenonetopRefreshStealBtn then pcall(_G.ZenonetopRefreshStealBtn) end
  if ToggleRefs and ToggleRefs.autoSteal and ToggleRefs.autoSteal.setVisual then
  pcall(ToggleRefs.autoSteal.setVisual, St.autoSteal == true)
  end
@@ -6249,9 +6249,9 @@ function rebuildMobile()
 	for key, e in pairs(modeRefs) do
  if e.holder then restorePos(e.holder, "M_" .. key) end
 	end
-	_G.XDRefreshModeBar()
-	_G.XDRefreshSentryBtn()
-	if _G.XDRefreshStealBtn then pcall(_G.XDRefreshStealBtn) end
+	_G.ZenonetopRefreshModeBar()
+	_G.ZenonetopRefreshSentryBtn()
+	if _G.ZenonetopRefreshStealBtn then pcall(_G.ZenonetopRefreshStealBtn) end
 end
 
 
@@ -6316,7 +6316,7 @@ function applyActBtnState(btn, on, onText, offText)
 	end
 end
 
-function _G.XDRefreshStealBtn()
+function _G.ZenonetopRefreshStealBtn()
 	local e = actRefs and actRefs.steal
 	if not e or not e.holder then return end
 	local show = (St.showStealBtn ~= false)
@@ -6327,7 +6327,7 @@ function _G.XDRefreshStealBtn()
 	end
 end
 
-function _G.XDRefreshSentryBtn()
+function _G.ZenonetopRefreshSentryBtn()
 	local e = actRefs and actRefs.sentry
 	if e and e.btn then
  applyActBtnState(e.btn, St.destroySentry == true, "SENTRY\nON", "SENTRY")
@@ -6335,7 +6335,7 @@ function _G.XDRefreshSentryBtn()
 end
 
 
-function _G.XDRefreshModeBar()
+function _G.ZenonetopRefreshModeBar()
 	for n, e in pairs(modeRefs) do
  if e and e.btn then
  local on = St.activeMode == n
@@ -6368,7 +6368,7 @@ function _G.XDRefreshModeBar()
 end
 
 -- Cập nhật size + shape TRỰC TIẾP (không destroy → giữ vị trí kéo)
-_G.XDForceApplyShape = function(shape)
+_G.ZenonetopForceApplyShape = function(shape)
 	shape = shape or (St and St.btnShape) or "Square"
 	if St then St.btnShape = shape end
 	local refs = actRefs
@@ -6383,7 +6383,7 @@ _G.XDForceApplyShape = function(shape)
 	end
 end
 
-function _G.XDUpdateMobileVisuals()
+function _G.ZenonetopUpdateMobileVisuals()
 	for n, e in pairs(modeRefs) do
  if e and e.holder and e.btn then
  local sc = tonumber(St.btnScale) or 1
@@ -6417,12 +6417,12 @@ function _G.XDUpdateMobileVisuals()
  s.Transparency = 0.15
  end
 	end
-	if _G.XDRefreshModeBar then pcall(_G.XDRefreshModeBar) end
-	if _G.XDRefreshSentryBtn then pcall(_G.XDRefreshSentryBtn) end
-	if _G.XDRefreshStealBtn then pcall(_G.XDRefreshStealBtn) end
+	if _G.ZenonetopRefreshModeBar then pcall(_G.ZenonetopRefreshModeBar) end
+	if _G.ZenonetopRefreshSentryBtn then pcall(_G.ZenonetopRefreshSentryBtn) end
+	if _G.ZenonetopRefreshStealBtn then pcall(_G.ZenonetopRefreshStealBtn) end
 	-- Scale Speed V2 mode bar
 	pcall(function()
- local gui = PlayerGui:FindFirstChild("XDV2ModeBar")
+ local gui = PlayerGui:FindFirstChild("ZenonetopV2ModeBar")
  if not gui then return end
  local sc = tonumber(St.btnScale) or 1
  local modeSz = tonumber(St.btnSizes and St.btnSizes.mode) or 50
@@ -6441,7 +6441,7 @@ function _G.XDUpdateMobileVisuals()
 	end)
 end
 
-function _G.XDApplyMobile()
+function _G.ZenonetopApplyMobile()
 	ModeGui.Enabled = St.mobileBtns == true
 	ActGui.Enabled = St.mobileBtns == true
 	local hasMode = next(modeRefs) ~= nil
@@ -6450,14 +6450,14 @@ function _G.XDApplyMobile()
  rebuildMobile()
 	end
 	-- luôn áp shape/size (Box/Round/Square) kể cả khi đã có nút
-	if _G.XDUpdateMobileVisuals then pcall(_G.XDUpdateMobileVisuals) end
+	if _G.ZenonetopUpdateMobileVisuals then pcall(_G.ZenonetopUpdateMobileVisuals) end
 end
-function _G.XDResetMobilePos()
+function _G.ZenonetopResetMobilePos()
 	St._btnPos = {}
 	rebuildMobile()
 	pcall(saveCfg)
 end
-_G.XDApplyMobile()
+_G.ZenonetopApplyMobile()
 
 ----------------------------------------------------------------
 -- KEYBINDS (Drop / TP / Insta / Mode) — no menu toggle key
@@ -6565,7 +6565,7 @@ function reapplyAllLogic(reason)
 	pcall(function()
  if St.autoSteal then
  if type(setAutoSteal) == "function" then setAutoSteal(true) end
- if _G.XDSyncAutoSteal then pcall(_G.XDSyncAutoSteal) end
+ if _G.ZenonetopSyncAutoSteal then pcall(_G.ZenonetopSyncAutoSteal) end
  end
 	end)
 	-- Ragdoll TP
@@ -6575,7 +6575,7 @@ function reapplyAllLogic(reason)
 	pcall(function()
  if ModeGui then ModeGui.Enabled = St.mobileBtns == true end
  if ActGui then ActGui.Enabled = St.mobileBtns == true end
- if _G.XDApplyMobile then pcall(_G.XDApplyMobile) end
+ if _G.ZenonetopApplyMobile then pcall(_G.ZenonetopApplyMobile) end
 	end)
 	-- Sync toggle UI + ép logic chạy nếu đang ON
 	pcall(function()
@@ -6589,7 +6589,7 @@ function reapplyAllLogic(reason)
  end
 	end)
 end
-_G.XDReapplyAllLogic = reapplyAllLogic
+_G.ZenonetopReapplyAllLogic = reapplyAllLogic
 
 
 -- Re-apply ALL saved states so toggles that show ON actually work
@@ -6613,8 +6613,8 @@ task.defer(function()
  if type(setAutoSteal) == "function" then
  setAutoSteal(St.autoSteal == true)
  end
- if St.autoSteal and _G.XDSyncAutoSteal then
- pcall(_G.XDSyncAutoSteal)
+ if St.autoSteal and _G.ZenonetopSyncAutoSteal then
+ pcall(_G.ZenonetopSyncAutoSteal)
  end
 	end)
 end)
@@ -6651,7 +6651,7 @@ task.defer(function()
  if ModeGui then ModeGui.Enabled = St.mobileBtns == true end
  if ActGui then ActGui.Enabled = St.mobileBtns == true end
  if next(modeRefs) == nil or next(actRefs) == nil then
- if _G.XDApplyMobile then _G.XDApplyMobile() end
+ if _G.ZenonetopApplyMobile then _G.ZenonetopApplyMobile() end
  end
 	end)
 	pcall(function() if St.activeMode and setActiveMode then setActiveMode(St.activeMode) end end)
@@ -6678,12 +6678,12 @@ _G._VisHubCharReapplyConn = LP.CharacterAdded:Connect(function(char)
  if St.infJump and setInfJump then setInfJump(true) end
  if St.antiRagdoll and startAntiRagdoll then startAntiRagdoll() end
  if St.toolAim and setToolAim then setToolAim(true) end
- if St.autoSteal and _G.XDSyncAutoSteal then pcall(_G.XDSyncAutoSteal) end
+ if St.autoSteal and _G.ZenonetopSyncAutoSteal then pcall(_G.ZenonetopSyncAutoSteal) end
  end
 	end)
 end)
 
-print("[XD Full] Player(Anti+Speed S2+Aim+Drop+Insta) | ESP | Settings mobile/lock/shape/size")
+print("[ZENONETOP Full] Player(Anti+Speed S2+Aim+Drop+Insta) | ESP | Settings mobile/lock/shape/size")
 
 
 
@@ -6801,22 +6801,22 @@ function executeStealV1(prompt, part)
  local t0 = tick()
  while tick() - t0 < dur * pausePct do
  if not StealA.enabled or not stillInRange() then
- _G.XDStealBar.Reset()
+ _G.ZenonetopStealBar.Reset()
  StealA.busy = false
  return
  end
  local p = (tick() - t0) / dur
- _G.XDStealBar.Set(math.clamp(p, 0, pausePct), "STEALING")
+ _G.ZenonetopStealBar.Set(math.clamp(p, 0, pausePct), "STEALING")
  task.wait()
  end
- _G.XDStealBar.Set(pausePct, "WAIT")
+ _G.ZenonetopStealBar.Set(pausePct, "WAIT")
  -- wait until close
  while StealA.enabled and stillInRange() and not closeEnough() do
- _G.XDStealBar.Set(pausePct, "WAIT")
+ _G.ZenonetopStealBar.Set(pausePct, "WAIT")
  task.wait(0.05)
  end
  if not StealA.enabled or not stillInRange() then
- _G.XDStealBar.Reset()
+ _G.ZenonetopStealBar.Reset()
  StealA.busy = false
  return
  end
@@ -6824,12 +6824,12 @@ function executeStealV1(prompt, part)
  local remain = dur * (1 - pausePct)
  while tick() - t1 < remain do
  if not StealA.enabled or not stillInRange() then
- _G.XDStealBar.Reset()
+ _G.ZenonetopStealBar.Reset()
  StealA.busy = false
  return
  end
  local p = pausePct + (tick() - t1) / remain * (1 - pausePct)
- _G.XDStealBar.Set(p, "STEALING")
+ _G.ZenonetopStealBar.Set(p, "STEALING")
  task.wait()
  end
  else
@@ -6838,23 +6838,23 @@ function executeStealV1(prompt, part)
  local t0 = tick()
  while tick() - t0 < dur do
  if not StealA.enabled or not stillInRange() then
- _G.XDStealBar.Reset()
+ _G.ZenonetopStealBar.Reset()
  StealA.busy = false
  return
  end
- _G.XDStealBar.Set((tick() - t0) / dur, "STEALING")
+ _G.ZenonetopStealBar.Set((tick() - t0) / dur, "STEALING")
  task.wait()
  end
- _G.XDStealBar.Set(1, "SUCCESS")
+ _G.ZenonetopStealBar.Set(1, "SUCCESS")
  fireSteal(prompt)
- _G.XDStealBar.Reset() -- 100% → 0 ngay, loop tiếp trong radius
+ _G.ZenonetopStealBar.Reset() -- 100% → 0 ngay, loop tiếp trong radius
  end
  StealA.busy = false
  return
  end
- _G.XDStealBar.Set(1, "SUCCESS")
+ _G.ZenonetopStealBar.Set(1, "SUCCESS")
  fireSteal(prompt)
- _G.XDStealBar.Reset() -- 100% → 0 ngay
+ _G.ZenonetopStealBar.Reset() -- 100% → 0 ngay
  StealA.busy = false
  -- tiếp tục nếu còn trong radius (heartbeat startAutoSteal sẽ pick lại)
 	end)
@@ -6869,27 +6869,27 @@ function executeStealV2(prompt, part)
  local t0 = tick()
  while tick() - t0 < dur do
  if not StealA.enabled then
- _G.XDStealBar.Reset()
+ _G.ZenonetopStealBar.Reset()
  StealA.busy = false
  return
  end
  local r = LP.Character and LP.Character:FindFirstChild("HumanoidRootPart")
  if not r or not part or not part.Parent then
- _G.XDStealBar.Reset()
+ _G.ZenonetopStealBar.Reset()
  StealA.busy = false
  return
  end
  if (r.Position - part.Position).Magnitude > (St.stealRadius or 60) then
- _G.XDStealBar.Reset()
+ _G.ZenonetopStealBar.Reset()
  StealA.busy = false
  return
  end
- _G.XDStealBar.Set((tick() - t0) / dur, "STEALING")
+ _G.ZenonetopStealBar.Set((tick() - t0) / dur, "STEALING")
  task.wait()
  end
- _G.XDStealBar.Set(1, "SUCCESS")
+ _G.ZenonetopStealBar.Set(1, "SUCCESS")
  fireSteal(prompt)
- _G.XDStealBar.Reset() -- 100% → 0 ngay
+ _G.ZenonetopStealBar.Reset() -- 100% → 0 ngay
  StealA.busy = false
 	end)
 end
@@ -6916,7 +6916,7 @@ function stopAutoSteal()
 	-- Chỉ về 0%, KHÔNG ẩn / destroy steal bar
 	_G.AceStealBarProgress = 0
 	pcall(function() if _G.StealBar and _G.StealBar.Reset then _G.StealBar.Reset() end end)
-	pcall(function() if _G.XDStealBar and _G.XDStealBar.Reset then _G.XDStealBar.Reset() end end)
+	pcall(function() if _G.ZenonetopStealBar and _G.ZenonetopStealBar.Reset then _G.ZenonetopStealBar.Reset() end end)
 end
 function setAutoSteal(on)
 	-- exported below
@@ -6925,17 +6925,17 @@ function setAutoSteal(on)
 	autoStealRadius = tonumber(St.stealRadius) or 60
 	selectedStealMode = St.stealVer or "V1"
 	if St.autoSteal then startAutoSteal() else stopAutoSteal() end
-	if _G.XDSyncAutoSteal then pcall(_G.XDSyncAutoSteal) end
-	if _G.XDRefreshStealBtn then pcall(_G.XDRefreshStealBtn) end
+	if _G.ZenonetopSyncAutoSteal then pcall(_G.ZenonetopSyncAutoSteal) end
+	if _G.ZenonetopRefreshStealBtn then pcall(_G.ZenonetopRefreshStealBtn) end
 	-- đảm bảo nút mobile tồn tại
-	if St.autoSteal and (not actRefs or not actRefs.steal) and _G.XDApplyMobile then
- pcall(_G.XDApplyMobile)
+	if St.autoSteal and (not actRefs or not actRefs.steal) and _G.ZenonetopApplyMobile then
+ pcall(_G.ZenonetopApplyMobile)
 	end
 	saveCfg()
 end
 
 ----------------------------------------------------------------
--- PANEL TP (from XD, no music / no image / no sentry)
+-- PANEL TP (from ZENONETOP, no music / no image / no sentry)
 ----------------------------------------------------------------
 local TP = {
 	base = nil, pet = nil,
@@ -6955,7 +6955,7 @@ function tpMarker(pos, col)
 	P.CanCollide = false
 	P.Position = pos + Vector3.new(0, 2, 0)
 	P.Color = col
-	P.Name = "XDTP_SavePoint"
+	P.Name = "ZenonetopTP_SavePoint"
 	P.Parent = workspace
 	return P
 end
@@ -7042,16 +7042,16 @@ function runPanelTP()
  end
  end)
  TP.busy = false
- if _G.XDRefreshTPBtn then _G.XDRefreshTPBtn() end
+ if _G.ZenonetopRefreshTPBtn then _G.ZenonetopRefreshTPBtn() end
 	end)
 end
 
 -- Panel TP GUI (popup)
 function openPanelTP()
-	local old = PlayerGui:FindFirstChild("XDPanelTP")
+	local old = PlayerGui:FindFirstChild("ZenonetopPanelTP")
 	if old then old:Destroy() end
 	local gui = Instance.new("ScreenGui")
-	gui.Name = "XDPanelTP"
+	gui.Name = "ZenonetopPanelTP"
 	gui.ResetOnSpawn = false
 	gui.IgnoreGuiInset = true
 	gui.DisplayOrder = 130
@@ -7155,7 +7155,7 @@ function openPanelTP()
  if TP.markers.base then TP.markers.base:Destroy() end
  TP.markers.base = tpMarker(TP.base, Color3.fromRGB(255, 105, 180))
  showToast("BASE SAVED")
- if _G.XDRefreshTPBtn then _G.XDRefreshTPBtn() end
+ if _G.ZenonetopRefreshTPBtn then _G.ZenonetopRefreshTPBtn() end
 	end)
 	mkBtn("Luu Pet (diem 2)", 84, Color3.fromRGB(200, 120, 40), function()
  local hrp = LP.Character and LP.Character:FindFirstChild("HumanoidRootPart")
@@ -7164,7 +7164,7 @@ function openPanelTP()
  if TP.markers.pet then TP.markers.pet:Destroy() end
  TP.markers.pet = tpMarker(TP.pet, Color3.fromRGB(255, 140, 0))
  showToast("PET SAVED")
- if _G.XDRefreshTPBtn then _G.XDRefreshTPBtn() end
+ if _G.ZenonetopRefreshTPBtn then _G.ZenonetopRefreshTPBtn() end
 	end)
 	mkBtn("Xoa diem", 124, Color3.fromRGB(80, 40, 40), function()
  TP.base, TP.pet = nil, nil
@@ -7172,7 +7172,7 @@ function openPanelTP()
  if TP.markers.pet then TP.markers.pet:Destroy() end
  TP.markers = {}
  showToast("CLEARED")
- if _G.XDRefreshTPBtn then _G.XDRefreshTPBtn() end
+ if _G.ZenonetopRefreshTPBtn then _G.ZenonetopRefreshTPBtn() end
 	end)
 	mkBtn("TP NOW", 164, Color3.fromRGB(90, 70, 180), function()
  runPanelTP()
@@ -7233,7 +7233,7 @@ end
 -- Center TP button when 2 points saved
 do
 	local tpg = Instance.new("ScreenGui")
-	tpg.Name = "XDCenterTP"
+	tpg.Name = "ZenonetopCenterTP"
 	tpg.ResetOnSpawn = false
 	tpg.IgnoreGuiInset = true
 	tpg.DisplayOrder = 1002
@@ -7253,7 +7253,7 @@ do
 	local bst = Instance.new("UIStroke", btn)
 	bst.Color = Color3.fromRGB(140, 100, 255)
 	btn.MouseButton1Click:Connect(runPanelTP)
-	function _G.XDRefreshTPBtn()
+	function _G.ZenonetopRefreshTPBtn()
  local has = TP.base ~= nil or TP.pet ~= nil
  btn.Visible = has
  local kn = tostring(TP.key):gsub("Enum.KeyCode.", "")
@@ -7276,7 +7276,7 @@ end)
 
 
 ----------------------------------------------------------------
--- BODY LOCK (full XD Clean / BloodHounds)
+-- BODY LOCK (full ZENONETOP Clean / BloodHounds)
 ----------------------------------------------------------------
 local bodyLockEnabled = false
 local bodyLockRange = 20
@@ -7445,7 +7445,7 @@ end
 ----------------------------------------------------------------
 task.defer(function()
 	-- Auto steal on Player page
-	if not pagePlayer then warn("[XD] pagePlayer nil") return end
+	if not pagePlayer then warn("[ZENONETOP] pagePlayer nil") return end
 	section(pagePlayer, "* — AUTO STEAL", 20)
 	local function safeSetAS(on)
  if type(setAutoSteal) == "function" then
@@ -7498,8 +7498,8 @@ task.defer(function()
  autoStealRadius = tonumber(St.stealRadius) or 60
  if type(setAutoSteal) == "function" and St.autoSteal then
  pcall(function() setAutoSteal(true) end)
- elseif _G.XDSyncAutoSteal then
- pcall(_G.XDSyncAutoSteal)
+ elseif _G.ZenonetopSyncAutoSteal then
+ pcall(_G.ZenonetopSyncAutoSteal)
  end
  pcall(saveCfg)
  end
@@ -7508,8 +7508,8 @@ task.defer(function()
 	end
 	toggleNamed(pagePlayer, "Pause (chi khi ON)", St.stealPause == true, function(on)
  St.stealPause = on and true or false
- _G.XDStealPause = St.stealPause
- if _G.XDSyncAutoSteal then pcall(_G.XDSyncAutoSteal) end
+ _G.ZenonetopStealPause = St.stealPause
+ if _G.ZenonetopSyncAutoSteal then pcall(_G.ZenonetopSyncAutoSteal) end
  saveCfg()
 	end, 23, "stealPause")
 	-- radius box
@@ -7565,7 +7565,7 @@ task.defer(function()
 	setTab("Panel")
 end)
 
-print("[XD Ext] Panel TP | AutoSteal V1/V2 + bar | InfJump hold/manual | ToolAim ON")
+print("[ZENONETOP Ext] Panel TP | AutoSteal V1/V2 + bar | InfJump hold/manual | ToolAim ON")
 
 
 
@@ -7772,7 +7772,7 @@ local tpBestBusy = false
 function tpToBestChilli()
 	-- removed per request
 end
-_G.XDTpToBest = tpToBestChilli
+_G.ZenonetopTpToBest = tpToBestChilli
 
 -- UI: button on Panel + mobile + keybind
 St.keys.TpBest = St.keys.TpBest or Enum.KeyCode.B
@@ -7805,7 +7805,7 @@ end)
 -- Mobile external button
 task.defer(function()
 	local g = Instance.new("ScreenGui")
-	g.Name = "XDTpBestBtn"
+	g.Name = "ZenonetopTpBestBtn"
 	g.Enabled = false -- removed TP BEST
 	g.ResetOnSpawn = false
 	g.IgnoreGuiInset = true
@@ -7858,7 +7858,7 @@ end)
 
 
 ----------------------------------------------------------------
--- OVERHEAD: real speed + discord (from XD)
+-- OVERHEAD: real speed + discord (from ZENONETOP)
 ----------------------------------------------------------------
 local overheadGui, overheadSpeedLabel
 function setupOverheadInfo(char)
@@ -7871,12 +7871,12 @@ function setupOverheadInfo(char)
  if not head then return end
 	end
 	pcall(function()
- local old = head:FindFirstChild("XDOverheadInfo")
+ local old = head:FindFirstChild("ZenonetopOverheadInfo")
  if old then old:Destroy() end
 	end)
 	if overheadGui then pcall(function() overheadGui:Destroy() end) end
 	overheadGui = Instance.new("BillboardGui")
-	overheadGui.Name = "XDOverheadInfo"
+	overheadGui.Name = "ZenonetopOverheadInfo"
 	overheadGui.Size = UDim2.new(0, 300, 0, 96)
 	overheadGui.StudsOffset = Vector3.new(0, 2.8, 0)
 	overheadGui.AlwaysOnTop = true
@@ -7943,19 +7943,19 @@ if not _G._VisOverheadLoop then
 end
 
 
-print("[XD] TP TO BEST (Chilli) ready | key B | nut TP BEST")
+print("[ZENONETOP] TP TO BEST (Chilli) ready | key B | nut TP BEST")
 
 
 
 -- ============================================================
 -- LOAD FULL VIS AUTO STEAL (V1 / Semi V1-V2 / V3)
 -- ============================================================
-_G.XDStealPause = (St.stealPause == true)
+_G.ZenonetopStealPause = (St.stealPause == true)
 task.spawn(function()
 	local src
 	pcall(function()
- if readfile and isfile and isfile("XD_Auto_Steal_Embedded.lua") then
- src = readfile("XD_Auto_Steal_Embedded.lua")
+ if readfile and isfile and isfile("Zenonetop_Auto_Steal_Embedded.lua") then
+ src = readfile("Zenonetop_Auto_Steal_Embedded.lua")
  end
 	end)
 	-- fallback: try workspace artifact path won't work in-game; embed minimal wire
@@ -7973,7 +7973,7 @@ task.spawn(function()
 	end
 	-- Wire toggles to Ace sync
 	local function syncSteal()
- _G.XDStealPause = (St.stealPause == true)
+ _G.ZenonetopStealPause = (St.stealPause == true)
  autoStealEnabled = St.autoSteal == true
  _G.autoStealEnabled = autoStealEnabled
  if St.stealVer == "V1" then
@@ -8001,7 +8001,7 @@ task.spawn(function()
  end
  if _G.AceAutoStealSync then pcall(_G.AceAutoStealSync) end
 	end
-	_G.XDSyncAutoSteal = syncSteal
+	_G.ZenonetopSyncAutoSteal = syncSteal
 	-- override setAutoSteal (giữ bar + refresh nút mobile)
 	local _oldSet = setAutoSteal
 	setAutoSteal = function(on)
@@ -8013,7 +8013,7 @@ task.spawn(function()
  if type(stopAutoSteal) == "function" then pcall(stopAutoSteal) end
  end
  syncSteal()
- if _G.XDRefreshStealBtn then pcall(_G.XDRefreshStealBtn) end
+ if _G.ZenonetopRefreshStealBtn then pcall(_G.ZenonetopRefreshStealBtn) end
  if ToggleRefs and ToggleRefs.autoSteal and ToggleRefs.autoSteal.setVisual then
  pcall(ToggleRefs.autoSteal.setVisual, St.autoSteal == true)
  end
@@ -8021,7 +8021,7 @@ task.spawn(function()
 	end
 end)
 
--- Wallpaper list (XD style)
+-- Wallpaper list (ZENONETOP style)
 local VIS_WALLS = {
 	-- Empire BG only
 	"rbxassetid://126832513729779","rbxassetid://81347949983999","rbxassetid://76940707345653",
@@ -8134,17 +8134,17 @@ end)
 
 -- Mini = circle combat when closed
 task.defer(function()
-	local miniGui = PlayerGui:FindFirstChild("XDHubFullMini")
+	local miniGui = PlayerGui:FindFirstChild("ZenonetopHubFullMini")
 	local mini = miniGui and miniGui:FindFirstChildWhichIsA("TextButton")
 	if mini then
  mini.Size = UDim2.new(0, 110, 0, 36)
- mini.Text = "XD"
+ mini.Text = "xd"
  mini.TextSize = 22
  local c0 = mini:FindFirstChildOfClass("UICorner")
  if c0 then c0.CornerRadius = UDim.new(0, 8) end
 	end
 	-- Title bar rectangle text
-	local mainGui = PlayerGui:FindFirstChild("XDHubFullMenu")
+	local mainGui = PlayerGui:FindFirstChild("ZenonetopHubFullMenu")
 	local main = mainGui and mainGui:FindFirstChild("Main")
 	if main then
  local top = main:FindFirstChild("TopBar") or main:FindFirstChildWhichIsA("Frame")
@@ -8179,8 +8179,8 @@ if not _G._VisLogicWatchdog then
  if St.antiRagdoll and AntiRagdollV2 and not AntiRagdollV2.Enabled then
  if startAntiRagdoll then startAntiRagdoll() end
  end
- if St.autoSteal and _G.XDSyncAutoSteal then
- pcall(_G.XDSyncAutoSteal)
+ if St.autoSteal and _G.ZenonetopSyncAutoSteal then
+ pcall(_G.ZenonetopSyncAutoSteal)
  end
  end)
  end
@@ -8200,13 +8200,13 @@ task.spawn(function()
  St.menuOpen = Main.Visible == true
  end
  -- Mini open button
- local miniGui = PlayerGui:FindFirstChild("XDHubFullMini")
+ local miniGui = PlayerGui:FindFirstChild("ZenonetopHubFullMini")
  local mini = miniGui and miniGui:FindFirstChildWhichIsA("TextButton")
  if mini then
  St._miniPos = {mini.Position.X.Scale, mini.Position.X.Offset, mini.Position.Y.Scale, mini.Position.Y.Offset}
  end
  -- Mode bar
- local mb = PlayerGui:FindFirstChild("XDHubModeBar")
+ local mb = PlayerGui:FindFirstChild("ZenonetopHubModeBar")
  if mb then
  local f = mb:FindFirstChildWhichIsA("Frame")
  if f then
@@ -8230,10 +8230,10 @@ task.spawn(function()
  end
  end
  end
- snapHolders(PlayerGui:FindFirstChild("XDHubActionButtons"))
- snapHolders(PlayerGui:FindFirstChild("XDHubModeBar"))
+ snapHolders(PlayerGui:FindFirstChild("ZenonetopHubActionButtons"))
+ snapHolders(PlayerGui:FindFirstChild("ZenonetopHubModeBar"))
  -- Panel TP
- local tp = PlayerGui:FindFirstChild("XDHubbTP")
+ local tp = PlayerGui:FindFirstChild("ZenonetopHubbTP")
  if tp then
  local m = tp:FindFirstChild("TPMain")
  if m then
@@ -8242,7 +8242,7 @@ task.spawn(function()
  end
  end
  -- Auto Steal floating GUI pos if any
- local asg = PlayerGui:FindFirstChild("XDAutoStealGui")
+ local asg = PlayerGui:FindFirstChild("ZenonetopAutoStealGui")
  if asg then
  local mf = asg:FindFirstChildWhichIsA("Frame")
  if mf then
@@ -8260,7 +8260,7 @@ task.defer(function()
  if St._mainPos and Main then
  Main.Position = UDim2.new(St._mainPos[1], St._mainPos[2], St._mainPos[3], St._mainPos[4])
  end
- local miniGui = PlayerGui:FindFirstChild("XDHubFullMini")
+ local miniGui = PlayerGui:FindFirstChild("ZenonetopHubFullMini")
  local mini = miniGui and miniGui:FindFirstChildWhichIsA("TextButton")
  if mini and St._miniPos then
  mini.Position = UDim2.new(St._miniPos[1], St._miniPos[2], St._miniPos[3], St._miniPos[4])
@@ -8314,10 +8314,10 @@ task.defer(function()
  cur = math.clamp(cur + (sign == "+" and 5 or -5), 20, 200)
  St.btnSizes.sentry = cur
  val.Text = tostring(cur)
- if _G.XDUpdateMobileVisuals then
- pcall(_G.XDUpdateMobileVisuals)
- elseif _G.XDApplyMobile then
- pcall(_G.XDApplyMobile)
+ if _G.ZenonetopUpdateMobileVisuals then
+ pcall(_G.ZenonetopUpdateMobileVisuals)
+ elseif _G.ZenonetopApplyMobile then
+ pcall(_G.ZenonetopApplyMobile)
  end
  saveCfg()
  end)
@@ -8353,7 +8353,7 @@ task.spawn(function()
 
 	local function Marker(pos, col)
  local p = Instance.new("Part")
- p.Name = "XDTP_Marker"
+ p.Name = "ZenonetopTP_Marker"
  p.Shape = Enum.PartType.Cylinder
  p.Size = Vector3.new(0.35, 4, 4)
  p.CFrame = CFrame.new(pos + Vector3.new(0, 0.2, 0)) * CFrame.Angles(0, 0, math.rad(90))
@@ -8563,11 +8563,11 @@ task.spawn(function()
 	if SAVE_PET then MARK_PET = Marker(SAVE_PET, Color3.fromRGB(255, 140, 0)) end
 
 	pcall(function()
- local old = PlayerGui:FindFirstChild("XDHubbTP")
+ local old = PlayerGui:FindFirstChild("ZenonetopHubbTP")
  if old then old:Destroy() end
 	end)
 	local gui = Instance.new("ScreenGui")
-	gui.Name = "XDHubbTP"
+	gui.Name = "ZenonetopHubbTP"
 	gui.ResetOnSpawn = false
 	gui.IgnoreGuiInset = true
 	gui.DisplayOrder = 80
@@ -8629,7 +8629,7 @@ task.spawn(function()
 	title.Size = UDim2.new(1, -100, 0, 24)
 	title.Position = UDim2.new(0, 64, 0, y(1))
 	title.BackgroundTransparency = 1
-	title.Text = "XD TP"
+	title.Text = "xd TP"
 	title.TextColor3 = Color3.fromRGB(230, 210, 255)
 	title.Font = Enum.Font.GothamBold
 	title.TextSize = 13
@@ -8871,7 +8871,7 @@ task.spawn(function()
  if input.KeyCode == KEYBIND_TP then StartTP() end
 	end)
 
-	print("[XD] Compact TP panel ready | rainbow | markers | key X")
+	print("[ZENONETOP] Compact TP panel ready | rainbow | markers | key X")
 end)
 
 
@@ -8898,7 +8898,7 @@ task.spawn(function()
  for _, parent in ipairs(parents) do
  for _, g in ipairs(parent:GetChildren()) do
  local n = (g.Name or ""):lower():gsub("%s+", "")
- -- giữ XDStealBarOnly + bar script khác
+ -- giữ ZenonetopStealBarOnly + bar script khác
  if n == "visstealbaronly" then
  -- keep
  elseif own[n] or n:find("visautosteal", 1, true) then
@@ -8913,12 +8913,12 @@ task.spawn(function()
 
 
 	pcall(function()
- local o = PlayerGui:FindFirstChild("XDStealBarOnly")
+ local o = PlayerGui:FindFirstChild("ZenonetopStealBarOnly")
  if o then o:Destroy() end
 	end)
 
 	local gui = Instance.new("ScreenGui")
-	gui.Name = "XDStealBarOnly"
+	gui.Name = "ZenonetopStealBarOnly"
 	gui.ResetOnSpawn = false
 	gui.IgnoreGuiInset = true
 	gui.DisplayOrder = 200000 -- đè lên bar script khác, không xoá chúng
@@ -9179,8 +9179,8 @@ task.spawn(function()
 ----------------------------------------------------------------
 -- ACE SPEED BYPASS (full) — mini = ON/OFF EN + Lock | scale panels
 ----------------------------------------------------------------
--- ===== XD FULL: Speed Bypass + Lagger V2 (replace All Gear old panels) =====
--- XDBypass — Speed Bypass (Noxa-style UI + keybind PC + minimize + bg)
+-- ===== ZENONETOP FULL: Speed Bypass + Lagger V2 (replace All Gear old panels) =====
+-- ZenonetopBypass — Speed Bypass (Noxa-style UI + keybind PC + minimize + bg)
 -- ============================================================
 task.spawn(function()
 	local Players = game:GetService("Players")
@@ -9192,7 +9192,7 @@ task.spawn(function()
 	local running = false
 	local bomb = nil
 	local spamThread = nil
-	local ConfigFile = "XDBypass.json"
+	local ConfigFile = "ZenonetopBypass.json"
 	-- Dùng full list BackgroundIDs của (1–50+)
 	local BG_IDS = (BackgroundIDs and #BackgroundIDs > 0) and BackgroundIDs or {
  "89504528485163", "108697485255882", "71211662493854", "118953269416540", "106345334781345",
@@ -9319,12 +9319,12 @@ task.spawn(function()
 
 	local parent = (gethui and gethui()) or game:GetService("CoreGui")
 	pcall(function()
- local old = parent:FindFirstChild("XDBypassGui")
+ local old = parent:FindFirstChild("ZenonetopBypassGui")
  if old then old:Destroy() end
 	end)
 
 	local gui = Instance.new("ScreenGui")
-	gui.Name = "XDBypassGui"
+	gui.Name = "ZenonetopBypassGui"
 	gui.ResetOnSpawn = false
 	gui.IgnoreGuiInset = true
 	gui.Enabled = true
@@ -9582,7 +9582,7 @@ task.spawn(function()
 	discLbl.Size = UDim2.new(1, 0, 0, 22)
 	discLbl.Position = UDim2.fromOffset(0, 288)
 	discLbl.BackgroundTransparency = 1
-	discLbl.Text = "XD · Speed Bypass"
+	discLbl.Text = "xd · Speed Bypass"
 	discLbl.TextColor3 = Color3.fromRGB(160, 160, 170)
 	discLbl.Font = Enum.Font.GothamBold
 	discLbl.TextSize = 11
@@ -10064,7 +10064,7 @@ task.spawn(function()
  end)
  end
 	end)
-	print("[Vis] XDBypass panel loaded (Noxa-style + keybind + minimize + remember open)")
+	print("[Vis] ZenonetopBypass panel loaded (Noxa-style + keybind + minimize + remember open)")
 end)
 
 
@@ -10083,7 +10083,7 @@ task.spawn(function()
 
 	local LP = Players.LocalPlayer
 	local PlayerGui = LP:WaitForChild("PlayerGui")
-	local ConfigFile = "XDPerishLaggerV2.json"
+	local ConfigFile = "ZenonetopPerishLaggerV2.json"
 
 	local NIVELES = {
  Low = { poder = 23 },
@@ -10423,7 +10423,7 @@ task.spawn(function()
 	title.Position = UDim2.new(0, 50, 0, 8)
 	title.Size = UDim2.new(0, 150, 0, 19)
 	title.Font = Enum.Font.GothamBlack
-	title.Text = "XDUser V2"
+	title.Text = "ZenonetopUser V2"
 	title.TextColor3 = C.White
 	title.TextSize = 18
 	title.TextXAlignment = Enum.TextXAlignment.Left
@@ -10435,7 +10435,7 @@ task.spawn(function()
 	subtitle.Position = UDim2.new(0, 50, 0, 26)
 	subtitle.Size = UDim2.new(0, 170, 0, 12)
 	subtitle.Font = Enum.Font.GothamBold
-	subtitle.Text = "XDUser module"
+	subtitle.Text = "ZenonetopUser module"
 	subtitle.TextColor3 = C.TextDim
 	subtitle.TextSize = 10
 	subtitle.TextXAlignment = Enum.TextXAlignment.Left
@@ -10883,10 +10883,10 @@ print("[Vis] Perish Lagger V2 FULL GUI loaded (menu toggle, pos persist like V1)
 end)
 
 -- ============================================================
--- WRAPPERS: Settings → XD Lagger V2 (Perish) + Speed Bypass
+-- WRAPPERS: Settings → ZENONETOP Lagger V2 (Perish) + Speed Bypass
 -- ============================================================
 do
-	function _G.XDSetLaggerPanel(on)
+	function _G.ZenonetopSetLaggerPanel(on)
  on = on and true or false
  if type(St) == "table" then St.showLaggerPanel = on end
  pcall(function()
@@ -10899,14 +10899,14 @@ do
  pcall(function() if saveCfg then saveCfg() end end)
 	end
 
-	function _G.XDSetLaggerLock(on)
+	function _G.ZenonetopSetLaggerLock(on)
  on = on and true or false
  if type(St) == "table" then St.laggerPanelLock = on end
  pcall(function() if _G.AceSetPerishV2Lock then _G.AceSetPerishV2Lock(on) end end)
  pcall(function() if saveCfg then saveCfg() end end)
 	end
 
-	function _G.XDSetSpeedBypassPanel(on)
+	function _G.ZenonetopSetSpeedBypassPanel(on)
  on = on and true or false
  if type(St) == "table" then
  St.showSpeedBypassPanel = on
@@ -10921,7 +10921,7 @@ do
  local gui = nil
  for _, p in ipairs(parents) do
  if p then
- gui = p:FindFirstChild("XDBypassGui")
+ gui = p:FindFirstChild("ZenonetopBypassGui")
  if gui then break end
  end
  end
@@ -10957,7 +10957,7 @@ do
  local api = _G.AceSetVisBypassPanelVisible
  if type(api) == "function" then
  local ok, err = pcall(api, on)
- if not ok then warn("[XD] SpeedBypass panel:", err) end
+ if not ok then warn("[ZENONETOP] SpeedBypass panel:", err) end
  else
  -- API chưa sẵn: đợi tối đa 1s (không 5s)
  task.spawn(function()
@@ -10975,7 +10975,7 @@ do
  pcall(function() if saveCfg then saveCfg() end end)
 	end
 
-function _G.XDSetSpeedBypassLock(on)
+function _G.ZenonetopSetSpeedBypassLock(on)
  on = on and true or false
  if type(St) == "table" then St.speedBypassLock = on end
  -- Lock riêng Speed Bypass — không dính Lock UI menu chính (St.guiLock)
@@ -10992,18 +10992,18 @@ function _G.XDSetSpeedBypassLock(on)
 	task.defer(function()
  task.wait(0.2)
  pcall(function()
- if type(St) == "table" and St.showLaggerPanel then _G.XDSetLaggerPanel(true) end
+ if type(St) == "table" and St.showLaggerPanel then _G.ZenonetopSetLaggerPanel(true) end
  -- Speed Bypass: chỉ hiện nếu user đã ON show trong settings (không auto)
  if type(St) == "table" and St.showSpeedBypassPanel == true then
- _G.XDSetSpeedBypassPanel(true)
- elseif type(_G.XDSetSpeedBypassPanel) == "function" then
- _G.XDSetSpeedBypassPanel(false)
+ _G.ZenonetopSetSpeedBypassPanel(true)
+ elseif type(_G.ZenonetopSetSpeedBypassPanel) == "function" then
+ _G.ZenonetopSetSpeedBypassPanel(false)
  end
  end)
 	end)
 end
 
-print("[XD] FULL Vis Lagger V2 (Perish) + Speed Bypass GUI (no old Vynx)")
+print("[ZENONETOP] FULL Vis Lagger V2 (Perish) + Speed Bypass GUI (no old Vynx)")
 end)
 
 
