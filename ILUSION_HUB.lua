@@ -382,17 +382,17 @@ end
 -- COLORS / STATE
 ----------------------------------------------------------------
 local C = {
-	-- ILUSION HUB palette: lead-grey panel, lighter grey controls, red selected/action buttons
-	bg = Color3.fromRGB(48, 48, 52), bg2 = Color3.fromRGB(56, 56, 60),
-	card = Color3.fromRGB(68, 68, 73), stroke = Color3.fromRGB(235, 235, 240),
-	accent = Color3.fromRGB(210, 48, 68), text = Color3.fromRGB(255, 255, 255),
-	textDim = Color3.fromRGB(235, 235, 235), on = Color3.fromRGB(60, 220, 110),
-	off = Color3.fromRGB(58, 58, 62), box = Color3.fromRGB(76, 76, 82),
-	danger = Color3.fromRGB(210, 48, 68),
-	modeOnBg = Color3.fromRGB(210, 48, 68), modeOnTxt = Color3.fromRGB(255, 255, 255),
-	modeOffBg = Color3.fromRGB(76, 76, 82), modeOffTxt = Color3.fromRGB(255, 255, 255),
-	btnOn = Color3.fromRGB(210, 48, 68), -- selected buttons are red with white text
-	btnOff = Color3.fromRGB(76, 76, 82),
+	-- Black button palette (matched to the black button in the reference image)
+	bg = Color3.fromRGB(10, 10, 12), bg2 = Color3.fromRGB(16, 16, 18),
+	card = Color3.fromRGB(20, 20, 22), stroke = Color3.fromRGB(115, 115, 120),
+	accent = Color3.fromRGB(0, 0, 0), text = Color3.fromRGB(255, 255, 255),
+	textDim = Color3.fromRGB(175, 175, 180), on = Color3.fromRGB(60, 220, 110),
+	off = Color3.fromRGB(12, 12, 14), box = Color3.fromRGB(24, 24, 26),
+	danger = Color3.fromRGB(220, 70, 90),
+	modeOnBg = Color3.fromRGB(0, 0, 0), modeOnTxt = Color3.fromRGB(255, 255, 255),
+	modeOffBg = Color3.fromRGB(0, 0, 0), modeOffTxt = Color3.fromRGB(255, 255, 255),
+	btnOn = Color3.fromRGB(0, 0, 0), -- black when ON, like the reference button
+	btnOff = Color3.fromRGB(0, 0, 0),
 }
 
 
@@ -4438,7 +4438,7 @@ function setTab(name)
 	for n, b in pairs(tabBtns) do
  local on = n == name
  b.BackgroundColor3 = on and C.accent or C.card
- b.TextColor3 = on and C.text or C.text
+ b.TextColor3 = on and Color3.fromRGB(30, 20, 30) or C.text
 	end
 end
 function addTab(name, order)
@@ -4661,7 +4661,7 @@ function actionBtn(parent, text, color, cb, order)
 	b.Size = UDim2.new(1, 0, 1, 0)
 	b.BackgroundTransparency = 1
 	b.Text = text
-	b.TextColor3 = Color3.fromRGB(255, 255, 255)
+	b.TextColor3 = Color3.fromRGB(30, 20, 30)
 	b.TextSize = 13
 	b.Font = Enum.Font.GothamBold
 	b.Parent = r
@@ -4898,7 +4898,7 @@ for i, name in ipairs({ "Stand", "Jump" }) do
 	b.Position = UDim2.new(1, -140 + (i - 1) * 66, 0.5, -13)
 	b.BackgroundColor3 = ((St.dropMode == 1 and name == "Stand") or (St.dropMode == 2 and name == "Jump")) and C.accent or C.box
 	b.Text = name
-	b.TextColor3 = ((St.dropMode == 1 and name == "Stand") or (St.dropMode == 2 and name == "Jump")) and C.text or C.text
+	b.TextColor3 = ((St.dropMode == 1 and name == "Stand") or (St.dropMode == 2 and name == "Jump")) and Color3.fromRGB(30, 20, 30) or C.text
 	b.TextSize = 11
 	b.Font = Enum.Font.GothamBold
 	b.AutoButtonColor = false
@@ -4912,7 +4912,7 @@ for i, name in ipairs({ "Stand", "Jump" }) do
  if ch:IsA("TextButton") then
  local on = (St.dropMode == 2 and ch.Text == "Jump") or (St.dropMode == 1 and ch.Text == "Stand")
  ch.BackgroundColor3 = on and C.accent or C.box
- ch.TextColor3 = on and C.text or C.text
+ ch.TextColor3 = on and Color3.fromRGB(30, 20, 30) or C.text
  end
  end
  pcall(saveCfg)
@@ -4939,7 +4939,7 @@ for i, name in ipairs({ "V1", "V2" }) do
 	b.Position = UDim2.new(1, -120 + (i - 1) * 54, 0.5, -13)
 	b.BackgroundColor3 = (St.instaMode == name) and C.accent or C.box
 	b.Text = name
-	b.TextColor3 = (St.instaMode == name) and C.text or C.text
+	b.TextColor3 = (St.instaMode == name) and Color3.fromRGB(30, 20, 30) or C.text
 	b.TextSize = 11
 	b.Font = Enum.Font.GothamBold
 	b.AutoButtonColor = false
@@ -4953,7 +4953,7 @@ for i, name in ipairs({ "V1", "V2" }) do
  if ch:IsA("TextButton") then
  local on = ch.Text == St.instaMode
  ch.BackgroundColor3 = on and C.accent or C.box
- ch.TextColor3 = on and C.text or C.text
+ ch.TextColor3 = on and Color3.fromRGB(30, 20, 30) or C.text
  end
  end
  pcall(saveCfg)
@@ -5298,7 +5298,7 @@ for i, name in ipairs({ "Round", "Box", "Square" }) do
 	b.Position = UDim2.new(0, 12 + (i - 1) * 100, 0.5, -14)
 	b.BackgroundColor3 = (St.btnShape == name) and C.accent or C.box
 	b.Text = name
-	b.TextColor3 = (St.btnShape == name) and C.text or C.text
+	b.TextColor3 = (St.btnShape == name) and Color3.fromRGB(30, 20, 30) or C.text
 	b.TextSize = 12
 	b.Font = Enum.Font.GothamBold
 	b.AutoButtonColor = false
@@ -5323,7 +5323,7 @@ for i, name in ipairs({ "Round", "Box", "Square" }) do
  if ch:IsA("TextButton") then
  local on = ch.Text == name
  ch.BackgroundColor3 = on and C.accent or C.box
- ch.TextColor3 = on and C.text or C.text
+ ch.TextColor3 = on and Color3.fromRGB(30, 20, 30) or C.text
  end
  end
  pcall(saveCfg)
@@ -5488,7 +5488,7 @@ for _, info in ipairs({{"-", -72}, {"+", -40}}) do
 end
 
 section(pageSet, "* — RESET", 30)
-actionBtn(pageSet, "Reset Mobile Positions", C.danger, function()
+actionBtn(pageSet, "Reset Mobile Positions", C.accent, function()
 	if _G.Amateuz_topResetMobilePos then _G.Amateuz_topResetMobilePos() end
 	saveCfg()
 end, 31)
@@ -5567,7 +5567,7 @@ actionBtn(pageSet, "Reset All Settings", C.danger, function()
 	pcall(saveCfg)
 	showToast("RESET ALL ✓ Free Sell La Tuat Ngu Lon")
 end, 32)
-actionBtn(pageSet, "Save Now", C.danger, function()
+actionBtn(pageSet, "Save Now", C.accent, function()
 	-- snapshot vị trí menu / mini / bar trước khi ghi
 	pcall(function()
  if Main then
@@ -5603,7 +5603,7 @@ Mini.Size = UDim2.new(0, 110, 0, 36)
 Mini.Position = UDim2.new(0, 14, 0, 90)
 Mini.BackgroundColor3 = Color3.fromRGB(18, 18, 26)
 Mini.Text = "ILUSION HUB"
-Mini.TextColor3 = C.accent
+Mini.TextColor3 = Color3.fromRGB(255, 255, 255)
 Mini.TextSize = 12
 Mini.Font = Enum.Font.GothamBold
 Mini.Visible = false
@@ -5825,13 +5825,13 @@ function applyEmpireBtnBg(btn, index)
 	local id = list[((tonumber(index) or 1) - 1) % #list + 1]
 	if not id or id <= 0 then return end
 	-- nền đậm hơn (Amateuz_top style) nhưng chữ vẫn đọc được
-	btn.BackgroundTransparency = 0
-	btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	btn.BackgroundTransparency = 0.35
+	btn.BackgroundColor3 = Color3.fromRGB(8, 8, 12)
 	local bgImg = Instance.new("ImageLabel")
 	bgImg.Name = "BtnBgImage"
 	bgImg.BackgroundTransparency = 1
 	bgImg.Image = "rbxassetid://" .. tostring(id)
-	bgImg.ImageTransparency = 1 -- solid black button: hide image completely
+	bgImg.ImageTransparency = 0.08 -- đậm hơn (thấp = rõ ảnh hơn)
 	bgImg.ScaleType = Enum.ScaleType.Crop
 	bgImg.Size = UDim2.new(1, 0, 1, 0)
 	bgImg.ZIndex = (btn.ZIndex or 1)
@@ -5843,7 +5843,7 @@ function applyEmpireBtnBg(btn, index)
 	dim.Name = "BtnDim"
 	dim.Size = UDim2.new(1, 0, 1, 0)
 	dim.BackgroundColor3 = Color3.new(0, 0, 0)
-	dim.BackgroundTransparency = 0 -- fully black overlay
+	dim.BackgroundTransparency = 0.45
 	dim.BorderSizePixel = 0
 	dim.ZIndex = (btn.ZIndex or 1) + 1
 	dim.Active = false
@@ -6129,7 +6129,7 @@ function makeModeBtn(name, order)
  elseif e and e.btn then
  local on = St.activeMode == n
  e.btn.BackgroundColor3 = on and Color3.fromRGB(255, 200, 210) or Color3.fromRGB(255, 255, 255)
- e.btn.TextColor3 = on and C.text or Color3.fromRGB(25, 25, 30)
+ e.btn.TextColor3 = on and Color3.fromRGB(30, 20, 30) or Color3.fromRGB(25, 25, 30)
  end
  end
  styleMode(true)
@@ -6430,7 +6430,7 @@ function applyActBtnState(btn, on, onText, offText)
  btn.TextColor3 = Color3.fromRGB(255, 255, 255)
  if onText then btn.Text = onText end
  local bgImg = btn:FindFirstChild("BtnBgImage")
- if bgImg then bgImg.ImageTransparency = 1 end
+ if bgImg then bgImg.ImageTransparency = 0.75 end
  local dim = btn:FindFirstChild("BtnDim")
  if not dim then
  dim = Instance.new("Frame")
@@ -6445,7 +6445,6 @@ function applyActBtnState(btn, on, onText, offText)
  dc.Parent = dim
  end
  dim.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
- dim.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
  dim.BackgroundTransparency = 0
  dim.Visible = true
  local tl = btn:FindFirstChild("BtnTextOverlay")
@@ -6458,12 +6457,12 @@ function applyActBtnState(btn, on, onText, offText)
  local st = btn:FindFirstChild("BtnBorder") or btn:FindFirstChildOfClass("UIStroke")
  if st then st.Color = Color3.fromRGB(255, 255, 255); st.Transparency = 0; st.Thickness = 2.5 end
 	else
- btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+ btn.BackgroundColor3 = C.btnOff or Color3.fromRGB(16, 16, 22)
  btn.BackgroundTransparency = 0
  btn.TextColor3 = Color3.fromRGB(255, 255, 255)
  if offText then btn.Text = offText end
  local bgImg = btn:FindFirstChild("BtnBgImage")
- if bgImg then bgImg.ImageTransparency = 1 end
+ if bgImg then bgImg.ImageTransparency = 0.08 end
  local dim = btn:FindFirstChild("BtnDim")
  if dim then
  dim.BackgroundColor3 = Color3.new(0, 0, 0)
@@ -7640,7 +7639,7 @@ task.defer(function()
  b.Position = UDim2.new(1, -140 + (i - 1) * 44, 0.5, -13)
  b.BackgroundColor3 = (St.stealVer == name) and C.accent or C.box
  b.Text = name
- b.TextColor3 = (St.stealVer == name) and C.text or C.text
+ b.TextColor3 = (St.stealVer == name) and Color3.fromRGB(30, 20, 30) or C.text
  b.TextSize = 11
  b.Font = Enum.Font.GothamBold
  b.AutoButtonColor = false
@@ -7654,7 +7653,7 @@ task.defer(function()
  if ch:IsA("TextButton") then
  local on = ch.Text == St.stealVer
  ch.BackgroundColor3 = on and C.accent or C.box
- ch.TextColor3 = on and C.text or C.text
+ ch.TextColor3 = on and Color3.fromRGB(30, 20, 30) or C.text
  end
  end
  -- apply mode immediately (fix non-responsive V1/V2/V3)
@@ -7712,7 +7711,7 @@ task.defer(function()
  b.Position = UDim2.new(0, 12 + (i - 1) * 80, 0.5, -13)
  b.BackgroundColor3 = (St.infJumpMode == name) and C.accent or C.box
  b.Text = name
- b.TextColor3 = (St.infJumpMode == name) and C.text or C.text
+ b.TextColor3 = (St.infJumpMode == name) and Color3.fromRGB(30, 20, 30) or C.text
  b.TextSize = 11
  b.Font = Enum.Font.GothamBold
  b.Parent = ij
@@ -7723,7 +7722,7 @@ task.defer(function()
  if ch:IsA("TextButton") then
  local on = ch.Text == St.infJumpMode
  ch.BackgroundColor3 = on and C.accent or C.box
- ch.TextColor3 = on and C.text or C.text
+ ch.TextColor3 = on and Color3.fromRGB(30, 20, 30) or C.text
  end
  end
  end)
@@ -8796,7 +8795,7 @@ task.spawn(function()
 	title.Size = UDim2.new(1, -100, 0, 24)
 	title.Position = UDim2.new(0, 64, 0, y(1))
 	title.BackgroundTransparency = 1
-	title.Text = "ILUSION HUB TP"
+	title.Text = "Amateuz_top TP"
 	title.TextColor3 = Color3.fromRGB(230, 210, 255)
 	title.Font = Enum.Font.GothamBold
 	title.TextSize = 13
@@ -9758,7 +9757,7 @@ task.spawn(function()
 	discLbl.Size = UDim2.new(1, 0, 0, 22)
 	discLbl.Position = UDim2.fromOffset(0, 288)
 	discLbl.BackgroundTransparency = 1
-	discLbl.Text = "ILUSION HUB · Speed Bypass"
+	discLbl.Text = "Amateuz_top · Speed Bypass"
 	discLbl.TextColor3 = Color3.fromRGB(160, 160, 170)
 	discLbl.Font = Enum.Font.GothamBold
 	discLbl.TextSize = 11
