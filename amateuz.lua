@@ -27,7 +27,7 @@ local PlayerGui = LP:WaitForChild("PlayerGui", 30) or LP:FindFirstChild("PlayerG
 
 pcall(function()
 	for _, n in ipairs({
- "amateuzHubFullMenu", "amateuzHubFullMini", "amateuzHubModeBar", "amateuzHubActionButtons", "amateuzIntro", "amateuzHubIntro",
+ "amateuzFullMenu", "amateuzFullMini", "amateuzModeBar", "amateuzActionButtons", "amateuzIntro", "amateuzIntro",
 	}) do
  local g = PlayerGui:FindFirstChild(n)
  if g then g:Destroy() end
@@ -1755,7 +1755,7 @@ end
 -- AUTO STEAL GUI
 -- ============================================================
 task.spawn(function()
-	local CONFIG_FILE = "amateuzHubAutoSteal"
+	local CONFIG_FILE = "amateuzAutoSteal"
 	local BackgroundIDs = {"89504528485163","108697485255882","71211662493854","118953269416540","106345334781345","103042929344358","126137370200580","129236724255771","109053968018578","76085007631338","99416158073201","126860692354524","73226092831324","90280869222992","90746158236678","107977050874654","124475159163140","117085976067902","76582249427748","131388128481309","106050493494582","71852104184395","84453255265251","98541566010518","118963313877514","82757811555212","130451097419605","129030262345273","76292842640935","92910922537368","105960347086002","116720305084998","90341354549871","72399600208480","81834484116440","135088241492683","90453834580322","90631990302263","109619268613730","88369503310562","80708025126373","102253425322931","135181794444219","111941119745474","138739435956313","92966351305582","127008542588565","81233250155347","77446891363466","93417009946836","102729289645203","113953274092851","116355482429334","133090961209841","84995781107338"}
 
 	local BASE_W, BASE_H, BASE_H_EXP = 300, 96, 240
@@ -2438,7 +2438,7 @@ function loadCfg()
  if isfile(CFG) then
  return HttpService:JSONDecode(readfile(CFG))
  end
- for _, old in ipairs({"RaraOnflop.json", "amateuzHub_FullMenu_v1.json", "amateuzHub_Config.json", "amateuz.json"}) do
+ for _, old in ipairs({"RaraOnflop.json", "amateuz_FullMenu_v1.json", "amateuz_Config.json", "amateuz.json"}) do
  if isfile(old) then
  local d = HttpService:JSONDecode(readfile(old))
  pcall(function() writefile(CFG, HttpService:JSONEncode(d)) end)
@@ -4216,7 +4216,7 @@ function stroke(p, col)
 end
 
 local Gui = Instance.new("ScreenGui")
-Gui.Name = "amateuzHubFullMenu"
+Gui.Name = "amateuzFullMenu"
 Gui.ResetOnSpawn = false
 Gui.IgnoreGuiInset = true
 Gui.DisplayOrder = 200
@@ -5139,7 +5139,7 @@ toggleNamed(pageSet, "Show Auto Steal Button", St.showStealBtn ~= false, functio
 end, 2.5, "showStealBtn")
 toggleNamed(pageSet, "Show Panel TP", St.showTPPanel ~= false, function(on)
 	St.showTPPanel = on and true or false
-	local g = PlayerGui:FindFirstChild("amateuzHubbTP")
+	local g = PlayerGui:FindFirstChild("amateuzbTP")
 	if g then g.Enabled = St.showTPPanel end
 	saveCfg()
 end, 25, "showTPPanel")
@@ -5244,12 +5244,12 @@ toggleNamed(pageSet, "Lock UI", St.guiLock, function(on)
  St._mainPos = {Main.Position.X.Scale, Main.Position.X.Offset, Main.Position.Y.Scale, Main.Position.Y.Offset}
  St.menuOpen = Main.Visible == true
  end
- local miniGui = PlayerGui:FindFirstChild("amateuzHubFullMini")
+ local miniGui = PlayerGui:FindFirstChild("amateuzFullMini")
  local mini = miniGui and miniGui:FindFirstChildWhichIsA("TextButton")
  if mini then
  St._miniPos = {mini.Position.X.Scale, mini.Position.X.Offset, mini.Position.Y.Scale, mini.Position.Y.Offset}
  end
- local mb = PlayerGui:FindFirstChild("amateuzHubModeBar")
+ local mb = PlayerGui:FindFirstChild("amateuzModeBar")
  local mf = mb and mb:FindFirstChildWhichIsA("Frame")
  if mf then
  St._modeBarPos = {mf.Position.X.Scale, mf.Position.X.Offset, mf.Position.Y.Scale, mf.Position.Y.Offset}
@@ -5270,8 +5270,8 @@ toggleNamed(pageSet, "Lock UI", St.guiLock, function(on)
  end
  end
  end
- snapHoldersLock(PlayerGui:FindFirstChild("amateuzHubActionButtons"))
- snapHoldersLock(PlayerGui:FindFirstChild("amateuzHubModeBar"))
+ snapHoldersLock(PlayerGui:FindFirstChild("amateuzActionButtons"))
+ snapHoldersLock(PlayerGui:FindFirstChild("amateuzModeBar"))
 	end)
 	pcall(saveCfg)
 end, 3, "guiLock")
@@ -5573,7 +5573,7 @@ actionBtn(pageSet, "Save Now", C.accent, function()
  if Main then
  St._mainPos = {Main.Position.X.Scale, Main.Position.X.Offset, Main.Position.Y.Scale, Main.Position.Y.Offset}
  end
- local mini = PlayerGui:FindFirstChild("amateuzHubFullMini")
+ local mini = PlayerGui:FindFirstChild("amateuzFullMini")
  local mb = mini and mini:FindFirstChildWhichIsA("GuiObject")
  if mb then
  St._miniPos = {mb.Position.X.Scale, mb.Position.X.Offset, mb.Position.Y.Scale, mb.Position.Y.Offset}
@@ -5592,7 +5592,7 @@ end, 33)
 -- MINI + CLOSE (no keybind)
 ----------------------------------------------------------------
 local MiniGui = Instance.new("ScreenGui")
-MiniGui.Name = "amateuzHubFullMini"
+MiniGui.Name = "amateuzFullMini"
 MiniGui.ResetOnSpawn = false
 MiniGui.IgnoreGuiInset = true
 MiniGui.DisplayOrder = 121
@@ -5735,7 +5735,7 @@ end
 -- MOBILE: 3 mode + Drop + Insta + TP
 ----------------------------------------------------------------
 local ModeGui = Instance.new("ScreenGui")
-ModeGui.Name = "amateuzHubModeBar"
+ModeGui.Name = "amateuzModeBar"
 ModeGui.ResetOnSpawn = false
 ModeGui.IgnoreGuiInset = true
 ModeGui.DisplayOrder = 2501
@@ -5743,7 +5743,7 @@ ModeGui.Enabled = false
 ModeGui.Parent = PlayerGui
 
 local ActGui = Instance.new("ScreenGui")
-ActGui.Name = "amateuzHubActionButtons"
+ActGui.Name = "amateuzActionButtons"
 ActGui.ResetOnSpawn = false
 ActGui.IgnoreGuiInset = true
 ActGui.DisplayOrder = 2500
@@ -8317,7 +8317,7 @@ end)
 
 -- Mini = circle combat when closed
 task.defer(function()
-	local miniGui = PlayerGui:FindFirstChild("amateuzHubFullMini")
+	local miniGui = PlayerGui:FindFirstChild("amateuzFullMini")
 	local mini = miniGui and miniGui:FindFirstChildWhichIsA("TextButton")
 	if mini then
  mini.Size = UDim2.new(0, 110, 0, 36)
@@ -8327,7 +8327,7 @@ task.defer(function()
  if c0 then c0.CornerRadius = UDim.new(0, 8) end
 	end
 	-- Title bar rectangle text
-	local mainGui = PlayerGui:FindFirstChild("amateuzHubFullMenu")
+	local mainGui = PlayerGui:FindFirstChild("amateuzFullMenu")
 	local main = mainGui and mainGui:FindFirstChild("Main")
 	if main then
  local top = main:FindFirstChild("TopBar") or main:FindFirstChildWhichIsA("Frame")
@@ -8383,13 +8383,13 @@ task.spawn(function()
  St.menuOpen = Main.Visible == true
  end
  -- Mini open button
- local miniGui = PlayerGui:FindFirstChild("amateuzHubFullMini")
+ local miniGui = PlayerGui:FindFirstChild("amateuzFullMini")
  local mini = miniGui and miniGui:FindFirstChildWhichIsA("TextButton")
  if mini then
  St._miniPos = {mini.Position.X.Scale, mini.Position.X.Offset, mini.Position.Y.Scale, mini.Position.Y.Offset}
  end
  -- Mode bar
- local mb = PlayerGui:FindFirstChild("amateuzHubModeBar")
+ local mb = PlayerGui:FindFirstChild("amateuzModeBar")
  if mb then
  local f = mb:FindFirstChildWhichIsA("Frame")
  if f then
@@ -8413,10 +8413,10 @@ task.spawn(function()
  end
  end
  end
- snapHolders(PlayerGui:FindFirstChild("amateuzHubActionButtons"))
- snapHolders(PlayerGui:FindFirstChild("amateuzHubModeBar"))
+ snapHolders(PlayerGui:FindFirstChild("amateuzActionButtons"))
+ snapHolders(PlayerGui:FindFirstChild("amateuzModeBar"))
  -- Panel TP
- local tp = PlayerGui:FindFirstChild("amateuzHubbTP")
+ local tp = PlayerGui:FindFirstChild("amateuzbTP")
  if tp then
  local m = tp:FindFirstChild("TPMain")
  if m then
@@ -8443,7 +8443,7 @@ task.defer(function()
  if St._mainPos and Main then
  Main.Position = UDim2.new(St._mainPos[1], St._mainPos[2], St._mainPos[3], St._mainPos[4])
  end
- local miniGui = PlayerGui:FindFirstChild("amateuzHubFullMini")
+ local miniGui = PlayerGui:FindFirstChild("amateuzFullMini")
  local mini = miniGui and miniGui:FindFirstChildWhichIsA("TextButton")
  if mini and St._miniPos then
  mini.Position = UDim2.new(St._miniPos[1], St._miniPos[2], St._miniPos[3], St._miniPos[4])
@@ -8746,11 +8746,11 @@ task.spawn(function()
 	if SAVE_PET then MARK_PET = Marker(SAVE_PET, Color3.fromRGB(255, 140, 0)) end
 
 	pcall(function()
- local old = PlayerGui:FindFirstChild("amateuzHubbTP")
+ local old = PlayerGui:FindFirstChild("amateuzbTP")
  if old then old:Destroy() end
 	end)
 	local gui = Instance.new("ScreenGui")
-	gui.Name = "amateuzHubbTP"
+	gui.Name = "amateuzbTP"
 	gui.ResetOnSpawn = false
 	gui.IgnoreGuiInset = true
 	gui.DisplayOrder = 80
