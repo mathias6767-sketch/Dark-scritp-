@@ -27,7 +27,7 @@ local PlayerGui = LP:WaitForChild("PlayerGui", 30) or LP:FindFirstChild("PlayerG
 
 pcall(function()
 	for _, n in ipairs({
- "Ilusión HubHubFullMenu", "Ilusión HubHubFullMini", "Ilusión HubHubModeBar", "Ilusión HubHubActionButtons", "Ilusión HubIntro", "Ilusión HubHubIntro",
+ "amateuzHubFullMenu", "amateuzHubFullMini", "amateuzHubModeBar", "amateuzHubActionButtons", "amateuzIntro", "amateuzHubIntro",
 	}) do
  local g = PlayerGui:FindFirstChild(n)
  if g then g:Destroy() end
@@ -35,7 +35,7 @@ pcall(function()
 end)
 
 ----------------------------------------------------------------
--- Ilusión Hub.CC INTRO (red/black/white, music + skip)
+-- amateuz.CC INTRO (red/black/white, music + skip)
 ----------------------------------------------------------------
 do
 	local TweenService = TS
@@ -66,13 +66,13 @@ do
 
 	local function createIntro()
 	    -- Clean old intro
-	    for _, name in ipairs({"Ilusión HubIntro"}) do
+	    for _, name in ipairs({"amateuzIntro"}) do
 	        local old = PlayerGui:FindFirstChild(name)
 	        if old then old:Destroy() end
 	    end
 
 	    introGui = Instance.new("ScreenGui")
-	    introGui.Name = "Ilusión HubIntro"
+	    introGui.Name = "amateuzIntro"
 	    introGui.IgnoreGuiInset = true
 	    introGui.ResetOnSpawn = false
 	    introGui.DisplayOrder = 999999
@@ -136,13 +136,13 @@ do
 	    flash.BorderSizePixel = 0
 	    flash.ZIndex = 400
 
-	    -- Main Title - "Ilusión Hub" (RED)
+	    -- Main Title - "amateuz" (RED)
 	    local introTitle = Instance.new("TextLabel", background)
 	    introTitle.AnchorPoint = Vector2.new(0.5, 0.5)
 	    introTitle.Position = UDim2.fromScale(0.5, 0.47)
 	    introTitle.Size = UDim2.fromScale(1.1, 0.22)
 	    introTitle.BackgroundTransparency = 1
-	    introTitle.Text = "Ilusión Hub"
+	    introTitle.Text = "amateuz"
 	    introTitle.TextColor3 = Color3.fromRGB(255, 0, 0)
 	    introTitle.TextTransparency = 1
 	    introTitle.TextScaled = true
@@ -206,7 +206,7 @@ do
 	        local asset = loadMusic()
 	        if not asset or not introActive then return end
 	        introSound = Instance.new("Sound")
-	        introSound.Name = "Ilusión HubIntroMusic"
+	        introSound.Name = "amateuzIntroMusic"
 	        introSound.SoundId = asset
 	        introSound.Volume = MUSIC_VOLUME
 	        introSound.Looped = false
@@ -399,7 +399,7 @@ local C = {
 -- Auto-write Vis Auto Steal for loadstring
 pcall(function()
 	if writefile then
- writefile("Ilusión Hub_Auto_Steal_Embedded.lua", [==[--[[
+ writefile("amateuz_Auto_Steal_Embedded.lua", [==[--[[
  Auto Steal — full Amateuz_top logic V1 / Semi V1-V2 / V3
 ]]
 if _G.__VisAutoStealRunning then
@@ -418,7 +418,7 @@ local HttpService = game:GetService("HttpService")
 local LP = Players.LocalPlayer
 local PlayerGui = LP:WaitForChild("PlayerGui")
 
--- Shared state (must match Ilusión Hub names used in steal logic)
+-- Shared state (must match amateuz names used in steal logic)
 autoStealEnabled = false
 selectedStealMode = "Normal"
 autoStealRadius = 60
@@ -520,7 +520,7 @@ _G.__AceSetupNormalAutoSteal = function()
  return math.clamp(r, 1, 500)
  end
  local function getAutoGrabPauseFraction()
- -- no pause by default: if _G.Ilusión HubStealPause ~= true → treat as close-enough always (100%)
+ -- no pause by default: if _G.amateuzStealPause ~= true → treat as close-enough always (100%)
  if _G.Amateuz_topStealPause ~= true then
  return 1.0 -- full 0-100 without waiting
  end
@@ -1755,7 +1755,7 @@ end
 -- AUTO STEAL GUI
 -- ============================================================
 task.spawn(function()
-	local CONFIG_FILE = "Ilusión HubHubAutoSteal"
+	local CONFIG_FILE = "amateuzHubAutoSteal"
 	local BackgroundIDs = {"89504528485163","108697485255882","71211662493854","118953269416540","106345334781345","103042929344358","126137370200580","129236724255771","109053968018578","76085007631338","99416158073201","126860692354524","73226092831324","90280869222992","90746158236678","107977050874654","124475159163140","117085976067902","76582249427748","131388128481309","106050493494582","71852104184395","84453255265251","98541566010518","118963313877514","82757811555212","130451097419605","129030262345273","76292842640935","92910922537368","105960347086002","116720305084998","90341354549871","72399600208480","81834484116440","135088241492683","90453834580322","90631990302263","109619268613730","88369503310562","80708025126373","102253425322931","135181794444219","111941119745474","138739435956313","92966351305582","127008542588565","81233250155347","77446891363466","93417009946836","102729289645203","113953274092851","116355482429334","133090961209841","84995781107338"}
 
 	local BASE_W, BASE_H, BASE_H_EXP = 300, 96, 240
@@ -1809,12 +1809,12 @@ task.spawn(function()
 
 	local parent = (typeof(gethui) == "function" and gethui()) or game:GetService("CoreGui")
 	pcall(function()
- local o = parent:FindFirstChild("Ilusión HubAutoStealGui"); if o then o:Destroy() end
- local b = PlayerGui:FindFirstChild("Ilusión HubAutoStealBarGui"); if b then b:Destroy() end
+ local o = parent:FindFirstChild("amateuzAutoStealGui"); if o then o:Destroy() end
+ local b = PlayerGui:FindFirstChild("amateuzAutoStealBarGui"); if b then b:Destroy() end
 	end)
 
 	local gui = Instance.new("ScreenGui")
-	gui.Name = "Ilusión HubAutoStealGui"
+	gui.Name = "amateuzAutoStealGui"
 	gui.Enabled = false -- disabled: menu-only steal
 	gui.ResetOnSpawn = false
 	gui.IgnoreGuiInset = true
@@ -2356,7 +2356,7 @@ local St = {
 }
 local ToggleRefs = {} -- để Reset All cập nhật UI
 
-local CFG = "Ilusión HubAllgear.json"
+local CFG = "amateuzAllgear.json"
 local _saveToken = 0
 function autoSaveDebounced()
 	_saveToken = _saveToken + 1
@@ -2428,7 +2428,7 @@ function saveCfg()
 	writefile(CFG, HttpService:JSONEncode(d))
 	end)
 	if not ok then
- warn("[Ilusión Hub] saveCfg fail:", err)
+ warn("[amateuz] saveCfg fail:", err)
 	end
 	return ok
 end
@@ -2438,7 +2438,7 @@ function loadCfg()
  if isfile(CFG) then
  return HttpService:JSONDecode(readfile(CFG))
  end
- for _, old in ipairs({"RaraOnflop.json", "Ilusión HubHub_FullMenu_v1.json", "Ilusión HubHub_Config.json", "Ilusión Hub.json"}) do
+ for _, old in ipairs({"RaraOnflop.json", "amateuzHub_FullMenu_v1.json", "amateuzHub_Config.json", "amateuz.json"}) do
  if isfile(old) then
  local d = HttpService:JSONDecode(readfile(old))
  pcall(function() writefile(CFG, HttpService:JSONEncode(d)) end)
@@ -2490,7 +2490,7 @@ task.spawn(function()
 	while true do
  task.wait(3)
  local ok, err = pcall(saveCfg)
- if not ok then warn("[Ilusión Hub] autosave 3s fail:", err) end
+ if not ok then warn("[amateuz] autosave 3s fail:", err) end
 	end
 end)
 
@@ -2584,7 +2584,7 @@ function ensureSpeedAttachment(hrp, key, name)
 	if not att or att.Parent ~= hrp then
  if att then pcall(function() att:Destroy() end) end
  att = Instance.new("Attachment")
- att.Name = name or "Ilusión HubEmpireSpeedAtt"
+ att.Name = name or "amateuzEmpireSpeedAtt"
  att.Parent = hrp
  _spd[key] = att
 	end
@@ -2750,8 +2750,8 @@ if not _G._VisEmpireJumpHook then
  local pg = LP:WaitForChild("PlayerGui", 15)
  if not pg then return end
  local function hookJumpButton(btn)
- if btn:IsA("GuiButton") and btn.Name == "JumpButton" and not btn:GetAttribute("Ilusión HubInfJumpHooked") then
- btn:SetAttribute("Ilusión HubInfJumpHooked", true)
+ if btn:IsA("GuiButton") and btn.Name == "JumpButton" and not btn:GetAttribute("amateuzInfJumpHooked") then
+ btn:SetAttribute("amateuzInfJumpHooked", true)
  btn.MouseButton1Down:Connect(function()
  if InfJumpState.enabled then InfJumpState.jumpHeld = true end
  end)
@@ -2975,7 +2975,7 @@ _G.Amateuz_topSetAntiRagdollMode = setAntiRagdollMode
 
 
 ----------------------------------------------------------------
--- ANTI GUMMY / BOOGIE / PAINTBALL (Ilusión Hub full) — LUÔN BẬT
+-- ANTI GUMMY / BOOGIE / PAINTBALL (amateuz full) — LUÔN BẬT
 --------------------------------------------------------------
 -- Anti Gummy / Boogie / Bee / Paintball (from Tp Heatseeker)
 -- Always ON, no GUI
@@ -3119,7 +3119,7 @@ if not _G._FAG_VisAntiGummyFullLoaded then
 	end)
 end
 
--- RARA HUB Anti Bee — integrated into Ilusión Hub with an ON/OFF toggle
+-- RARA HUB Anti Bee — integrated into amateuz with an ON/OFF toggle
 -- Removes the same Lighting effects as RARA, suppresses Bee buzzing,
 -- protects the movement callback while enabled, and locks camera FOV to 70.
 do
@@ -3330,7 +3330,7 @@ function setAntiPaint(on)
 end
 
 ----------------------------------------------------------------
--- TOOL AIMBOT (Ilusión Hub full) — LUÔN BẬT
+-- TOOL AIMBOT (amateuz full) — LUÔN BẬT
 ----------------------------------------------------------------
 local aimOn = true
 local TOOLS = { ["Web Slinger"] = true, ["Paintball Gun"] = true, ["Laser Cape"] = true }
@@ -3523,7 +3523,7 @@ function InstaResetV2()
 	local lockCF = cam and cam.CFrame
 	pcall(function()
  if cam then cam.CameraType = Enum.CameraType.Scriptable; cam.CFrame = lockCF end
- RS:BindToRenderStep("Ilusión HubInstaV2Cam", Enum.RenderPriority.Camera.Value + 1, function()
+ RS:BindToRenderStep("amateuzInstaV2Cam", Enum.RenderPriority.Camera.Value + 1, function()
  pcall(function()
  if cam then cam.CameraType = Enum.CameraType.Scriptable; if lockCF then cam.CFrame = lockCF end end
  local ac = LP.Character
@@ -3538,7 +3538,7 @@ function InstaResetV2()
 	local conn
 	conn = LP.CharacterAdded:Connect(function(newChar)
  if conn then conn:Disconnect() end
- pcall(function() RS:UnbindFromRenderStep("Ilusión HubInstaV2Cam") end)
+ pcall(function() RS:UnbindFromRenderStep("amateuzInstaV2Cam") end)
  local nh = newChar:WaitForChild("Humanoid", 5)
  task.wait(0.05)
  pcall(function()
@@ -3548,7 +3548,7 @@ function InstaResetV2()
 	end)
 	task.delay(8, function()
  if _resetBusy then
- pcall(function() RS:UnbindFromRenderStep("Ilusión HubInstaV2Cam") end)
+ pcall(function() RS:UnbindFromRenderStep("amateuzInstaV2Cam") end)
  _resetBusy = false
  end
 	end)
@@ -3572,8 +3572,8 @@ function InstaResetV1()
  cam.CameraType = Enum.CameraType.Custom
  if humanoid then cam.CameraSubject = humanoid end
  end
- pcall(function() RS:UnbindFromRenderStep("Ilusión HubInstaV1Cam") end)
- pcall(function() RS:UnbindFromRenderStep("Ilusión HubInstaV2Cam") end)
+ pcall(function() RS:UnbindFromRenderStep("amateuzInstaV1Cam") end)
+ pcall(function() RS:UnbindFromRenderStep("amateuzInstaV2Cam") end)
 	end)
 
 	local charConn
@@ -4216,7 +4216,7 @@ function stroke(p, col)
 end
 
 local Gui = Instance.new("ScreenGui")
-Gui.Name = "Ilusión HubHubFullMenu"
+Gui.Name = "amateuzHubFullMenu"
 Gui.ResetOnSpawn = false
 Gui.IgnoreGuiInset = true
 Gui.DisplayOrder = 200
@@ -4235,7 +4235,7 @@ Main.Parent = Gui
 
 -- Menu scale (to/nhỏ menu chính)
 local menuScaleObj = Instance.new("UIScale")
-menuScaleObj.Name = "Ilusión HubMenuScale"
+menuScaleObj.Name = "amateuzMenuScale"
 menuScaleObj.Scale = tonumber(St.menuScale) or 1
 menuScaleObj.Parent = Main
 function applyMenuScale()
@@ -5139,7 +5139,7 @@ toggleNamed(pageSet, "Show Auto Steal Button", St.showStealBtn ~= false, functio
 end, 2.5, "showStealBtn")
 toggleNamed(pageSet, "Show Panel TP", St.showTPPanel ~= false, function(on)
 	St.showTPPanel = on and true or false
-	local g = PlayerGui:FindFirstChild("Ilusión HubHubbTP")
+	local g = PlayerGui:FindFirstChild("amateuzHubbTP")
 	if g then g.Enabled = St.showTPPanel end
 	saveCfg()
 end, 25, "showTPPanel")
@@ -5244,12 +5244,12 @@ toggleNamed(pageSet, "Lock UI", St.guiLock, function(on)
  St._mainPos = {Main.Position.X.Scale, Main.Position.X.Offset, Main.Position.Y.Scale, Main.Position.Y.Offset}
  St.menuOpen = Main.Visible == true
  end
- local miniGui = PlayerGui:FindFirstChild("Ilusión HubHubFullMini")
+ local miniGui = PlayerGui:FindFirstChild("amateuzHubFullMini")
  local mini = miniGui and miniGui:FindFirstChildWhichIsA("TextButton")
  if mini then
  St._miniPos = {mini.Position.X.Scale, mini.Position.X.Offset, mini.Position.Y.Scale, mini.Position.Y.Offset}
  end
- local mb = PlayerGui:FindFirstChild("Ilusión HubHubModeBar")
+ local mb = PlayerGui:FindFirstChild("amateuzHubModeBar")
  local mf = mb and mb:FindFirstChildWhichIsA("Frame")
  if mf then
  St._modeBarPos = {mf.Position.X.Scale, mf.Position.X.Offset, mf.Position.Y.Scale, mf.Position.Y.Offset}
@@ -5270,8 +5270,8 @@ toggleNamed(pageSet, "Lock UI", St.guiLock, function(on)
  end
  end
  end
- snapHoldersLock(PlayerGui:FindFirstChild("Ilusión HubHubActionButtons"))
- snapHoldersLock(PlayerGui:FindFirstChild("Ilusión HubHubModeBar"))
+ snapHoldersLock(PlayerGui:FindFirstChild("amateuzHubActionButtons"))
+ snapHoldersLock(PlayerGui:FindFirstChild("amateuzHubModeBar"))
 	end)
 	pcall(saveCfg)
 end, 3, "guiLock")
@@ -5573,7 +5573,7 @@ actionBtn(pageSet, "Save Now", C.accent, function()
  if Main then
  St._mainPos = {Main.Position.X.Scale, Main.Position.X.Offset, Main.Position.Y.Scale, Main.Position.Y.Offset}
  end
- local mini = PlayerGui:FindFirstChild("Ilusión HubHubFullMini")
+ local mini = PlayerGui:FindFirstChild("amateuzHubFullMini")
  local mb = mini and mini:FindFirstChildWhichIsA("GuiObject")
  if mb then
  St._miniPos = {mb.Position.X.Scale, mb.Position.X.Offset, mb.Position.Y.Scale, mb.Position.Y.Offset}
@@ -5592,7 +5592,7 @@ end, 33)
 -- MINI + CLOSE (no keybind)
 ----------------------------------------------------------------
 local MiniGui = Instance.new("ScreenGui")
-MiniGui.Name = "Ilusión HubHubFullMini"
+MiniGui.Name = "amateuzHubFullMini"
 MiniGui.ResetOnSpawn = false
 MiniGui.IgnoreGuiInset = true
 MiniGui.DisplayOrder = 121
@@ -5602,7 +5602,7 @@ local Mini = Instance.new("TextButton")
 Mini.Size = UDim2.new(0, 110, 0, 36)
 Mini.Position = UDim2.new(0, 14, 0, 90)
 Mini.BackgroundColor3 = Color3.fromRGB(18, 18, 26)
-Mini.Text = "Ilusión Hub"
+Mini.Text = "amateuz"
 Mini.TextColor3 = C.accent
 Mini.TextSize = 12
 Mini.Font = Enum.Font.GothamBold
@@ -5708,7 +5708,7 @@ function closeMenu()
  end
  end)
  Mini.Visible = true
- Mini.Text = "Ilusión Hub"
+ Mini.Text = "amateuz"
  -- Giữ vị trí mini đã lưu; nếu chưa có thì đặt gần chỗ menu
  pcall(function()
  local p = St._miniPos
@@ -5735,7 +5735,7 @@ end
 -- MOBILE: 3 mode + Drop + Insta + TP
 ----------------------------------------------------------------
 local ModeGui = Instance.new("ScreenGui")
-ModeGui.Name = "Ilusión HubHubModeBar"
+ModeGui.Name = "amateuzHubModeBar"
 ModeGui.ResetOnSpawn = false
 ModeGui.IgnoreGuiInset = true
 ModeGui.DisplayOrder = 2501
@@ -5743,7 +5743,7 @@ ModeGui.Enabled = false
 ModeGui.Parent = PlayerGui
 
 local ActGui = Instance.new("ScreenGui")
-ActGui.Name = "Ilusión HubHubActionButtons"
+ActGui.Name = "amateuzHubActionButtons"
 ActGui.ResetOnSpawn = false
 ActGui.IgnoreGuiInset = true
 ActGui.DisplayOrder = 2500
@@ -5824,7 +5824,7 @@ function applyEmpireBtnBg(btn, index)
 	local list = MOB_BTN_IMAGE_IDS
 	local id = list[((tonumber(index) or 1) - 1) % #list + 1]
 	if not id or id <= 0 then return end
-	-- nền đậm hơn (Ilusión Hub style) nhưng chữ vẫn đọc được
+	-- nền đậm hơn (amateuz style) nhưng chữ vẫn đọc được
 	btn.BackgroundTransparency = 0.35
 	btn.BackgroundColor3 = Color3.fromRGB(8, 8, 12)
 	local bgImg = Instance.new("ImageLabel")
@@ -5889,12 +5889,12 @@ function applyEmpireBtnBg(btn, index)
 end
 
 ----------------------------------------------------------------
--- SPEED V2 MODE BAR (full GUI from Ilusión Hub Clean) — 3 mode
+-- SPEED V2 MODE BAR (full GUI from amateuz Clean) — 3 mode
 ----------------------------------------------------------------
 local v2BarButtons = {}
 function _G.Amateuz_topBuildV2ModeBar()
 	pcall(function()
- local old = PlayerGui:FindFirstChild("Ilusión HubV2ModeBar")
+ local old = PlayerGui:FindFirstChild("amateuzV2ModeBar")
  if old then old:Destroy() end
 	end)
 	if not St.mobileBtns then return end
@@ -5921,7 +5921,7 @@ function _G.Amateuz_topBuildV2ModeBar()
  },
 	}
 	local gui = Instance.new("ScreenGui")
-	gui.Name = "Ilusión HubV2ModeBar"
+	gui.Name = "amateuzV2ModeBar"
 	gui.ResetOnSpawn = false
 	gui.IgnoreGuiInset = true
 	gui.DisplayOrder = 95
@@ -6602,7 +6602,7 @@ function _G.Amateuz_topUpdateMobileVisuals()
 	if _G.Amateuz_topRefreshStealBtn then pcall(_G.Amateuz_topRefreshStealBtn) end
 	-- Scale Speed V2 mode bar
 	pcall(function()
- local gui = PlayerGui:FindFirstChild("Ilusión HubV2ModeBar")
+ local gui = PlayerGui:FindFirstChild("amateuzV2ModeBar")
  if not gui then return end
  local sc = tonumber(St.btnScale) or 1
  local modeSz = tonumber(St.btnSizes and St.btnSizes.mode) or 50
@@ -6866,7 +6866,7 @@ _G._VisHubCharReapplyConn = LP.CharacterAdded:Connect(function(char)
 	end)
 end)
 
-print("[Ilusión Hub Full] Player(Anti+Speed S2+Aim+Drop+Insta) | ESP | Settings mobile/lock/shape/size")
+print("[amateuz Full] Player(Anti+Speed S2+Aim+Drop+Insta) | ESP | Settings mobile/lock/shape/size")
 
 
 
@@ -7118,7 +7118,7 @@ function setAutoSteal(on)
 end
 
 ----------------------------------------------------------------
--- PANEL TP (from Ilusión Hub, no music / no image / no sentry)
+-- PANEL TP (from amateuz, no music / no image / no sentry)
 ----------------------------------------------------------------
 local TP = {
 	base = nil, pet = nil,
@@ -7138,7 +7138,7 @@ function tpMarker(pos, col)
 	P.CanCollide = false
 	P.Position = pos + Vector3.new(0, 2, 0)
 	P.Color = col
-	P.Name = "Ilusión HubTP_SavePoint"
+	P.Name = "amateuzTP_SavePoint"
 	P.Parent = workspace
 	return P
 end
@@ -7231,10 +7231,10 @@ end
 
 -- Panel TP GUI (popup)
 function openPanelTP()
-	local old = PlayerGui:FindFirstChild("Ilusión HubPanelTP")
+	local old = PlayerGui:FindFirstChild("amateuzPanelTP")
 	if old then old:Destroy() end
 	local gui = Instance.new("ScreenGui")
-	gui.Name = "Ilusión HubPanelTP"
+	gui.Name = "amateuzPanelTP"
 	gui.ResetOnSpawn = false
 	gui.IgnoreGuiInset = true
 	gui.DisplayOrder = 130
@@ -7416,7 +7416,7 @@ end
 -- Center TP button when 2 points saved
 do
 	local tpg = Instance.new("ScreenGui")
-	tpg.Name = "Ilusión HubCenterTP"
+	tpg.Name = "amateuzCenterTP"
 	tpg.ResetOnSpawn = false
 	tpg.IgnoreGuiInset = true
 	tpg.DisplayOrder = 1002
@@ -7459,7 +7459,7 @@ end)
 
 
 ----------------------------------------------------------------
--- BODY LOCK (full Ilusión Hub Clean / BloodHounds)
+-- BODY LOCK (full amateuz Clean / BloodHounds)
 ----------------------------------------------------------------
 local bodyLockEnabled = false
 local bodyLockRange = 20
@@ -7628,7 +7628,7 @@ end
 ----------------------------------------------------------------
 task.defer(function()
 	-- Auto steal on Player page
-	if not pagePlayer then warn("[Ilusión Hub] pagePlayer nil") return end
+	if not pagePlayer then warn("[amateuz] pagePlayer nil") return end
 	section(pagePlayer, "* — AUTO STEAL", 20)
 	local function safeSetAS(on)
  if type(setAutoSteal) == "function" then
@@ -7748,7 +7748,7 @@ task.defer(function()
 	setTab("Panel")
 end)
 
-print("[Ilusión Hub Ext] Panel TP | AutoSteal V1/V2 + bar | InfJump hold/manual | ToolAim ON")
+print("[amateuz Ext] Panel TP | AutoSteal V1/V2 + bar | InfJump hold/manual | ToolAim ON")
 
 
 
@@ -7988,7 +7988,7 @@ end)
 -- Mobile external button
 task.defer(function()
 	local g = Instance.new("ScreenGui")
-	g.Name = "Ilusión HubTpBestBtn"
+	g.Name = "amateuzTpBestBtn"
 	g.Enabled = false -- removed TP BEST
 	g.ResetOnSpawn = false
 	g.IgnoreGuiInset = true
@@ -8041,7 +8041,7 @@ end)
 
 
 ----------------------------------------------------------------
--- OVERHEAD: real speed + discord (from Ilusión Hub)
+-- OVERHEAD: real speed + discord (from amateuz)
 ----------------------------------------------------------------
 local overheadGui, overheadSpeedLabel
 function setupOverheadInfo(char)
@@ -8054,12 +8054,12 @@ function setupOverheadInfo(char)
  if not head then return end
 	end
 	pcall(function()
- local old = head:FindFirstChild("Ilusión HubOverheadInfo")
+ local old = head:FindFirstChild("amateuzOverheadInfo")
  if old then old:Destroy() end
 	end)
 	if overheadGui then pcall(function() overheadGui:Destroy() end) end
 	overheadGui = Instance.new("BillboardGui")
-	overheadGui.Name = "Ilusión HubOverheadInfo"
+	overheadGui.Name = "amateuzOverheadInfo"
 	overheadGui.Size = UDim2.new(0, 300, 0, 96)
 	overheadGui.StudsOffset = Vector3.new(0, 2.8, 0)
 	overheadGui.AlwaysOnTop = true
@@ -8126,7 +8126,7 @@ if not _G._VisOverheadLoop then
 end
 
 
-print("[Ilusión Hub] TP TO BEST (Chilli) ready | key B | nut TP BEST")
+print("[amateuz] TP TO BEST (Chilli) ready | key B | nut TP BEST")
 
 
 
@@ -8137,8 +8137,8 @@ _G.Amateuz_topStealPause = (St.stealPause == true)
 task.spawn(function()
 	local src
 	pcall(function()
- if readfile and isfile and isfile("Ilusión Hub_Auto_Steal_Embedded.lua") then
- src = readfile("Ilusión Hub_Auto_Steal_Embedded.lua")
+ if readfile and isfile and isfile("amateuz_Auto_Steal_Embedded.lua") then
+ src = readfile("amateuz_Auto_Steal_Embedded.lua")
  end
 	end)
 	-- fallback: try workspace artifact path won't work in-game; embed minimal wire
@@ -8204,7 +8204,7 @@ task.spawn(function()
 	end
 end)
 
--- Wallpaper list (Ilusión Hub style)
+-- Wallpaper list (amateuz style)
 local VIS_WALLS = {
 	-- Empire BG only
 	"rbxassetid://126832513729779","rbxassetid://81347949983999","rbxassetid://76940707345653",
@@ -8317,17 +8317,17 @@ end)
 
 -- Mini = circle combat when closed
 task.defer(function()
-	local miniGui = PlayerGui:FindFirstChild("Ilusión HubHubFullMini")
+	local miniGui = PlayerGui:FindFirstChild("amateuzHubFullMini")
 	local mini = miniGui and miniGui:FindFirstChildWhichIsA("TextButton")
 	if mini then
  mini.Size = UDim2.new(0, 110, 0, 36)
- mini.Text = "Ilusión Hub"
+ mini.Text = "amateuz"
  mini.TextSize = 22
  local c0 = mini:FindFirstChildOfClass("UICorner")
  if c0 then c0.CornerRadius = UDim.new(0, 8) end
 	end
 	-- Title bar rectangle text
-	local mainGui = PlayerGui:FindFirstChild("Ilusión HubHubFullMenu")
+	local mainGui = PlayerGui:FindFirstChild("amateuzHubFullMenu")
 	local main = mainGui and mainGui:FindFirstChild("Main")
 	if main then
  local top = main:FindFirstChild("TopBar") or main:FindFirstChildWhichIsA("Frame")
@@ -8383,13 +8383,13 @@ task.spawn(function()
  St.menuOpen = Main.Visible == true
  end
  -- Mini open button
- local miniGui = PlayerGui:FindFirstChild("Ilusión HubHubFullMini")
+ local miniGui = PlayerGui:FindFirstChild("amateuzHubFullMini")
  local mini = miniGui and miniGui:FindFirstChildWhichIsA("TextButton")
  if mini then
  St._miniPos = {mini.Position.X.Scale, mini.Position.X.Offset, mini.Position.Y.Scale, mini.Position.Y.Offset}
  end
  -- Mode bar
- local mb = PlayerGui:FindFirstChild("Ilusión HubHubModeBar")
+ local mb = PlayerGui:FindFirstChild("amateuzHubModeBar")
  if mb then
  local f = mb:FindFirstChildWhichIsA("Frame")
  if f then
@@ -8413,10 +8413,10 @@ task.spawn(function()
  end
  end
  end
- snapHolders(PlayerGui:FindFirstChild("Ilusión HubHubActionButtons"))
- snapHolders(PlayerGui:FindFirstChild("Ilusión HubHubModeBar"))
+ snapHolders(PlayerGui:FindFirstChild("amateuzHubActionButtons"))
+ snapHolders(PlayerGui:FindFirstChild("amateuzHubModeBar"))
  -- Panel TP
- local tp = PlayerGui:FindFirstChild("Ilusión HubHubbTP")
+ local tp = PlayerGui:FindFirstChild("amateuzHubbTP")
  if tp then
  local m = tp:FindFirstChild("TPMain")
  if m then
@@ -8425,7 +8425,7 @@ task.spawn(function()
  end
  end
  -- Auto Steal floating GUI pos if any
- local asg = PlayerGui:FindFirstChild("Ilusión HubAutoStealGui")
+ local asg = PlayerGui:FindFirstChild("amateuzAutoStealGui")
  if asg then
  local mf = asg:FindFirstChildWhichIsA("Frame")
  if mf then
@@ -8443,7 +8443,7 @@ task.defer(function()
  if St._mainPos and Main then
  Main.Position = UDim2.new(St._mainPos[1], St._mainPos[2], St._mainPos[3], St._mainPos[4])
  end
- local miniGui = PlayerGui:FindFirstChild("Ilusión HubHubFullMini")
+ local miniGui = PlayerGui:FindFirstChild("amateuzHubFullMini")
  local mini = miniGui and miniGui:FindFirstChildWhichIsA("TextButton")
  if mini and St._miniPos then
  mini.Position = UDim2.new(St._miniPos[1], St._miniPos[2], St._miniPos[3], St._miniPos[4])
@@ -8536,7 +8536,7 @@ task.spawn(function()
 
 	local function Marker(pos, col)
  local p = Instance.new("Part")
- p.Name = "Ilusión HubTP_Marker"
+ p.Name = "amateuzTP_Marker"
  p.Shape = Enum.PartType.Cylinder
  p.Size = Vector3.new(0.35, 4, 4)
  p.CFrame = CFrame.new(pos + Vector3.new(0, 0.2, 0)) * CFrame.Angles(0, 0, math.rad(90))
@@ -8746,11 +8746,11 @@ task.spawn(function()
 	if SAVE_PET then MARK_PET = Marker(SAVE_PET, Color3.fromRGB(255, 140, 0)) end
 
 	pcall(function()
- local old = PlayerGui:FindFirstChild("Ilusión HubHubbTP")
+ local old = PlayerGui:FindFirstChild("amateuzHubbTP")
  if old then old:Destroy() end
 	end)
 	local gui = Instance.new("ScreenGui")
-	gui.Name = "Ilusión HubHubbTP"
+	gui.Name = "amateuzHubbTP"
 	gui.ResetOnSpawn = false
 	gui.IgnoreGuiInset = true
 	gui.DisplayOrder = 80
@@ -8812,7 +8812,7 @@ task.spawn(function()
 	title.Size = UDim2.new(1, -100, 0, 24)
 	title.Position = UDim2.new(0, 64, 0, y(1))
 	title.BackgroundTransparency = 1
-	title.Text = "Ilusión Hub TP"
+	title.Text = "amateuz TP"
 	title.TextColor3 = Color3.fromRGB(230, 210, 255)
 	title.Font = Enum.Font.GothamBold
 	title.TextSize = 13
@@ -9054,7 +9054,7 @@ task.spawn(function()
  if input.KeyCode == KEYBIND_TP then StartTP() end
 	end)
 
-	print("[Ilusión Hub] Compact TP panel ready | rainbow | markers | key X")
+	print("[amateuz] Compact TP panel ready | rainbow | markers | key X")
 end)
 
 
@@ -9081,7 +9081,7 @@ task.spawn(function()
  for _, parent in ipairs(parents) do
  for _, g in ipairs(parent:GetChildren()) do
  local n = (g.Name or ""):lower():gsub("%s+", "")
- -- giữ Ilusión HubStealBarOnly + bar script khác
+ -- giữ amateuzStealBarOnly + bar script khác
  if n == "visstealbaronly" then
  -- keep
  elseif own[n] or n:find("visautosteal", 1, true) then
@@ -9096,12 +9096,12 @@ task.spawn(function()
 
 
 	pcall(function()
- local o = PlayerGui:FindFirstChild("Ilusión HubStealBarOnly")
+ local o = PlayerGui:FindFirstChild("amateuzStealBarOnly")
  if o then o:Destroy() end
 	end)
 
 	local gui = Instance.new("ScreenGui")
-	gui.Name = "Ilusión HubStealBarOnly"
+	gui.Name = "amateuzStealBarOnly"
 	gui.ResetOnSpawn = false
 	gui.IgnoreGuiInset = true
 	gui.DisplayOrder = 200000 -- đè lên bar script khác, không xoá chúng
@@ -9362,8 +9362,8 @@ task.spawn(function()
 ----------------------------------------------------------------
 -- ACE SPEED BYPASS (full) — mini = ON/OFF EN + Lock | scale panels
 ----------------------------------------------------------------
--- ===== Ilusión Hub FULL: Speed Bypass + Lagger V2 (replace All Gear old panels) =====
--- Ilusión HubBypass — Speed Bypass (Noxa-style UI + keybind PC + minimize + bg)
+-- ===== amateuz FULL: Speed Bypass + Lagger V2 (replace All Gear old panels) =====
+-- amateuzBypass — Speed Bypass (Noxa-style UI + keybind PC + minimize + bg)
 -- ============================================================
 task.spawn(function()
 	local Players = game:GetService("Players")
@@ -9375,7 +9375,7 @@ task.spawn(function()
 	local running = false
 	local bomb = nil
 	local spamThread = nil
-	local ConfigFile = "Ilusión HubBypass.json"
+	local ConfigFile = "amateuzBypass.json"
 	-- Dùng full list BackgroundIDs của (1–50+)
 	local BG_IDS = (BackgroundIDs and #BackgroundIDs > 0) and BackgroundIDs or {
  "89504528485163", "108697485255882", "71211662493854", "118953269416540", "106345334781345",
@@ -9502,12 +9502,12 @@ task.spawn(function()
 
 	local parent = (gethui and gethui()) or game:GetService("CoreGui")
 	pcall(function()
- local old = parent:FindFirstChild("Ilusión HubBypassGui")
+ local old = parent:FindFirstChild("amateuzBypassGui")
  if old then old:Destroy() end
 	end)
 
 	local gui = Instance.new("ScreenGui")
-	gui.Name = "Ilusión HubBypassGui"
+	gui.Name = "amateuzBypassGui"
 	gui.ResetOnSpawn = false
 	gui.IgnoreGuiInset = true
 	gui.Enabled = true
@@ -9765,7 +9765,7 @@ task.spawn(function()
 	discLbl.Size = UDim2.new(1, 0, 0, 22)
 	discLbl.Position = UDim2.fromOffset(0, 288)
 	discLbl.BackgroundTransparency = 1
-	discLbl.Text = "Ilusión Hub · Speed Bypass"
+	discLbl.Text = "amateuz · Speed Bypass"
 	discLbl.TextColor3 = Color3.fromRGB(160, 160, 170)
 	discLbl.Font = Enum.Font.GothamBold
 	discLbl.TextSize = 11
@@ -10247,7 +10247,7 @@ task.spawn(function()
  end)
  end
 	end)
-	print("[Vis] Ilusión HubBypass panel loaded (Noxa-style + keybind + minimize + remember open)")
+	print("[Vis] amateuzBypass panel loaded (Noxa-style + keybind + minimize + remember open)")
 end)
 
 
@@ -10266,7 +10266,7 @@ task.spawn(function()
 
 	local LP = Players.LocalPlayer
 	local PlayerGui = LP:WaitForChild("PlayerGui")
-	local ConfigFile = "Ilusión HubPerishLaggerV2.json"
+	local ConfigFile = "amateuzPerishLaggerV2.json"
 
 	local NIVELES = {
  Low = { poder = 23 },
@@ -10606,7 +10606,7 @@ task.spawn(function()
 	title.Position = UDim2.new(0, 50, 0, 8)
 	title.Size = UDim2.new(0, 150, 0, 19)
 	title.Font = Enum.Font.GothamBlack
-	title.Text = "Ilusión HubUser V2"
+	title.Text = "amateuzUser V2"
 	title.TextColor3 = C.White
 	title.TextSize = 18
 	title.TextXAlignment = Enum.TextXAlignment.Left
@@ -10618,7 +10618,7 @@ task.spawn(function()
 	subtitle.Position = UDim2.new(0, 50, 0, 26)
 	subtitle.Size = UDim2.new(0, 170, 0, 12)
 	subtitle.Font = Enum.Font.GothamBold
-	subtitle.Text = "Ilusión HubUser module"
+	subtitle.Text = "amateuzUser module"
 	subtitle.TextColor3 = C.TextDim
 	subtitle.TextSize = 10
 	subtitle.TextXAlignment = Enum.TextXAlignment.Left
@@ -11066,7 +11066,7 @@ print("[Vis] Perish Lagger V2 FULL GUI loaded (menu toggle, pos persist like V1)
 end)
 
 -- ============================================================
--- WRAPPERS: Settings → Ilusión Hub Lagger V2 (Perish) + Speed Bypass
+-- WRAPPERS: Settings → amateuz Lagger V2 (Perish) + Speed Bypass
 -- ============================================================
 do
 	function _G.Amateuz_topSetLaggerPanel(on)
@@ -11104,7 +11104,7 @@ do
  local gui = nil
  for _, p in ipairs(parents) do
  if p then
- gui = p:FindFirstChild("Ilusión HubBypassGui")
+ gui = p:FindFirstChild("amateuzBypassGui")
  if gui then break end
  end
  end
@@ -11140,7 +11140,7 @@ do
  local api = _G.AceSetVisBypassPanelVisible
  if type(api) == "function" then
  local ok, err = pcall(api, on)
- if not ok then warn("[Ilusión Hub] SpeedBypass panel:", err) end
+ if not ok then warn("[amateuz] SpeedBypass panel:", err) end
  else
  -- API chưa sẵn: đợi tối đa 1s (không 5s)
  task.spawn(function()
@@ -11186,7 +11186,7 @@ function _G.Amateuz_topSetSpeedBypassLock(on)
 	end)
 end
 
-print("[Ilusión Hub] FULL Vis Lagger V2 (Perish) + Speed Bypass GUI (no old Vynx)")
+print("[amateuz] FULL Vis Lagger V2 (Perish) + Speed Bypass GUI (no old Vynx)")
 end)
 
 
