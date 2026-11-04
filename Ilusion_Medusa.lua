@@ -2025,7 +2025,7 @@ end)
 end)
 
 local St = {
-	antiGummy = true, antiRagdoll = false, antiPaint = true, antiBoogie = true,
+	antiGummy = true, antiRagdoll = false, antiPaint = true, antiBoogie = true, antiBee = false,
 	toolAim = true, speedOn = true, infJump = true, bodyLock = false, bodyLockRange = 20,
 	activeMode = "Normal",
 	modes = {
@@ -2036,6 +2036,7 @@ local St = {
 	dropMode = 2, -- 1 Stand/Fling, 2 Jump
 	instaMode = "V1",
 	mobileBtns = true, guiLock = false, -- default ON: Drop / Insta / TP buttons
+	showBtnPiam = true, showBtnSentry = true, showBtnAgu = true, showBtnMedu = true,
 	showStealBtn = true, showLaggerPanel = false, showPingLaggerPanel = false, showSpeedBypassPanel = false, speedBypassLock = false, panelGuiScale = 0.7, panelGuiWidth = 1, laggerPanelLock = false, pingPanelLock = false, -- hiện nút Auto Steal ngoài (độc lập auto steal on/off)
 	btnShape = "Square", -- Round | Box | Square
 	btnScale = 0.75,
@@ -2048,7 +2049,7 @@ local St = {
  DestroySentry = Enum.KeyCode.H,
  AutoSteal = nil, -- nil = None (no key)
 	},
-	esp = false, tracer = false, antiLag = false,
+	esp = false, tracer = false, antiLag = false, trapEsp = false,
 	antiKick = true, wallOpacity = 0.12, speedMethod = "Velocity",
 	destroySentry = false,
 	spamLaser = false, spamPaint = false,
@@ -3288,6 +3289,176 @@ function setTracer(on)
 	saveCfg()
 end
 
+----------------------------------------------------------------
+-- TRAP ESP — highlight + label on traps in workspace
+----------------------------------------------------------------
+local TrapESP = {
+	on = false,
+	data = {}, -- [Instance] = { hl, bb }
+	conns = {},
+	scanToken = 0,
+}
+
+local TRAP_NAME_KEYS = {
+	"trap", "beartrap", "bear trap", "spike", "landmine", "mine",
+	"snare", "clawtrap", "rattrap", "mousetrap", "floortrap",
+	"trampa", "pinchos", "mina",
+}
+
+local function isTrapCandidate(inst)
+	if not inst or not inst.Parent then return false end
+	local n = string.lower(tostring(inst.Name or ""))
+	for _, key in ipairs(TRAP_NAME_KEYS) do
+		if string.find(n, key, 1, true) then
+			return true
+		end
+	end
+	-- Attribute / tag style
+	local ok, attr = pcall(function() return inst:GetAttribute("IsTrap") or inst:GetAttribute("Trap") end)
+	if ok and attr then return true end
+	return false
+end
+
+local function trapRootPart(inst)
+	if inst:IsA("BasePart") then return inst end
+	if inst:IsA("Model") then
+		if inst.PrimaryPart then return inst.PrimaryPart end
+		local p = inst:FindFirstChildWhichIsA("BasePart", true)
+		return p
+	end
+	return inst:FindFirstChildWhichIsA("BasePart", true)
+end
+
+local function trapCleanupOne(inst)
+	local d = TrapESP.data[inst]
+	if not d then return end
+	pcall(function() if d.hl then d.hl:Destroy() end end)
+	pcall(function() if d.bb then d.bb:Destroy() end end)
+	TrapESP.data[inst] = nil
+end
+
+local function trapCleanupAll()
+	for inst in pairs(TrapESP.data) do
+		trapCleanupOne(inst)
+	end
+	TrapESP.data = {}
+end
+
+local function trapAttach(inst)
+	if not TrapESP.on or not inst or not inst.Parent then return end
+	if TrapESP.data[inst] then return end
+	if not isTrapCandidate(inst) then return end
+	-- Prefer model root if part is under a trap model
+	local root = inst
+	if inst:IsA("BasePart") then
+		local m = inst:FindFirstAncestorOfClass("Model")
+		if m and isTrapCandidate(m) then root = m end
+	end
+	if TrapESP.data[root] then return end
+	local part = trapRootPart(root)
+	if not part then return end
+
+	local hl = Instance.new("Highlight")
+	hl.Name = "IlusionTrapESP"
+	hl.Adornee = root:IsA("Model") and root or part
+	hl.FillColor = Color3.fromRGB(255, 60, 60)
+	hl.OutlineColor = Color3.fromRGB(255, 200, 80)
+	hl.FillTransparency = 0.55
+	hl.OutlineTransparency = 0
+	hl.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+	hl.Parent = root:IsA("Model") and root or part
+
+	local bb = Instance.new("BillboardGui")
+	bb.Name = "IlusionTrapESPLabel"
+	bb.Size = UDim2.fromOffset(90, 28)
+	bb.StudsOffset = Vector3.new(0, 2.2, 0)
+	bb.AlwaysOnTop = true
+	bb.MaxDistance = 400
+	bb.Adornee = part
+	bb.Parent = part
+
+	local lbl = Instance.new("TextLabel")
+	lbl.Size = UDim2.fromScale(1, 1)
+	lbl.BackgroundTransparency = 1
+	lbl.Text = "TRAP"
+	lbl.TextColor3 = Color3.fromRGB(255, 80, 80)
+	lbl.TextStrokeTransparency = 0.3
+	lbl.TextStrokeColor3 = Color3.new(0, 0, 0)
+	lbl.Font = Enum.Font.GothamBlack
+	lbl.TextSize = 14
+	lbl.Parent = bb
+
+	TrapESP.data[root] = { hl = hl, bb = bb, part = part }
+end
+
+local function trapScanOnce()
+	if not TrapESP.on then return end
+	-- Clean dead
+	for inst, d in pairs(TrapESP.data) do
+		if not inst.Parent or (d.part and not d.part.Parent) then
+			trapCleanupOne(inst)
+		end
+	end
+	local function scan(container, depth)
+		if not container or depth > 6 then return end
+		for _, child in ipairs(container:GetChildren()) do
+			if isTrapCandidate(child) then
+				trapAttach(child)
+			end
+			-- common folders
+			local n = string.lower(child.Name)
+			if child:IsA("Folder") or child:IsA("Model") then
+				if n:find("trap", 1, true) or n:find("map", 1, true) or n:find("world", 1, true)
+					or n:find("obstacle", 1, true) or n:find("hazard", 1, true)
+					or depth < 3 then
+					scan(child, depth + 1)
+				end
+			end
+		end
+	end
+	pcall(function() scan(workspace, 0) end)
+end
+
+function startTrapESP()
+	if TrapESP.on then return end
+	TrapESP.on = true
+	TrapESP.scanToken += 1
+	local token = TrapESP.scanToken
+	trapScanOnce()
+	table.insert(TrapESP.conns, workspace.DescendantAdded:Connect(function(obj)
+		if not TrapESP.on then return end
+		if isTrapCandidate(obj) then
+			task.defer(trapAttach, obj)
+		end
+	end))
+	table.insert(TrapESP.conns, workspace.DescendantRemoving:Connect(function(obj)
+		if TrapESP.data[obj] then trapCleanupOne(obj) end
+	end))
+	task.spawn(function()
+		while TrapESP.on and TrapESP.scanToken == token do
+			pcall(trapScanOnce)
+			task.wait(1.25)
+		end
+	end)
+end
+
+function stopTrapESP()
+	TrapESP.on = false
+	TrapESP.scanToken += 1
+	for _, c in ipairs(TrapESP.conns) do
+		pcall(function() c:Disconnect() end)
+	end
+	TrapESP.conns = {}
+	trapCleanupAll()
+end
+
+function setTrapESP(on)
+	St.trapEsp = on and true or false
+	if St.trapEsp then startTrapESP() else stopTrapESP() end
+	saveCfg()
+end
+
+
 -- Anti Lag (Vis simplified)
 local antiLagConn = nil
 function applyDerender(obj)
@@ -3951,7 +4122,6 @@ function makePage(name)
 end
 local pagePlayer = makePage("Player")
 local pageSpeed = makePage("Speed")
-local pageAntiBee = makePage("Anti Bee")
 local pageESP = makePage("ESP")
 local pageSpam = makePage("Spam")
 local pageCounter = makePage("Counter")
@@ -3991,12 +4161,11 @@ function addTab(name, order)
 end
 addTab("Player", 1)
 addTab("Speed", 2)
-addTab("Anti Bee", 3)
-addTab("ESP", 4)
-addTab("Spam", 5)
-addTab("Counter", 6)
-addTab("Settings", 7)
-addTab("Keybinds", 8)
+addTab("ESP", 3)
+addTab("Spam", 4)
+addTab("Counter", 5)
+addTab("Settings", 6)
+addTab("Keybinds", 7)
 
 function section(parent, text, order)
 	local f = Instance.new("Frame")
@@ -4290,6 +4459,13 @@ do
 end
 toggleNamed(pagePlayer, "Anti Paintball Gun", St.antiPaint, setAntiPaint, 4, "antiPaint")
 toggleNamed(pagePlayer, "Anti Boogie Bomb", St.antiBoogie, setAntiBoogie, 5, "antiBoogie")
+toggleNamed(pagePlayer, "Anti Bee", St.antiBee == true, function(state)
+	St.antiBee = state and true or false
+	if AntiBeeModule then
+		pcall(function() AntiBeeModule.set(state) end)
+	end
+	pcall(saveCfg)
+end, 6, "antiBee")
 
 
 
@@ -4479,10 +4655,6 @@ do
     AntiBeeModule = buildAntiBee()
 end
 
-section(pageAntiBee, "* — ANTI BEE", 1)
-toggleNamed(pageAntiBee, "Anti Bee", false, function(state)
-    AntiBeeModule.set(state)
-end, 2, "antiBee")
 
 section(pageSpeed, "* — SPEED (Vis S2)", 10)
 toggleNamed(pageSpeed, "Speed On", St.speedOn, setSpeedOn, 11, "speedOn")
@@ -4794,7 +4966,8 @@ end
 section(pageESP, "* — ESP", 1)
 toggleNamed(pageESP, "Player ESP", St.esp, setESP, 2, "esp")
 toggleNamed(pageESP, "Tracker / Tracer", St.tracer, setTracer, 3, "tracer")
-toggleNamed(pageESP, "Anti Lag", St.antiLag, setAntiLag, 4, "antiLag")
+toggleNamed(pageESP, "Trap ESP", St.trapEsp == true, setTrapESP, 4, "trapEsp")
+toggleNamed(pageESP, "Anti Lag", St.antiLag, setAntiLag, 5, "antiLag")
 
 
 ----------------------------------------------------------------
@@ -4837,6 +5010,32 @@ spamTxt.TextXAlignment = Enum.TextXAlignment.Left
 spamTxt.TextYAlignment = Enum.TextYAlignment.Center
 spamTxt.Parent = spamInfo
 
+
+----------------------------------------------------------------
+-- FLOATING TOOL BUTTONS visibility (Piam / Sentry / Agu / Medu)
+----------------------------------------------------------------
+function _G.IlusionApplyToolButtons()
+	local map = {
+		IlusionPiamButtonGui = St.showBtnPiam ~= false,
+		IlusionSentryButtonGui = St.showBtnSentry ~= false,
+		IlusionAguButtonGui = St.showBtnAgu ~= false,
+		IlusionMedusaButtonGui = St.showBtnMedu ~= false,
+	}
+	local parents = { PlayerGui }
+	pcall(function() table.insert(parents, game:GetService("CoreGui")) end)
+	pcall(function() if gethui then table.insert(parents, gethui()) end end)
+	for _, parent in ipairs(parents) do
+		if parent then
+			for name, on in pairs(map) do
+				local g = parent:FindFirstChild(name)
+				if g then
+					pcall(function() g.Enabled = on and true or false end)
+				end
+			end
+		end
+	end
+end
+
 ----------------------------------------------------------------
 -- SETTINGS TAB
 ----------------------------------------------------------------
@@ -4855,6 +5054,28 @@ toggleNamed(pageSet, "Show Auto Steal Button", St.showStealBtn ~= false, functio
 	end
 	saveCfg()
 end, 2.5, "showStealBtn")
+
+section(pageSet, "* — BUTTONS", 3)
+toggleNamed(pageSet, "Piam", St.showBtnPiam ~= false, function(on)
+	St.showBtnPiam = on and true or false
+	if _G.IlusionApplyToolButtons then _G.IlusionApplyToolButtons() end
+	saveCfg()
+end, 3.1, "showBtnPiam")
+toggleNamed(pageSet, "Sentry", St.showBtnSentry ~= false, function(on)
+	St.showBtnSentry = on and true or false
+	if _G.IlusionApplyToolButtons then _G.IlusionApplyToolButtons() end
+	saveCfg()
+end, 3.2, "showBtnSentry")
+toggleNamed(pageSet, "Agu", St.showBtnAgu ~= false, function(on)
+	St.showBtnAgu = on and true or false
+	if _G.IlusionApplyToolButtons then _G.IlusionApplyToolButtons() end
+	saveCfg()
+end, 3.3, "showBtnAgu")
+toggleNamed(pageSet, "Medu", St.showBtnMedu ~= false, function(on)
+	St.showBtnMedu = on and true or false
+	if _G.IlusionApplyToolButtons then _G.IlusionApplyToolButtons() end
+	saveCfg()
+end, 3.4, "showBtnMedu")
 toggleNamed(pageSet, "Show Panel TP", St.showTPPanel ~= false, function(on)
 	St.showTPPanel = on and true or false
 	local g = PlayerGui:FindFirstChild("IlusionbTP")
@@ -5263,9 +5484,10 @@ actionBtn(pageSet, "Reset All Settings", C.danger, function()
 	end
 	-- sync toggle UI
 	local defs = {
- antiGummy = true, antiRagdoll = false, antiPaint = true, antiBoogie = true,
+ antiGummy = true, antiRagdoll = false, antiPaint = true, antiBoogie = true, antiBee = false,
  toolAim = true, infJump = true, destroySentry = false, speedOn = true,
  mobileBtns = true, guiLock = false,
+ showBtnPiam = true, showBtnSentry = true, showBtnAgu = true, showBtnMedu = true,
  esp = false, tracer = false, antiLag = false,
  spamLaser = false, spamPaint = false,
  autoSteal = false, stealPause = false, showTPPanel = true,
@@ -6477,12 +6699,19 @@ pcall(function() setAntiGummy(St.antiGummy ~= false) end)
 pcall(function() setAntiBoogie(St.antiBoogie ~= false) end)
 pcall(function() setAntiPaint(St.antiPaint ~= false) end)
 pcall(function() setAntiRagdoll(St.antiRagdoll == true) end)
+pcall(function() if _G.IlusionApplyToolButtons then _G.IlusionApplyToolButtons() end end)
+pcall(function()
+	if AntiBeeModule and St.antiBee == true then
+		AntiBeeModule.set(true)
+	end
+end)
 pcall(function() setToolAim(St.toolAim ~= false) end)
 pcall(function() setInfJump(St.infJump ~= false) end)
 pcall(function() setDestroySentry(St.destroySentry == true) end)
 pcall(function() setSpeedOn(St.speedOn ~= false) end)
 pcall(function() setActiveMode(St.activeMode or "Normal") end)
 pcall(function() setESP(St.esp == true) end)
+pcall(function() if St.trapEsp and setTrapESP then setTrapESP(true) end end)
 pcall(function() setTracer(St.tracer == true) end)
 pcall(function() setAntiLag(St.antiLag == true) end)
 pcall(function() setSpamLaser(St.spamLaser == true) end)
@@ -11072,6 +11301,7 @@ do
     gui.DisplayOrder = 100
     gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     gui.Parent = parentGui
+    gui.Enabled = (St.showBtnPiam ~= false)
 
     local piamButton = Instance.new("TextButton")
     piamButton.Name = "Bolita_Piam"
@@ -11236,6 +11466,7 @@ do
     guiSentry.DisplayOrder = 100
     guiSentry.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     guiSentry.Parent = parentGui
+    guiSentry.Enabled = (St.showBtnSentry ~= false)
 
     local SentryButton = Instance.new("TextButton")
     SentryButton.Name = "Bolita_Sentry"
@@ -11397,6 +11628,7 @@ do
     guiAgu.DisplayOrder = 100
     guiAgu.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     guiAgu.Parent = parentGui
+    guiAgu.Enabled = (St.showBtnAgu ~= false)
 
     local AguButton = Instance.new("TextButton")
     AguButton.Name = "Bolita_Agu"
@@ -11557,6 +11789,7 @@ do
     guiMedusa.DisplayOrder = 100
     guiMedusa.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     guiMedusa.Parent = parentGui
+    guiMedusa.Enabled = (St.showBtnMedu ~= false)
 
     local medusaButton = Instance.new("TextButton")
     medusaButton.Name = "Bolita_Medu"
