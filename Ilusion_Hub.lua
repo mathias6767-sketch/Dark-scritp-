@@ -1524,7 +1524,7 @@ task.spawn(function()
 	if not gui.Parent then gui.Parent = PlayerGui end
 
 	local function corner(o, r)
- local c = Instance.new("UICorner"); c.CornerRadius = UDim.new(0, r or 10); c.Parent = o
+ local c = Instance.new("UICorner"); c.CornerRadius = UDim.new(0, r or 0); c.Parent = o
 	end
 	local COL = {
  bg = Color3.fromRGB(10,10,12), header = Color3.fromRGB(16,16,18), row = Color3.fromRGB(22,22,26),
@@ -1541,7 +1541,7 @@ task.spawn(function()
 	main.Visible = saved.panelOpen ~= false
 	main.ClipsDescendants = true
 	main.ZIndex = 60
-	corner(main, 12)
+	corner(main, 0)
 	Instance.new("UIStroke", main).Color = COL.stroke
 
 	local bgImg = Instance.new("ImageLabel", main)
@@ -1551,7 +1551,7 @@ task.spawn(function()
 	bgImg.ScaleType = Enum.ScaleType.Crop
 	bgImg.ZIndex = 60
 	bgImg.Image = "rbxassetid://" .. BackgroundIDs[saved.bgIndex]
-	corner(bgImg, 12)
+	corner(bgImg, 0)
 
 	local uiScale = Instance.new("UIScale", main)
 	uiScale.Scale = saved.scale
@@ -1567,7 +1567,7 @@ task.spawn(function()
 	header.BackgroundTransparency = 0.25
 	header.BorderSizePixel = 0
 	header.ZIndex = 61
-	corner(header, 12)
+	corner(header, 0)
 
 	local title = Instance.new("TextLabel", header)
 	title.Size = UDim2.new(0, 72, 1, 0)
@@ -1592,7 +1592,7 @@ task.spawn(function()
  b.TextSize = 10
  b.ZIndex = 63
  b.AutoButtonColor = false
- corner(b, 6)
+ corner(b, 0)
  modeBtns[name] = b
 	end
 
@@ -1603,7 +1603,7 @@ task.spawn(function()
 	lockBtn.Text = saved.locked and "🔒" or "🔓"
 	lockBtn.TextSize = 11
 	lockBtn.ZIndex = 63
-	corner(lockBtn, 6)
+	corner(lockBtn, 0)
 
 	local onBtn = Instance.new("TextButton", header)
 	onBtn.Size = UDim2.fromOffset(40, 20)
@@ -1615,7 +1615,7 @@ task.spawn(function()
 	onBtn.TextSize = 10
 	onBtn.ZIndex = 63
 	onBtn.AutoButtonColor = false
-	corner(onBtn, 10)
+	corner(onBtn, 0)
 
 	local expBtn = Instance.new("TextButton", header)
 	expBtn.Size = UDim2.fromOffset(22, 22)
@@ -1626,7 +1626,7 @@ task.spawn(function()
 	expBtn.Font = Enum.Font.GothamBold
 	expBtn.TextSize = 14
 	expBtn.ZIndex = 63
-	corner(expBtn, 6)
+	corner(expBtn, 0)
 
 	local body = Instance.new("Frame", main)
 	body.Size = UDim2.new(1, -16, 0, 44)
@@ -1666,13 +1666,13 @@ task.spawn(function()
 	barBg.BackgroundColor3 = COL.barBg
 	barBg.BorderSizePixel = 0
 	barBg.ZIndex = 62
-	corner(barBg, 6)
+	corner(barBg, 0)
 	local barFill = Instance.new("Frame", barBg)
 	barFill.Size = UDim2.new(0, 0, 1, 0)
 	barFill.BackgroundColor3 = Color3.fromRGB(100, 255, 160)
 	barFill.BorderSizePixel = 0
 	barFill.ZIndex = 63
-	corner(barFill, 6)
+	corner(barFill, 0)
 	local barGrad = Instance.new("UIGradient", barFill)
 	barGrad.Color = ColorSequence.new({
  ColorSequenceKeypoint.new(0, Color3.fromRGB(80, 220, 140)),
@@ -1707,7 +1707,7 @@ task.spawn(function()
 	radBox.TextSize = 12
 	radBox.ClearTextOnFocus = false
 	radBox.ZIndex = 63
-	corner(radBox, 6)
+	corner(radBox, 0)
 
 	local radMinus = Instance.new("TextButton", expandPanel)
 	radMinus.Size = UDim2.fromOffset(28, 24)
@@ -1718,7 +1718,7 @@ task.spawn(function()
 	radMinus.Font = Enum.Font.GothamBold
 	radMinus.TextSize = 14
 	radMinus.ZIndex = 63
-	corner(radMinus, 6)
+	corner(radMinus, 0)
 
 	local radPlus = Instance.new("TextButton", expandPanel)
 	radPlus.Size = UDim2.fromOffset(28, 24)
@@ -1729,7 +1729,7 @@ task.spawn(function()
 	radPlus.Font = Enum.Font.GothamBold
 	radPlus.TextSize = 14
 	radPlus.ZIndex = 63
-	corner(radPlus, 6)
+	corner(radPlus, 0)
 
 	local bgTitle = Instance.new("TextLabel", expandPanel)
 	bgTitle.Size = UDim2.new(1,0,0,14)
@@ -1751,7 +1751,7 @@ task.spawn(function()
 	bgPrev.Font = Enum.Font.GothamBold
 	bgPrev.TextSize = 12
 	bgPrev.ZIndex = 63
-	corner(bgPrev, 6)
+	corner(bgPrev, 0)
 
 	local bgNext = Instance.new("TextButton", expandPanel)
 	bgNext.Size = UDim2.fromOffset(40, 24)
@@ -1762,7 +1762,7 @@ task.spawn(function()
 	bgNext.Font = Enum.Font.GothamBold
 	bgNext.TextSize = 12
 	bgNext.ZIndex = 63
-	corner(bgNext, 6)
+	corner(bgNext, 0)
 
 	local scaleTitle = Instance.new("TextLabel", expandPanel)
 	scaleTitle.Size = UDim2.new(0, 80, 0, 14)
@@ -1784,7 +1784,7 @@ task.spawn(function()
 	scaleMinus.Font = Enum.Font.GothamBold
 	scaleMinus.TextSize = 16
 	scaleMinus.ZIndex = 63
-	corner(scaleMinus, 6)
+	corner(scaleMinus, 0)
 
 	local scalePlus = Instance.new("TextButton", expandPanel)
 	scalePlus.Size = UDim2.fromOffset(36, 24)
@@ -1795,7 +1795,7 @@ task.spawn(function()
 	scalePlus.Font = Enum.Font.GothamBold
 	scalePlus.TextSize = 16
 	scalePlus.ZIndex = 63
-	corner(scalePlus, 6)
+	corner(scalePlus, 0)
 
 	local scaleVal = Instance.new("TextLabel", expandPanel)
 	scaleVal.Size = UDim2.fromOffset(48, 24)
@@ -3899,7 +3899,7 @@ end
 
 function corner(p, r)
 	local c = Instance.new("UICorner")
-	c.CornerRadius = UDim.new(0, r or 10)
+	c.CornerRadius = UDim.new(0, 0)
 	c.Parent = p
 	return c
 end
@@ -3955,7 +3955,7 @@ pcall(function()
 	end
 end)
 
-corner(Main, 14)
+corner(Main, 0)
 local mainStroke = stroke(Main)
 mainStroke.Thickness = 2.2
 mainStroke.Transparency = 0
@@ -3990,7 +3990,7 @@ Top.BorderSizePixel = 0
 Top.ZIndex = 15
 Top.Active = true
 Top.Parent = Main
-corner(Top, 14)
+corner(Top, 0)
 local topFix = Instance.new("Frame")
 topFix.Size = UDim2.new(1, 0, 0, 12)
 topFix.Position = UDim2.new(0, 0, 1, -12)
@@ -4038,7 +4038,7 @@ CloseBtn.TextSize = 11
 CloseBtn.Font = Enum.Font.GothamBold
 CloseBtn.AutoButtonColor = false
 CloseBtn.Parent = Top
-corner(CloseBtn, 6)
+corner(CloseBtn, 0)
 
 -- Helper tròn bên TRÁI menu (LKZ style) — ấn = đóng
 local Helper = Instance.new("TextButton")
@@ -4052,7 +4052,7 @@ Helper.TextSize = 18
 Helper.Font = Enum.Font.GothamBold
 Helper.AutoButtonColor = false
 Helper.Parent = Main
-corner(Helper, 22)
+corner(Helper, 0)
 local hs = Instance.new("UIStroke", Helper)
 hs.Color = C.accent
 hs.Thickness = 2
@@ -4076,7 +4076,7 @@ TabBar.ZIndex = 20
 TabBar.Active = true
 TabBar.Selectable = true
 TabBar.Parent = Main
-corner(TabBar, 8)
+corner(TabBar, 0)
 local tabList = Instance.new("UIListLayout", TabBar)
 tabList.FillDirection = Enum.FillDirection.Vertical
 tabList.Padding = UDim.new(0, 4)
@@ -4153,7 +4153,7 @@ function addTab(name, order)
 	b.Selectable = true
 	b.ZIndex = 21
 	b.Parent = TabBar
-	corner(b, 8)
+	corner(b, 0)
 	local function go() setTab(name) end
 	b.MouseButton1Click:Connect(go)
 	b.Activated:Connect(go)
@@ -4191,7 +4191,7 @@ function row(parent, h, order)
 	f.LayoutOrder = order
 	f.Active = true
 	f.Parent = parent
-	corner(f, 9)
+	corner(f, 0)
 	stroke(f)
 	return f
 end
@@ -4213,14 +4213,14 @@ function toggle(parent, label, default, cb, order)
 	track.BackgroundColor3 = default and C.on or C.off
 	track.BorderSizePixel = 0
 	track.Parent = r
-	corner(track, 11)
+	corner(track, 0)
 	local knob = Instance.new("Frame")
 	knob.Size = UDim2.new(0, 18, 0, 18)
 	knob.Position = default and UDim2.new(1, -20, 0.5, -9) or UDim2.new(0, 2, 0.5, -9)
 	knob.BackgroundColor3 = Color3.new(1, 1, 1)
 	knob.BorderSizePixel = 0
 	knob.Parent = track
-	corner(knob, 9)
+	corner(knob, 0)
 	local state = default
 	local btn = Instance.new("TextButton")
 	btn.Size = UDim2.new(1, 0, 1, 0)
@@ -4300,7 +4300,7 @@ function numBox(parent, pos, w, val, cb)
 	b.Active = true
 	b.ZIndex = 25
 	b.Parent = parent
-	corner(b, 6)
+	corner(b, 0)
 	b.FocusLost:Connect(function()
  local n = tonumber(b.Text)
  if n then
@@ -4330,7 +4330,7 @@ function keyBtn(parent, key, onSet, pos)
 	b.Active = true
 	b.ZIndex = 25
 	b.Parent = parent
-	corner(b, 6)
+	corner(b, 0)
 	b.MouseButton1Click:Connect(function()
  if listening then return end
  listening = b
@@ -4402,7 +4402,7 @@ do
 	holder.BorderSizePixel = 0
 	holder.Parent = r
 	local hc = Instance.new("UICorner")
-	hc.CornerRadius = UDim.new(0, 8)
+	hc.CornerRadius = UDim.new(0, 0)
 	hc.Parent = holder
 	local slide = Instance.new("Frame")
 	slide.Size = UDim2.new(0.5, -6, 1, -6)
@@ -4412,7 +4412,7 @@ do
 	slide.ZIndex = 2
 	slide.Parent = holder
 	local sc = Instance.new("UICorner")
-	sc.CornerRadius = UDim.new(0, 6)
+	sc.CornerRadius = UDim.new(0, 0)
 	sc.Parent = slide
 	local t1 = Instance.new("TextLabel")
 	t1.BackgroundTransparency = 1
@@ -4793,7 +4793,7 @@ for i, name in ipairs({ "Stand", "Jump" }) do
 	b.Font = Enum.Font.GothamBold
 	b.AutoButtonColor = false
 	b.Parent = dropRow
-	corner(b, 7)
+	corner(b, 0)
 	b.Active = true
 	b.ZIndex = 40
 	function pickDrop()
@@ -4834,7 +4834,7 @@ for i, name in ipairs({ "V1", "V2" }) do
 	b.Font = Enum.Font.GothamBold
 	b.AutoButtonColor = false
 	b.Parent = instaRow
-	corner(b, 7)
+	corner(b, 0)
 	b.Active = true
 	b.ZIndex = 40
 	function pickInsta()
@@ -4899,7 +4899,7 @@ if pageKeys then
  b.Font = Enum.Font.GothamBold
  b.AutoButtonColor = false
  b.Parent = r
- corner(b, 7)
+ corner(b, 0)
  local function refresh()
  local k = St.keys and St.keys[keyId]
  if not k or k == Enum.KeyCode.Unknown then
@@ -5121,7 +5121,7 @@ do
  b.Font = Enum.Font.GothamBold
  b.AutoButtonColor = false
  b.Parent = r
- corner(b, 7)
+ corner(b, 0)
  local function fire()
  St.panelGuiScale = math.clamp((tonumber(St.panelGuiScale) or 1) + (info[1] == "+" and 0.05 or -0.05), 0.6, 1.6)
  val.Text = tostring(math.floor(St.panelGuiScale * 100)) .. "%"
@@ -5164,7 +5164,7 @@ do
  b.Font = Enum.Font.GothamBold
  b.AutoButtonColor = false
  b.Parent = r
- corner(b, 7)
+ corner(b, 0)
  local function fire()
  St.panelGuiWidth = math.clamp((tonumber(St.panelGuiWidth) or 1) + (info[1] == "+" and 0.05 or -0.05), 0.7, 1.5)
  val.Text = tostring(math.floor(St.panelGuiWidth * 100)) .. "%"
@@ -5307,7 +5307,7 @@ function sizeRow(label, key, order)
  b.Active = true
  b.ZIndex = 30
  b.Parent = r
- corner(b, 7)
+ corner(b, 0)
  local function fire()
  local cur = tonumber(St.btnSizes[key]) or 50
  cur = math.clamp(cur + (sign == "+" and 5 or -5), 20, 200)
@@ -5360,7 +5360,7 @@ for _, info in ipairs({ { "-", -80 }, { "+", -44 } }) do
 	b.Active = true
 	b.ZIndex = 30
 	b.Parent = scaleRow
-	corner(b, 7)
+	corner(b, 0)
 	function fire()
  St.btnScale = math.clamp((tonumber(St.btnScale) or 1) + (info[1] == "+" and 0.05 or -0.05), 0.3, 2.0)
  scaleVal.Text = tostring(math.floor(St.btnScale * 100)) .. "%"
@@ -5415,7 +5415,7 @@ for _, info in ipairs({{"-", -72}, {"+", -40}}) do
 	b.Active = true
 	b.ZIndex = 30
 	b.Parent = menuScaleRow
-	corner(b, 6)
+	corner(b, 0)
 	function fire()
  St.menuScale = math.clamp((St.menuScale or 1) + (info[1] == "+" and 0.05 or -0.05), 0.7, 1.3)
  msVal.Text = tostring(math.floor(St.menuScale * 100)) .. "%"
@@ -5547,7 +5547,7 @@ Mini.Font = Enum.Font.GothamBold
 Mini.Visible = false
 Mini.AutoButtonColor = false
 Mini.Parent = MiniGui
-corner(Mini, 8)
+corner(Mini, 0)
 local miniStroke = Instance.new("UIStroke", Mini)
 miniStroke.Color = C.accent
 miniStroke.Thickness = 2
@@ -5763,7 +5763,7 @@ function applyCorner(btn, forceShape)
 	elseif shape == "Pill" then
  rad = UDim.new(0, 16)
 	else
- rad = UDim.new(0, 6) -- rounded square matching the reference buttons
+ rad = UDim.new(0, 0) -- square matching the reference buttons
 	end
 	local c = Instance.new("UICorner")
 	c.Name = "ShapeCorner"
@@ -5790,7 +5790,7 @@ function applyCornerToChildren(btn, shape)
 	if shape == "Round" then rad = UDim.new(1, 0)
 	elseif shape == "Box" then rad = UDim.new(0, 12)
 	elseif shape == "Pill" then rad = UDim.new(0, 16)
-	else rad = UDim.new(0, 6)
+	else rad = UDim.new(0, 0)
 	end
 	for _, ch in ipairs(btn:GetChildren()) do
  if ch:IsA("ImageLabel") or (ch:IsA("Frame") and ch.Name ~= "BtnTextOverlay") then
@@ -5823,11 +5823,11 @@ function applyEmpireBtnBg(btn, index)
  local corner = btn:FindFirstChildOfClass("UICorner")
  if not corner then corner = Instance.new("UICorner"); corner.Parent = btn end
  if St and St.btnShape == "Round" then
-  corner.CornerRadius = UDim.new(0, 12)
+  corner.CornerRadius = UDim.new(0, 0)
  elseif St and St.btnShape == "Box" then
-  corner.CornerRadius = UDim.new(0, 8)
+  corner.CornerRadius = UDim.new(0, 0)
  else
-  corner.CornerRadius = UDim.new(0, 6)
+  corner.CornerRadius = UDim.new(0, 0)
  end
  local stroke = btn:FindFirstChild("BtnBorder") or btn:FindFirstChildOfClass("UIStroke")
  if not stroke then stroke = Instance.new("UIStroke"); stroke.Name = "BtnBorder"; stroke.Parent = btn end
@@ -6494,7 +6494,7 @@ function _G.IlusionUpdateMobileVisuals()
  e.holder.Size = UDim2.new(0, w, 0, h)
  e.btn.TextSize = math.clamp(math.floor(h * 0.36), 11, 14)
  local c = e.btn:FindFirstChildOfClass("UICorner") or Instance.new("UICorner", e.btn)
- c.CornerRadius = UDim.new(0, 12) -- V2 bo góc chữ nhật
+ c.CornerRadius = UDim.new(0, 0) -- V2 bo góc chữ nhật
  if e.style then e.style(St.activeMode == n) end
  end
 	end
@@ -7172,7 +7172,7 @@ function openPanelTP()
 	f.BorderSizePixel = 0
 	f.Active = true
 	f.Parent = gui
-	Instance.new("UICorner", f).CornerRadius = UDim.new(0, 12)
+	Instance.new("UICorner", f).CornerRadius = UDim.new(0, 0)
 	local st = Instance.new("UIStroke", f)
 	st.Color = Color3.fromRGB(120, 90, 200)
 	st.Thickness = 1.5
@@ -7221,7 +7221,7 @@ function openPanelTP()
 	close.TextColor3 = Color3.new(1, 1, 1)
 	close.Font = Enum.Font.GothamBold
 	close.Parent = f
-	Instance.new("UICorner", close).CornerRadius = UDim.new(0, 6)
+	Instance.new("UICorner", close).CornerRadius = UDim.new(0, 0)
 	close.MouseButton1Click:Connect(function() gui:Destroy() end)
 	local lockB = Instance.new("TextButton")
 	lockB.Size = UDim2.new(0, 64, 0, 24)
@@ -7232,7 +7232,7 @@ function openPanelTP()
 	lockB.Font = Enum.Font.GothamBold
 	lockB.TextSize = 10
 	lockB.Parent = f
-	Instance.new("UICorner", lockB).CornerRadius = UDim.new(0, 6)
+	Instance.new("UICorner", lockB).CornerRadius = UDim.new(0, 0)
 	lockB.MouseButton1Click:Connect(function()
  panelLocked = not panelLocked
  lockB.Text = panelLocked and "LOCK" or "UNLOCK"
@@ -7253,7 +7253,7 @@ function openPanelTP()
  b.Font = Enum.Font.GothamBold
  b.TextSize = 12
  b.Parent = f
- Instance.new("UICorner", b).CornerRadius = UDim.new(0, 12)
+ Instance.new("UICorner", b).CornerRadius = UDim.new(0, 0)
  local edge = Instance.new("UIStroke")
  edge.Color = Color3.fromRGB(45, 45, 45)
  edge.Thickness = 1
@@ -7320,7 +7320,7 @@ function openPanelTP()
  b.TextColor3 = Color3.new(1, 1, 1)
  b.Font = Enum.Font.GothamBold
  b.Parent = f
- Instance.new("UICorner", b).CornerRadius = UDim.new(0, 6)
+ Instance.new("UICorner", b).CornerRadius = UDim.new(0, 0)
  b.MouseButton1Click:Connect(function()
  TP[key] = math.clamp(TP[key] + (sign == "+" and 0.01 or -0.01), 0.01, 0.5)
  val.Text = string.format("%.2f", TP[key])
@@ -7362,7 +7362,7 @@ do
 	btn.TextSize = 14
 	btn.Visible = false
 	btn.Parent = tpg
-	Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 12)
+	Instance.new("UICorner", btn).CornerRadius = UDim.new(0, 0)
 	local bst = Instance.new("UIStroke", btn)
 	bst.Color = Color3.fromRGB(140, 100, 255)
 	btn.MouseButton1Click:Connect(runPanelTP)
@@ -7593,7 +7593,7 @@ task.defer(function()
  b.Active = true
  b.ZIndex = 40
  b.Parent = verRow
- Instance.new("UICorner", b).CornerRadius = UDim.new(0, 7)
+ Instance.new("UICorner", b).CornerRadius = UDim.new(0, 0)
  local function pickVer()
  St.stealVer = name
  for _, ch in ipairs(verRow:GetChildren()) do
@@ -7662,7 +7662,7 @@ task.defer(function()
  b.TextSize = 11
  b.Font = Enum.Font.GothamBold
  b.Parent = ij
- Instance.new("UICorner", b).CornerRadius = UDim.new(0, 7)
+ Instance.new("UICorner", b).CornerRadius = UDim.new(0, 0)
  b.MouseButton1Click:Connect(function()
  setInfJumpMode(name)
  for _, ch in ipairs(ij:GetChildren()) do
@@ -7933,7 +7933,7 @@ task.defer(function()
 	b.Font = Enum.Font.GothamBlack
 	b.TextSize = 13
 	b.Parent = g
-	Instance.new("UICorner", b).CornerRadius = UDim.new(0, 10)
+	Instance.new("UICorner", b).CornerRadius = UDim.new(0, 0)
 	local s = Instance.new("UIStroke", b)
 	s.Color = Color3.fromRGB(80, 220, 120)
 	s.Thickness = 1.5
@@ -8155,7 +8155,7 @@ task.defer(function()
 	img.Image = VIS_WALLS[St.wallIndex] or VIS_WALLS[1]
 	img.ZIndex = 2
 	img.Parent = wr
-	Instance.new("UICorner", img).CornerRadius = UDim.new(0, 6)
+	Instance.new("UICorner", img).CornerRadius = UDim.new(0, 0)
 	local idxLbl = Instance.new("TextLabel")
 	idxLbl.Size = UDim2.new(0, 48, 0, 20)
 	idxLbl.Position = UDim2.new(0, 70, 0.5, -10)
@@ -8197,7 +8197,7 @@ task.defer(function()
  dim.Active = false
  dim.Selectable = false
  dim.Parent = Main
- Instance.new("UICorner", bg).CornerRadius = UDim.new(0, 12)
+ Instance.new("UICorner", bg).CornerRadius = UDim.new(0, 0)
  for _, ch in ipairs(Main:GetChildren()) do
  if ch ~= bg and ch.Name ~= "WallDim" and ch:IsA("GuiObject") then
  if ch.ZIndex < 2 then ch.ZIndex = 2 end
@@ -8227,7 +8227,7 @@ task.defer(function()
  b.Active = true
  b.ZIndex = 3
  b.Parent = wr
- Instance.new("UICorner", b).CornerRadius = UDim.new(0, 6)
+ Instance.new("UICorner", b).CornerRadius = UDim.new(0, 0)
  local function step()
  local n = #VIS_WALLS
  if n < 1 then return end
@@ -8254,7 +8254,7 @@ task.defer(function()
  mini.Text = "ILUSIÓN"
  mini.TextSize = 22
  local c0 = mini:FindFirstChildOfClass("UICorner")
- if c0 then c0.CornerRadius = UDim.new(0, 8) end
+ if c0 then c0.CornerRadius = UDim.new(0, 0) end
 	end
 	-- Title bar rectangle text
 	local mainGui = PlayerGui:FindFirstChild("IlusionFullMenu")
@@ -8421,7 +8421,7 @@ task.defer(function()
  b.TextColor3 = C.text
  b.Font = Enum.Font.GothamBold
  b.Parent = sr
- Instance.new("UICorner", b).CornerRadius = UDim.new(0, 6)
+ Instance.new("UICorner", b).CornerRadius = UDim.new(0, 0)
  b.MouseButton1Click:Connect(function()
  local cur = tonumber(St.btnSizes.sentry) or 50
  cur = math.clamp(cur + (sign == "+" and 5 or -5), 20, 200)
@@ -8699,7 +8699,7 @@ task.spawn(function()
 	Main.Active = true
 	Main.ClipsDescendants = true
 	Main.Parent = gui
-	Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 18)
+	Instance.new("UICorner", Main).CornerRadius = UDim.new(0, 0)
 
 	-- White outline, matching the reference TP panel
 	local stroke = Instance.new("UIStroke")
@@ -8722,7 +8722,7 @@ task.spawn(function()
 	LockBtn.Font = Enum.Font.GothamBold
 	LockBtn.TextSize = 10
 	LockBtn.Visible = false
-	Instance.new("UICorner", LockBtn).CornerRadius = UDim.new(0, 6)
+	Instance.new("UICorner", LockBtn).CornerRadius = UDim.new(0, 0)
 
 	local title = Instance.new("TextLabel", Main)
 	title.Size = UDim2.new(1, -62, 0, 30)
@@ -8760,7 +8760,7 @@ task.spawn(function()
  b.TextColor3 = Color3.new(1,1,1)
  b.Font = Enum.Font.GothamBold
  b.TextSize = 12
- Instance.new("UICorner", b).CornerRadius = UDim.new(0, 8)
+ Instance.new("UICorner", b).CornerRadius = UDim.new(0, 0)
  return b
 	end
 	local function mkLabel(text, row)
@@ -8785,7 +8785,7 @@ task.spawn(function()
  b.TextColor3 = Color3.new(1,1,1)
  b.Font = Enum.Font.GothamBold
  b.TextSize = 14
- Instance.new("UICorner", b).CornerRadius = UDim.new(0, 6)
+ Instance.new("UICorner", b).CornerRadius = UDim.new(0, 0)
  b.MouseButton1Click:Connect(s == "-" and onMinus or onPlus)
  end
 	end
@@ -8837,7 +8837,7 @@ task.spawn(function()
 	tpStroke.Parent = BtnTP
 	BtnTP.Font = Enum.Font.GothamBlack
 	BtnTP.TextSize = 14
-	Instance.new("UICorner", BtnTP).CornerRadius = UDim.new(0, 12)
+	Instance.new("UICorner", BtnTP).CornerRadius = UDim.new(0, 0)
 
 	if MINIMIZE then
  Main.Size = UDim2.new(0, 230, 0, 82)
@@ -9046,7 +9046,7 @@ task.spawn(function()
 	frame.Visible = true
 	frame.Active = true
 	frame.Parent = gui
-	Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 10)
+	Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 0)
 	local stroke = Instance.new("UIStroke", frame)
 	stroke.Color = Color3.fromRGB(70, 90, 140)
 	stroke.Thickness = 1.2
@@ -9442,7 +9442,7 @@ task.spawn(function()
 
 	local function corner(obj, r)
  local c = Instance.new("UICorner")
- c.CornerRadius = UDim.new(0, r or 8)
+ c.CornerRadius = UDim.new(0, 0)
  c.Parent = obj
  return c
 	end
@@ -9472,7 +9472,7 @@ task.spawn(function()
 	main.Visible = false
 	main.ClipsDescendants = true
 	main.Parent = gui
-	corner(main, 13)
+	corner(main, 0)
 	stroke(main, Color3.fromRGB(39, 39, 39), 1.3)
 
 	-- Background image (Noxa-style)
@@ -9484,7 +9484,7 @@ task.spawn(function()
 	bgImg.ScaleType = Enum.ScaleType.Crop
 	bgImg.ImageTransparency = 0.35
 	bgImg.ZIndex = 0
-	corner(bgImg, 13)
+	corner(bgImg, 0)
 
 	local header = Instance.new("Frame", main)
 	header.Size = UDim2.new(1, -6, 0, 31)
@@ -9493,7 +9493,7 @@ task.spawn(function()
 	header.BackgroundTransparency = 0.15
 	header.BorderSizePixel = 0
 	header.ZIndex = 4
-	corner(header, 10)
+	corner(header, 0)
 
 	local titleNoxa = Instance.new("TextLabel", header)
 	titleNoxa.Size = UDim2.fromOffset(36, 31)
@@ -9529,7 +9529,7 @@ task.spawn(function()
 	lockBtn.TextSize = 9
 	lockBtn.ZIndex = 8
 	lockBtn.AutoButtonColor = false
-	corner(lockBtn, 6)
+	corner(lockBtn, 0)
 	stroke(lockBtn, Color3.fromRGB(48, 48, 48), 1)
 
 	local hideBtn = Instance.new("TextButton", header)
@@ -9543,7 +9543,7 @@ task.spawn(function()
 	hideBtn.TextSize = 16
 	hideBtn.ZIndex = 7
 	hideBtn.AutoButtonColor = false
-	corner(hideBtn, 7)
+	corner(hideBtn, 0)
 	stroke(hideBtn, Color3.fromRGB(48, 48, 48), 1)
 
 	-- Keybind row
@@ -9554,7 +9554,7 @@ task.spawn(function()
 	keyRow.BackgroundTransparency = 0.2
 	keyRow.BorderSizePixel = 0
 	keyRow.ZIndex = 4
-	corner(keyRow, 7)
+	corner(keyRow, 0)
 	stroke(keyRow, Color3.fromRGB(44, 44, 44), 1)
 
 	local kbLbl = Instance.new("TextLabel", keyRow)
@@ -9577,7 +9577,7 @@ task.spawn(function()
 	kbButton.Font = Enum.Font.GothamBold
 	kbButton.TextSize = 10
 	kbButton.ZIndex = 6
-	corner(kbButton, 5)
+	corner(kbButton, 0)
 	stroke(kbButton, Color3.fromRGB(52, 52, 52), 1)
 
 	local bgLbl = Instance.new("TextLabel", keyRow)
@@ -9600,7 +9600,7 @@ task.spawn(function()
 	bgButton.Font = Enum.Font.GothamBold
 	bgButton.TextSize = 10
 	bgButton.ZIndex = 6
-	corner(bgButton, 5)
+	corner(bgButton, 0)
 	stroke(bgButton, Color3.fromRGB(52, 52, 52), 1)
 
 	-- Status ring area
@@ -9611,7 +9611,7 @@ task.spawn(function()
 	ringInner.BackgroundTransparency = 0.25
 	ringInner.BorderSizePixel = 0
 	ringInner.ZIndex = 4
-	corner(ringInner, 12)
+	corner(ringInner, 0)
 	stroke(ringInner, Color3.fromRGB(40, 40, 48), 1)
 
 	local statusLabel = Instance.new("TextLabel", ringInner)
@@ -9655,7 +9655,7 @@ task.spawn(function()
 	powerBox.Font = Enum.Font.GothamBold
 	powerBox.TextSize = 11
 	powerBox.ZIndex = 6
-	corner(powerBox, 6)
+	corner(powerBox, 0)
 
 	local activateButton = Instance.new("TextButton", main)
 	activateButton.Size = UDim2.new(1, -18, 0, 40)
@@ -9668,7 +9668,7 @@ task.spawn(function()
 	activateButton.TextSize = 12
 	activateButton.AutoButtonColor = false
 	activateButton.ZIndex = 5
-	corner(activateButton, 10)
+	corner(activateButton, 0)
 
 	local closeBtn = Instance.new("TextButton", main)
 	closeBtn.Size = UDim2.new(1, -18, 0, 28)
@@ -9680,7 +9680,7 @@ task.spawn(function()
 	closeBtn.Font = Enum.Font.GothamBold
 	closeBtn.TextSize = 11
 	closeBtn.ZIndex = 5
-	corner(closeBtn, 8)
+	corner(closeBtn, 0)
 
 	local discLbl = Instance.new("TextLabel", main)
 	discLbl.Size = UDim2.new(1, 0, 0, 22)
@@ -9703,7 +9703,7 @@ task.spawn(function()
 	mini.Visible = false
 	mini.ClipsDescendants = true
 	mini.ZIndex = 40
-	corner(mini, 13)
+	corner(mini, 0)
 	stroke(mini, Color3.fromRGB(39, 39, 39), 1.3)
 
 	local miniBg = Instance.new("ImageLabel", mini)
@@ -9713,7 +9713,7 @@ task.spawn(function()
 	miniBg.ScaleType = Enum.ScaleType.Crop
 	miniBg.ImageTransparency = 0.4
 	miniBg.ZIndex = 40
-	corner(miniBg, 13)
+	corner(miniBg, 0)
 
 	local miniHeader = Instance.new("Frame", mini)
 	miniHeader.Size = UDim2.new(1, -6, 0, 31)
@@ -9722,7 +9722,7 @@ task.spawn(function()
 	miniHeader.BackgroundTransparency = 0.15
 	miniHeader.BorderSizePixel = 0
 	miniHeader.ZIndex = 42
-	corner(miniHeader, 10)
+	corner(miniHeader, 0)
 
 	local miniTitle1 = Instance.new("TextLabel", miniHeader)
 	miniTitle1.Size = UDim2.fromOffset(36, 31)
@@ -9756,7 +9756,7 @@ task.spawn(function()
 	miniLock.TextSize = 9
 	miniLock.ZIndex = 46
 	miniLock.AutoButtonColor = false
-	corner(miniLock, 6)
+	corner(miniLock, 0)
 	stroke(miniLock, Color3.fromRGB(48, 48, 48), 1)
 
 	local unhideBtn = Instance.new("TextButton", miniHeader)
@@ -9770,7 +9770,7 @@ task.spawn(function()
 	unhideBtn.TextSize = 14
 	unhideBtn.ZIndex = 45
 	unhideBtn.AutoButtonColor = false
-	corner(unhideBtn, 7)
+	corner(unhideBtn, 0)
 	stroke(unhideBtn, Color3.fromRGB(48, 48, 48), 1)
 
 	local miniActivate = Instance.new("TextButton", mini)
@@ -9784,7 +9784,7 @@ task.spawn(function()
 	miniActivate.TextSize = 11
 	miniActivate.AutoButtonColor = false
 	miniActivate.ZIndex = 42
-	corner(miniActivate, 10)
+	corner(miniActivate, 0)
 
 	-- ===== STATE =====
 	local active = false
@@ -10225,7 +10225,7 @@ task.spawn(function()
 
 	local function corner(p, r)
  local x = Instance.new("UICorner")
- x.CornerRadius = UDim.new(0, r or 10)
+ x.CornerRadius = UDim.new(0, r or 0)
  x.Parent = p
  return x
 	end
@@ -10415,7 +10415,7 @@ task.spawn(function()
  pcall(SaveConfig)
 	end
 
-	corner(mainFrame, 16)
+	corner(mainFrame, 0)
 
 	-- BACKGROUND IMAGE + TINT (full)
 	local bgImg = Instance.new("ImageLabel", mainFrame)
@@ -10425,7 +10425,7 @@ task.spawn(function()
 	bgImg.ScaleType = Enum.ScaleType.Crop
 	bgImg.ImageTransparency = 0.2
 	bgImg.ZIndex = 0
-	corner(bgImg, 16)
+	corner(bgImg, 0)
 
 	local bgTint = Instance.new("Frame", mainFrame)
 	bgTint.Size = UDim2.new(1, 0, 1, 0)
@@ -10433,7 +10433,7 @@ task.spawn(function()
 	bgTint.BackgroundTransparency = 0.35
 	bgTint.BorderSizePixel = 0
 	bgTint.ZIndex = 0
-	corner(bgTint, 16)
+	corner(bgTint, 0)
 	local tintGrad = Instance.new("UIGradient", bgTint)
 	tintGrad.Rotation = 120
 	tintGrad.Color = ColorSequence.new({
@@ -10466,7 +10466,7 @@ task.spawn(function()
  p.Position = UDim2.new(math.random(), 0, math.random(), 0)
  p.BackgroundTransparency = 0.25 + math.random() * 0.5
  p.ZIndex = 1
- corner(p, 99)
+ corner(p, 0)
  table.insert(particles, {
  frame = p,
  base = p.BackgroundTransparency,
@@ -10519,7 +10519,7 @@ task.spawn(function()
 	av.Image = "rbxthumb://type=AvatarHeadShot&id=" .. LP.UserId .. "&w=150&h=150"
 	av.ScaleType = Enum.ScaleType.Crop
 	av.ZIndex = 3
-	corner(av, 9)
+	corner(av, 0)
 	stroke(av, C.Red, 1, 0.4)
 
 	local title = Instance.new("TextLabel", header)
@@ -10559,7 +10559,7 @@ task.spawn(function()
 	lockBtn.TextSize = 9
 	lockBtn.AutoButtonColor = false
 	lockBtn.ZIndex = 10
-	corner(lockBtn, 6)
+	corner(lockBtn, 0)
 	stroke(lockBtn, C.Red, 1, 0.55)
 	local function setV2Locked(on)
  v2Locked = on and true or false
@@ -10617,7 +10617,7 @@ task.spawn(function()
 	row.BackgroundTransparency = 0.25
 	row.BorderSizePixel = 0
 	row.ZIndex = 2
-	corner(row, 10)
+	corner(row, 0)
 	stroke(row, C.Red, 1, 0.6)
 
 	local textLagger = Instance.new("TextLabel", row)
@@ -10648,7 +10648,7 @@ task.spawn(function()
 	toggleContainer.Size = UDim2.new(0, 68, 0, 22)
 	toggleContainer.BorderSizePixel = 0
 	toggleContainer.ZIndex = 3
-	corner(toggleContainer, 99)
+	corner(toggleContainer, 0)
 	stroke(toggleContainer, C.Red, 1, 0.5)
 
 	local toggleBall = Instance.new("Frame", toggleContainer)
@@ -10657,7 +10657,7 @@ task.spawn(function()
 	toggleBall.Position = UDim2.new(0, 2, 0.5, -9)
 	toggleBall.BorderSizePixel = 0
 	toggleBall.ZIndex = 4
-	corner(toggleBall, 99)
+	corner(toggleBall, 0)
 
 	local toggleClick = Instance.new("TextButton", toggleContainer)
 	toggleClick.BackgroundTransparency = 1
@@ -10677,7 +10677,7 @@ task.spawn(function()
 	levelBar.BackgroundTransparency = 0.3
 	levelBar.BorderSizePixel = 0
 	levelBar.ZIndex = 2
-	corner(levelBar, 10)
+	corner(levelBar, 0)
 	stroke(levelBar, C.Red, 1, 0.6)
 
 	local pad = Instance.new("UIPadding", levelBar)
@@ -10703,7 +10703,7 @@ task.spawn(function()
  b.AutoButtonColor = false
  b.BorderSizePixel = 0
  b.ZIndex = 3
- corner(b, 8)
+ corner(b, 0)
  hoverLift(b)
  btns[name] = b
  strokes[name] = stroke(b, C.Red, 1, 0.6)
@@ -10717,7 +10717,7 @@ task.spawn(function()
 	footer.BackgroundTransparency = 0.3
 	footer.BorderSizePixel = 0
 	footer.ZIndex = 2
-	corner(footer, 10)
+	corner(footer, 0)
 	stroke(footer, C.Red, 1, 0.6)
 
 	local keybindButton = Instance.new("TextButton", footer)
@@ -10731,7 +10731,7 @@ task.spawn(function()
 	keybindButton.TextSize = 11
 	keybindButton.AutoButtonColor = false
 	keybindButton.ZIndex = 3
-	corner(keybindButton, 7)
+	corner(keybindButton, 0)
 	stroke(keybindButton, C.Red, 1, 0.55)
 	hoverLift(keybindButton)
 
@@ -11319,7 +11319,7 @@ do
     piamButton.Parent = gui
 
     local piamCorner = Instance.new("UICorner")
-    piamCorner.CornerRadius = UDim.new(0, 10)
+    piamCorner.CornerRadius = UDim.new(0, 0)
     piamCorner.Parent = piamButton
 
     local piamStroke = Instance.new("UIStroke")
@@ -11484,7 +11484,7 @@ do
     SentryButton.Parent = guiSentry
 
     local corner = Instance.new("UICorner")
-    corner.CornerRadius = UDim.new(0, 10)
+    corner.CornerRadius = UDim.new(0, 0)
     corner.Parent = SentryButton
 
     local stroke = Instance.new("UIStroke")
@@ -11646,7 +11646,7 @@ do
     AguButton.Parent = guiAgu
 
     local corner = Instance.new("UICorner")
-    corner.CornerRadius = UDim.new(0, 10)
+    corner.CornerRadius = UDim.new(0, 0)
     corner.Parent = AguButton
 
     local stroke = Instance.new("UIStroke")
@@ -11807,7 +11807,7 @@ do
     medusaButton.Parent = guiMedusa
 
     local medusaCorner = Instance.new("UICorner")
-    medusaCorner.CornerRadius = UDim.new(0, 10)
+    medusaCorner.CornerRadius = UDim.new(0, 0)
     medusaCorner.Parent = medusaButton
 
     local medusaStroke = Instance.new("UIStroke")
