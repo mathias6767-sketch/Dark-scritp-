@@ -83,17 +83,17 @@ end
 -- COLORS / STATE
 ----------------------------------------------------------------
 local C = {
-	-- Black / white reference palette
-	bg = Color3.fromRGB(8, 8, 8), bg2 = Color3.fromRGB(18, 18, 18),
-	card = Color3.fromRGB(25, 25, 25), stroke = Color3.fromRGB(235, 235, 235),
-	accent = Color3.fromRGB(255, 255, 255), text = Color3.fromRGB(255, 255, 255),
-	textDim = Color3.fromRGB(185, 185, 185), on = Color3.fromRGB(245, 245, 245),
-	off = Color3.fromRGB(35, 35, 35), box = Color3.fromRGB(30, 30, 30),
-	danger = Color3.fromRGB(90, 90, 90),
-	modeOnBg = Color3.fromRGB(255, 255, 255), modeOnTxt = Color3.fromRGB(15, 15, 15),
-	modeOffBg = Color3.fromRGB(24, 24, 24), modeOffTxt = Color3.fromRGB(245, 245, 245),
-	btnOn = Color3.fromRGB(255, 255, 255),
-	btnOff = Color3.fromRGB(16, 16, 16),
+	-- Red Ilusión palette
+	bg = Color3.fromRGB(28, 6, 8), bg2 = Color3.fromRGB(42, 10, 12),
+	card = Color3.fromRGB(55, 14, 16), stroke = Color3.fromRGB(220, 40, 40),
+	accent = Color3.fromRGB(255, 45, 45), text = Color3.fromRGB(255, 235, 235),
+	textDim = Color3.fromRGB(200, 140, 140), on = Color3.fromRGB(255, 55, 55),
+	off = Color3.fromRGB(40, 12, 14), box = Color3.fromRGB(48, 12, 14),
+	danger = Color3.fromRGB(120, 20, 20),
+	modeOnBg = Color3.fromRGB(255, 45, 45), modeOnTxt = Color3.fromRGB(30, 5, 5),
+	modeOffBg = Color3.fromRGB(40, 12, 14), modeOffTxt = Color3.fromRGB(255, 235, 235),
+	btnOn = Color3.fromRGB(255, 45, 45),
+	btnOff = Color3.fromRGB(40, 12, 14),
 }
 
 
@@ -4238,7 +4238,7 @@ function setTab(name)
 	for n, b in pairs(tabBtns) do
  local on = n == name
  b.BackgroundColor3 = on and C.accent or C.card
- b.TextColor3 = on and Color3.fromRGB(30, 20, 30) or C.text
+ b.TextColor3 = on and Color3.fromRGB(30, 5, 5) or C.text
 	end
 end
 function addTab(name, order)
