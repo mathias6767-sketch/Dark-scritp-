@@ -90,11 +90,12 @@ local C = {
 	textDim = Color3.fromRGB(180, 140, 145), on = Color3.fromRGB(205, 0, 0),
 	off = Color3.fromRGB(50, 50, 50), box = Color3.fromRGB(28, 28, 28),
 	danger = Color3.fromRGB(120, 0, 0),
-	modeOnBg = Color3.fromRGB(205, 0, 0), modeOnTxt = Color3.fromRGB(255, 240, 240),
-	modeOffBg = Color3.fromRGB(28, 28, 28), modeOffTxt = Color3.fromRGB(255, 240, 240),
-	btnOn = Color3.fromRGB(205, 0, 0),
-	btnOff = Color3.fromRGB(28, 28, 28),
+	modeOnBg = Color3.fromRGB(220, 50, 80), modeOnTxt = Color3.fromRGB(0, 0, 0),
+	modeOffBg = Color3.fromRGB(18, 4, 8), modeOffTxt = Color3.fromRGB(255, 255, 255),
+	btnOn = Color3.fromRGB(220, 50, 80),
+	btnOff = Color3.fromRGB(18, 4, 8),
 }
+
 
 
 -- Auto-write Vis Auto Steal for loadstring
@@ -5942,7 +5943,7 @@ function _G.IlusionBuildV2ModeBar()
  for n, e in pairs(modeRefs or {}) do
  if e and e.style then pcall(e.style, n == modeName)
  elseif e and e.btn then
- e.btn.BackgroundColor3 = (n == modeName) and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(28, 28, 28)
+ e.btn.BackgroundColor3 = (n == modeName) and Color3.fromRGB(220, 50, 80) or Color3.fromRGB(18, 4, 8)
  end
  end
  end
@@ -6085,7 +6086,7 @@ function makeModeBtn(name, order)
  e.style(St.activeMode == n)
  elseif e and e.btn then
  local on = St.activeMode == n
- e.btn.BackgroundColor3 = on and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(28, 28, 28)
+ e.btn.BackgroundColor3 = on and Color3.fromRGB(220, 50, 80) or Color3.fromRGB(18, 4, 8)
  e.btn.TextColor3 = on and Color3.fromRGB(0, 0, 0) or Color3.fromRGB(255, 255, 255)
  end
  end
@@ -6130,7 +6131,7 @@ function makeActBtn(key, label, pos, cb)
 	holder.Parent = ActGui
 	local btn = Instance.new("TextButton")
 	btn.Size = UDim2.new(1, 0, 1, 0)
-	btn.BackgroundColor3 = Color3.fromRGB(12, 12, 16)
+	btn.BackgroundColor3 = Color3.fromRGB(18, 4, 8)
 	btn.Text = label
 	btn.TextColor3 = Color3.fromRGB(255, 255, 255)
 	btn.TextSize = math.clamp(math.floor(sz * 0.22), 10, 16)
@@ -6149,7 +6150,7 @@ function makeActBtn(key, label, pos, cb)
  if oldS then oldS:Destroy() end
  local s = Instance.new("UIStroke")
  s.Name = "BtnBorder"
- s.Color = Color3.fromRGB(220, 220, 235)
+ s.Color = Color3.fromRGB(255, 12, 12)
  s.Thickness = 2
  s.Transparency = 0.15
  s.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
@@ -6395,10 +6396,14 @@ end
 function applyActBtnState(btn, on, onText, offText)
  if not btn then return end
  on = on and true or false
- -- Match the Speed buttons: black when OFF, white when ON, with a light border.
+ -- Dark.vs style: OFF = black + white text | ON = red + black text
+ local ON_BG = (C and C.btnOn) or Color3.fromRGB(220, 50, 80)
+ local OFF_BG = (C and C.btnOff) or Color3.fromRGB(18, 4, 8)
+ local ON_TXT = Color3.fromRGB(0, 0, 0)
+ local OFF_TXT = Color3.fromRGB(255, 255, 255)
  btn.BackgroundTransparency = 0
- btn.BackgroundColor3 = on and Color3.fromRGB(245, 245, 245) or Color3.fromRGB(18, 18, 18)
- btn.TextColor3 = on and Color3.fromRGB(10, 10, 10) or Color3.fromRGB(255, 255, 255)
+ btn.BackgroundColor3 = on and ON_BG or OFF_BG
+ btn.TextColor3 = on and ON_TXT or OFF_TXT
  if onText and on then btn.Text = onText elseif offText then btn.Text = offText end
  local bgImg = btn:FindFirstChild("BtnBgImage")
  if bgImg then bgImg:Destroy() end
@@ -6407,13 +6412,13 @@ function applyActBtnState(btn, on, onText, offText)
  local tl = btn:FindFirstChild("BtnTextOverlay")
  if tl then
   if onText and on then tl.Text = onText elseif offText then tl.Text = offText end
-  tl.TextColor3 = on and Color3.fromRGB(10, 10, 10) or Color3.fromRGB(255, 255, 255)
+  tl.TextColor3 = on and ON_TXT or OFF_TXT
   tl.TextStrokeTransparency = 1
  end
  local st = btn:FindFirstChild("BtnBorder") or btn:FindFirstChildOfClass("UIStroke")
  if not st then st = Instance.new("UIStroke"); st.Name = "BtnBorder"; st.Parent = btn end
- st.Color = Color3.fromRGB(225, 225, 225)
- st.Transparency = 0.12
+ st.Color = on and ON_BG or Color3.fromRGB(255, 12, 12)
+ st.Transparency = on and 0.2 or 0.55
  st.Thickness = 1.5
  st.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
 end
@@ -6443,23 +6448,23 @@ function _G.IlusionRefreshModeBar()
  local on = St.activeMode == n
  applyCorner(e.btn, "Square")
  if on then
- e.btn.BackgroundColor3 = C.modeOnBg or Color3.fromRGB(255, 20, 147)
+ e.btn.BackgroundColor3 = C.modeOnBg or Color3.fromRGB(220, 50, 80)
  e.btn.BackgroundTransparency = 0
- e.btn.TextColor3 = C.modeOnTxt or Color3.fromRGB(255, 255, 255)
+ e.btn.TextColor3 = C.modeOnTxt or Color3.fromRGB(0, 0, 0)
  local tl = e.btn:FindFirstChild("BtnTextOverlay")
  if tl then
- tl.TextColor3 = Color3.fromRGB(255, 255, 255)
+ tl.TextColor3 = Color3.fromRGB(0, 0, 0)
  tl.Text = n
  end
  local st = e.btn:FindFirstChildOfClass("UIStroke")
- if st then st.Color = Color3.fromRGB(255, 255, 255); st.Transparency = 0.05 end
+ if st then st.Color = Color3.fromRGB(220, 50, 80); st.Transparency = 0.2 end
  else
- e.btn.BackgroundColor3 = C.modeOffBg or Color3.fromRGB(255, 255, 255)
+ e.btn.BackgroundColor3 = C.modeOffBg or Color3.fromRGB(18, 4, 8)
  e.btn.BackgroundTransparency = 0
- e.btn.TextColor3 = C.modeOffTxt or Color3.fromRGB(25, 25, 30)
+ e.btn.TextColor3 = C.modeOffTxt or Color3.fromRGB(255, 255, 255)
  local tl = e.btn:FindFirstChild("BtnTextOverlay")
  if tl then
- tl.TextColor3 = Color3.fromRGB(25, 25, 30)
+ tl.TextColor3 = Color3.fromRGB(255, 255, 255)
  tl.Text = n
  end
  local st = e.btn:FindFirstChildOfClass("UIStroke")
@@ -6514,7 +6519,7 @@ function _G.IlusionUpdateMobileVisuals()
  s.Name = "BtnBorder"
  s.Parent = e.btn
  end
- s.Color = Color3.fromRGB(220, 220, 235)
+ s.Color = Color3.fromRGB(255, 12, 12)
  s.Thickness = 2
  s.Transparency = 0.15
  end
